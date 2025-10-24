@@ -2141,3 +2141,49 @@ textarea.invalid {
         grid-template-columns: 1fr;
     }
 }
+
+/* --- Guidance Process Section --- */
+.guidance-process {
+    max-width: 800px;
+    margin: 3rem auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.guidance-step {
+    text-align: left;
+}
+
+.guidance-step .step-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.step-indicator .step-number {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #999;
+}
+
+.step-indicator i {
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.guidance-step h3 {
+    text-align: left;
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+}
+
+.guidance-step p {
+    margin-bottom: 0;
+    color: #555;
+    font-size: 1rem;
+    line-height: 1.7;
+}
