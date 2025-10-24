@@ -1462,14 +1462,6 @@ textarea.invalid {
     text-align: left;
 }
 
-#map-section {
-    padding-top: 40px;
-}
-
-#map-section h2, #map-section .subtitle {
-    text-align: center;
-}
-
 #form-success-message {
     text-align: center;
     padding: 2rem;
