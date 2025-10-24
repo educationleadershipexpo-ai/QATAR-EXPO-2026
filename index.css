@@ -91,6 +91,7 @@ section {
     align-items: center;
     gap: 1.5rem;
     max-width: 1400px;
+    overflow: visible;
 }
 
 .logo {
@@ -113,6 +114,7 @@ section {
     flex: 1;
     display: flex;
     justify-content: center;
+    overflow: visible;
 }
 
 #main-nav > ul {
