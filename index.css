@@ -2013,6 +2013,134 @@ textarea.invalid {
     margin-bottom: 2.5rem;
 }
 
+/* --- Brand Exposure Page Styles --- */
+#audience-reach .stat-card {
+    background-color: var(--surface-color);
+}
+
+.exposure-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.exposure-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.exposure-item:nth-child(even) .exposure-image {
+    order: 2;
+}
+
+.exposure-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.exposure-text h3 {
+    text-align: left;
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.exposure-text h3 i {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.exposure-benefits {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem;
+}
+
+.exposure-benefits li {
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.75rem;
+}
+.exposure-benefits li::before {
+    content: '\f058'; /* Font Awesome check-circle */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 3px;
+    color: #d12386;
+}
+
+/* Marketing Timeline */
+#marketing-timeline-section {
+    padding-top: 40px;
+}
+.marketing-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 3rem auto 0;
+}
+
+.marketing-timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--surface-color);
+    border-radius: 2px;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 60px;
+    margin-bottom: 3rem;
+}
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 0 0 5px var(--bg-color);
+    border: 2px solid #711fb8;
+}
+
+.timeline-content h4 {
+    text-align: left;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+.timeline-content p {
+    margin: 0;
+    color: #555;
+}
 
 /* --- Responsive Styles --- */
 @media (max-width: 1200px) {
@@ -2114,6 +2242,14 @@ textarea.invalid {
         grid-template-columns: 1fr 1fr;
         gap: 2rem;
     }
+
+    .exposure-item {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .exposure-item:nth-child(even) .exposure-image {
+        order: -1; /* Reset order for stacking */
+    }
 }
 
 @media (max-width: 768px) {
@@ -2127,7 +2263,12 @@ textarea.invalid {
     
     .marketing-timeline::before { left: 15px; }
     .timeline-item { padding-left: 50px; }
-    .timeline-icon { width: 30px; height: 30px; font-size: 1rem; box-shadow: 0 0 0 3px #711fb8; }
+    .timeline-icon { 
+        width: 30px; 
+        height: 30px; 
+        font-size: 1rem;
+        box-shadow: 0 0 0 3px var(--bg-color);
+    }
 
     #mobile-sticky-bar {
         position: fixed;
@@ -2168,16 +2309,6 @@ textarea.invalid {
     }
     .tier-benefits.two-column-list {
         grid-template-columns: 1fr;
-    }
-
-    .journey-phase {
-        grid-template-columns: 1fr;
-    }
-    .journey-phase:nth-child(even) .journey-visual {
-        order: 1; /* Reset order for mobile */
-    }
-    .journey-visual {
-        margin-top: 2rem;
     }
 }
 
@@ -2446,89 +2577,4 @@ textarea.invalid {
     .timeline-time { padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
     .timeline-time h3 { position: static; }
     .session-tag { top: 5px; right: -40px; font-size: 0.7rem; }
-}
-
-/* --- NEW Brand Exposure Page Styles --- */
-.exposure-intro-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-    margin-top: 3rem;
-}
-.exposure-intro-grid .stat-card {
-    background: var(--surface-color);
-    padding: 1.5rem;
-}
-.exposure-intro-grid .stat-card h4 {
-    font-size: 1.8rem;
-}
-
-.marketing-journey {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    margin-top: 3rem;
-}
-
-.journey-phase {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: center;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid var(--border-color);
-}
-.journey-phase:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.journey-phase:nth-child(even) .journey-visual {
-    order: -1;
-}
-
-.journey-text h3 {
-    text-align: left;
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-.journey-text h3 i {
-    font-size: 2rem;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.journey-text .phase-subtitle {
-    font-weight: 700;
-    color: #555;
-    margin-bottom: 1.5rem;
-    display: block;
-}
-.journey-text ul {
-    list-style: none;
-    padding: 0;
-}
-.journey-text ul li {
-    padding-left: 2rem;
-    position: relative;
-    margin-bottom: 0.75rem;
-}
-.journey-text ul li::before {
-    content: '\f00c';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    position: absolute;
-    left: 0;
-    top: 4px;
-    color: #d12386;
-}
-
-.journey-visual img {
-    width: 100%;
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
 }
