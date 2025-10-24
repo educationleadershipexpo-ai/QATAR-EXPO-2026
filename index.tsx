@@ -1,512 +1,1131 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QATAR EDUCATION LEADERSHIP EXPO 2026</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.24.0"
-  }
-}
-</script>
-</head>
-<body>
 
-    <header class="main-header" id="main-header">
-        <div class="container">
-            <a href="index.html" class="logo"><img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png" alt="QELE 2026 Logo"></a>
-            <button class="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="hamburger-box">
-                    <span class="hamburger-inner"></span>
-                </span>
-            </button>
-            <nav id="main-nav">
-                 <ul>
-                    <li><a href="index.html" class="nav-link">Home</a></li>
-                    <li><a href="about.html" class="nav-link">About Expo</a></li>
-                    <li class="has-dropdown">
-                        <a href="#" class="nav-link">Visit <i class="fas fa-angle-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="why-attend.html">Why Attend</a></li>
-                            <li><a href="plan-your-trip.html">Plan Your Trip</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-dropdown">
-                        <a href="#" class="nav-link">For Students <i class="fas fa-angle-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="universities.html">Student Registration</a></li>
-                            <li><a href="career-counselling.html">Career Counselling</a></li>
-                            <li><a href="workshops.html">Workshop Schedule</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-dropdown">
-                        <a href="why-exhibit.html" class="nav-link">For Exhibitors <i class="fas fa-angle-down"></i></a>
-                         <ul class="dropdown-menu">
-                            <li><a href="why-exhibit.html">Why Exhibit</a></li>
-                            <li><a href="booth-features.html">Booth Features</a></li>
-                             <li><a href="booth-registration.html">Book Your Booth</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-dropdown">
-                        <a href="sponsorship-tiers.html" class="nav-link">For Sponsors <i class="fas fa-angle-down"></i></a>
-                         <ul class="dropdown-menu">
-                            <li><a href="sponsorship-tiers.html">Sponsorship Tiers</a></li>
-                            <li><a href="brand-exposure.html">Brand Exposure</a></li>
-                            <li><a href="sponsorship-registration.html">Become a Sponsor</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="contact.html" class="nav-link">Contact</a></li>
-                </ul>
-            </nav>
-            <div class="header-ctas">
-                <a href="booth-registration.html" class="btn btn-primary btn-sm">Book a Booth</a>
-                <a href="sponsorship-registration.html" class="btn btn-primary btn-sm">Sponsor Now</a>
-            </div>
-        </div>
-    </header>
+    import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 
-    <main>
-        <!-- 1. HERO SECTION -->
-        <section id="hero">
-            <video autoplay loop muted playsinline id="hero-video" aria-hidden="true">
-                <source src="https://videos.pexels.com/video-files/3209828/3209828-hd_1920_1080_25fps.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div class="container hero-content">
-                <div class="hero-text">
-                    <h1>Join the Region's Most Impactful Education Expo</h1>
-                    <p>
-                        <strong>April 19–20, 2026 | Sheraton Grand Doha Resort & Convention Hotel</strong>
-                        <br>
-                        Organized by Student Diwan, Qatar's leading EdTech platform
-                    </p>
-                    <div class="cta-group">
-                        <a href="booth-registration.html" id="hero-cta-booth" class="btn btn-primary">Reserve My Booth</a>
-                        <a href="sponsorship-registration.html" id="hero-cta-sponsor" class="btn btn-outline-light">Become a Sponsor</a>
-                    </div>
-                    <div class="urgency-trigger">
-                        <p><strong>Event Starts In:</strong></p>
-                    </div>
-                     <div id="countdown-timer">
-                        <div class="timer-unit">
-                            <span id="days">00</span>
-                            <p>Days</p>
-                        </div>
-                        <div class="timer-unit">
-                            <span id="hours">00</span>
-                            <p>Hours</p>
-                        </div>
-                        <div class="timer-unit">
-                            <span id="minutes">00</span>
-                            <p>Minutes</p>
-                        </div>
-                        <div class="timer-unit">
-                            <span id="seconds">00</span>
-                            <p>Seconds</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    declare var Panzoom: any;
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+    // Initialize Gemini AI
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
+
+    // --- Reusable Form Validation Helpers ---
+    const showError = (input: HTMLElement, message: string) => {
+        const formGroup = input.closest('.form-group, .form-group-consent, .interest-group-container');
+        if (!formGroup) return;
+        const errorElement = formGroup.querySelector('.error-message') as HTMLElement;
+        if (errorElement) {
+            errorElement.innerText = message;
+            errorElement.style.display = 'block';
+        }
+        if (input.tagName.toLowerCase() !== 'div') {
+            input.classList.add('invalid');
+        }
+    };
+
+    const clearError = (input: HTMLElement) => {
+        const formGroup = input.closest('.form-group, .form-group-consent, .interest-group-container');
+         if (!formGroup) return;
+        const errorElement = formGroup.querySelector('.error-message') as HTMLElement;
+        if (errorElement) {
+            errorElement.innerText = '';
+            errorElement.style.display = 'none';
+        }
+         if (input.tagName.toLowerCase() !== 'div') {
+            input.classList.remove('invalid');
+        }
+    };
+
+    // --- Universal Real-Time Validator ---
+    const validateField = (field: HTMLElement): boolean => {
+        if (!field) return true;
+        let isValid = true;
+        const input = field as HTMLInputElement;
+        const select = field as HTMLSelectElement;
+        const checkbox = field as HTMLInputElement;
+        const textarea = field as HTMLTextAreaElement;
+
+        const value = input.value?.trim();
+        clearError(field);
+
+        switch (field.id) {
+            case 'form-name':
+            case 'form-booth-name':
+            case 'form-student-name':
+            case 'form-sponsor-name':
+                if (value === '') {
+                    showError(field, 'Name is required.');
+                    isValid = false;
+                }
+                break;
+            
+            case 'form-organization':
+            case 'form-booth-company':
+            case 'form-student-school':
+            case 'form-sponsor-company':
+                if (value === '') {
+                    const fieldName = (field.id === 'form-booth-company' || field.id === 'form-sponsor-company') ? 'Company' : (field.id === 'form-student-school') ? 'School/Institution' : 'Organization';
+                    showError(field, `${fieldName} is required.`);
+                    isValid = false;
+                }
+                break;
+                
+            case 'form-email':
+            case 'form-booth-email':
+            case 'form-student-email':
+            case 'form-sponsor-email':
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (value === '') {
+                    showError(field, 'Email is required.');
+                    isValid = false;
+                } else if (!emailRegex.test(value)) {
+                    showError(field, 'Please enter a valid email address.');
+                    isValid = false;
+                }
+                break;
+            
+            case 'form-phone':
+            case 'form-student-phone':
+            case 'form-booth-phone':
+            case 'form-sponsor-phone':
+                const phoneRegex = /^[\d\s()+-]+$/;
+                if ((field.id === 'form-booth-phone' || field.id === 'form-sponsor-phone') && value === '') {
+                    showError(field, 'Mobile number is required.');
+                    isValid = false;
+                } else if (value !== '' && !phoneRegex.test(value)) {
+                    showError(field, 'Please enter a valid phone number.');
+                    isValid = false;
+                }
+                break;
+
+            case 'form-booth-title':
+            case 'form-sponsor-title':
+                 if (value === '') {
+                    const fieldName = (field.id === 'form-sponsor-title') ? 'Position' : 'Job Title';
+                    showError(field, `${fieldName} is required.`);
+                    isValid = false;
+                }
+                break;
+            
+            case 'form-booth-website':
+            case 'form-sponsor-website':
+                const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$/i;
+                if (value === '') {
+                    showError(field, 'Website is required.');
+                    isValid = false;
+                } else if (!urlRegex.test(value)) {
+                    showError(field, 'Please enter a valid website URL.');
+                    isValid = false;
+                }
+                break;
+
+            case 'form-sponsor-message':
+                if (textarea.value.trim() === '') {
+                    showError(field, 'Message is required.');
+                    isValid = false;
+                }
+                break;
+            
+            case 'form-interest':
+            case 'form-booth-package':
+            case 'form-booth-source':
+            case 'form-student-nationality':
+            case 'form-student-grade':
+            case 'form-student-source':
+            case 'form-booth-country':
+            case 'form-booth-company-field':
+            case 'form-sponsor-country':
+            case 'form-sponsor-company-field':
+                if (select.value === '') {
+                    showError(field, 'Please make a selection.');
+                    isValid = false;
+                }
+                break;
+
+            case 'form-student-dob':
+                if (input.value === '') {
+                     showError(field, 'Date of birth is required.');
+                     isValid = false;
+                }
+                break;
+            
+            case 'form-booth-consent':
+            case 'form-student-consent':
+            case 'form-sponsor-consent':
+                if (!checkbox.checked) {
+                    showError(checkbox, 'You must consent to continue.');
+                    isValid = false;
+                }
+                break;
+        }
+        return isValid;
+    }
+
+
+    // --- Active Nav Link Highlighting ---
+    function highlightActiveNav() {
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinks = document.querySelectorAll('#main-nav a.nav-link');
+
+        navLinks.forEach(link => {
+            const linkPage = (link as HTMLAnchorElement).href.split('/').pop();
+
+            if (linkPage === currentPage) {
+                link.classList.add('active');
+                
+                // For dropdowns, also highlight the parent
+                const parentDropdown = link.closest('.has-dropdown');
+                if (parentDropdown) {
+                    parentDropdown.querySelector('a.nav-link')?.classList.add('active');
+                }
+            }
+        });
+    }
+
+
+    // --- Mobile Navigation Logic ---
+    function initializeMobileNav() {
+        const header = document.getElementById('main-header');
+        const navToggle = document.querySelector('.nav-toggle') as HTMLButtonElement;
+        const mainNav = document.getElementById('main-nav');
+
+        if (!header || !navToggle || !mainNav) return;
+
+        navToggle.addEventListener('click', () => {
+        header.classList.toggle('nav-open');
+        const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', String(!isExpanded));
         
-        <!-- Scrolling Banner -->
-        <div class="scrolling-banner">
-            <div class="scrolling-text">
-                <span>⚡️ EARLY BIRD DISCOUNT ENDS NOVEMBER 20, 2025 ⚡️ CLAIM YOUR 15% OFF NOW</span>
-                <span>⚡️ EARLY BIRD DISCOUNT ENDS NOVEMBER 20, 2025 ⚡️ CLAIM YOUR 15% OFF NOW</span>
-            </div>
-        </div>
+        if (header.classList.contains('nav-open')) {
+            (mainNav.querySelector('a') as HTMLAnchorElement)?.focus();
+        } else {
+            navToggle.focus();
+        }
+        });
 
-        <!-- NEW: PARTNERS SECTION -->
-        <section id="home-partners">
-             <div class="container">
-                <h2>Our Partners & Supporters</h2>
-                <p class="subtitle">We are proud to collaborate with leaders in education and technology to make QELE 2026 a landmark event.</p>
-                <div class="logo-grid" id="home-partners-grid">
-                    <!-- Partner logos will be injected here by JS -->
-                </div>
-            </div>
-        </section>
+        // Close menu when a link is clicked, unless it's a dropdown toggle on mobile
+        mainNav.addEventListener('click', (e) => {
+            const link = (e.target as HTMLElement).closest('a');
+            if (!link) return;
+            
+            // Let the dropdown handler manage clicks on dropdown toggles in mobile view.
+            // The dropdown handler now uses stopPropagation, so this logic mainly prevents
+            // the nav from closing on mobile if a non-link area in a dropdown li is clicked.
+            if (link.parentElement?.classList.contains('has-dropdown') && window.innerWidth <= 768) {
+                return; 
+            }
 
-        <!-- 5. WHO IS ATTENDING -->
-        <section id="who-is-attending">
-            <div class="container">
-                 <h2>Who Is Attending?</h2>
-                 <div class="attendee-grid">
-                    <div class="attendee-card"><i class="fas fa-university"></i> 100+ Universities & Colleges</div>
-                    <div class="attendee-card"><i class="fas fa-laptop-code"></i> 50+ Edutech Companies</div>
-                    <div class="attendee-card"><i class="fas fa-chalkboard-teacher"></i> 75+ Education Consultants</div>
-                    <div class="attendee-card"><i class="fas fa-user-tie"></i> K-12 Leaders & Students</div>
-                    <div class="attendee-card"><i class="fas fa-building-columns"></i> Government Representatives</div>
-                    <div class="attendee-card"><i class="fas fa-microphone-alt"></i> 120+ Speakers & Influencers</div>
-                    <div class="attendee-card"><i class="fas fa-hands-holding-circle"></i> Sponsors, Media & Investors</div>
-                    <div class="attendee-card"><i class="fas fa-graduation-cap"></i> 4000+ Students</div>
-                 </div>
-            </div>
-        </section>
+            if (header.classList.contains('nav-open')) {
+                header.classList.remove('nav-open');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.focus();
+            }
+        });
+    }
+    
+    // --- Dropdown Navigation Logic ---
+    function initializeDropdowns() {
+        const dropdowns = document.querySelectorAll('.has-dropdown');
 
-        <!-- EXHIBITOR BENEFITS SECTION (NEW) -->
-        <section id="exhibitor-benefits" class="bg-surface section-angled-top">
-            <div class="container">
-                 <h2>Exhibitor Benefits</h2>
-                 <p class="subtitle">Maximize your impact and achieve your goals at QELE 2026.</p>
-                 <div class="benefits-grid">
-                    <div class="benefit-card">
-                        <i class="fas fa-users"></i>
-                        <h3>Recruitment</h3>
-                        <p>Engage Grade 11–12 students with strong admission intent (D+I).</p>
-                    </div>
-                     <div class="benefit-card">
-                        <i class="fas fa-eye"></i>
-                        <h3>Visibility</h3>
-                        <p>Gain 1M+ brand impressions across digital & event platforms.</p>
-                    </div>
-                     <div class="benefit-card">
-                        <i class="fas fa-lightbulb"></i>
-                        <h3>Thought Leadership</h3>
-                        <p>Shape MENA’s education agenda through panels & roundtables.</p>
-                    </div>
-                     <div class="benefit-card">
-                        <i class="fas fa-handshake"></i>
-                        <h3>Partnerships</h3>
-                        <p>Connect with education leaders, government, & industry experts.</p>
-                    </div>
-                 </div>
-            </div>
-        </section>
+        dropdowns.forEach((dropdown, index) => {
+            const toggle = dropdown.querySelector('a') as HTMLAnchorElement;
+            const menu = dropdown.querySelector('.dropdown-menu') as HTMLElement;
 
-        <!-- WHO SHOULD EXHIBIT SECTION (NEW) -->
-        <section id="who-should-exhibit" class="bg-surface">
-            <div class="container">
-                <h2>Who Should Exhibit?</h2>
-                <p class="subtitle">If you provide solutions for the education ecosystem, QELE is your platform.</p>
-                <div class="exhibitor-types-grid">
-                    <div class="exhibitor-type-card">
-                        <i class="fas fa-university"></i>
-                        <p>Universities & Colleges</p>
-                    </div>
-                    <div class="exhibitor-type-card">
-                        <i class="fas fa-wifi"></i>
-                        <p>Online Learning Providers</p>
-                    </div>
-                    <div class="exhibitor-type-card">
-                        <i class="fas fa-microchip"></i>
-                        <p>Hardware Providers</p>
-                    </div>
-                    <div class="exhibitor-type-card">
-                        <i class="fas fa-head-side-virus"></i>
-                        <p>EdTech (AI, VR, Digital)</p>
-                    </div>
-                    <div class="exhibitor-type-card">
-                        <i class="fas fa-flask"></i>
-                        <p>STEM Education Tools</p>
-                    </div>
-                    <div class="exhibitor-type-card">
-                        <i class="fas fa-headset"></i>
-                        <p>Education Consultants</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+            if (!toggle || !menu) return;
 
-        <!-- NEVER MISS A LEAD SECTION (NEW) -->
-        <section id="lead-capture">
-            <div class="container">
-                <div class="lead-capture-grid">
-                    <div class="lead-capture-text">
-                        <h2>Never Miss a Lead</h2>
-                        <h3>Instant Capture for Every Exhibitor</h3>
-                        <p>Turn every handshake into a qualified lead in seconds with our integrated lead capture system.</p>
-                        <ul class="lead-capture-features">
-                            <li><i class="fas fa-check-circle"></i><span><strong>Scan qualified visitors</strong> in seconds.</span></li>
-                            <li><i class="fas fa-check-circle"></i><span>Instantly capture Name, Role, Institution, Contact (Opt-in).</span></li>
-                            <li><i class="fas fa-check-circle"></i><span><strong>Real-time sync</strong> to your exhibitor dashboard.</span></li>
-                            <li><i class="fas fa-check-circle"></i><span>Instant <strong>CSV export</strong> for quick CRM import.</span></li>
-                            <li><i class="fas fa-check-circle"></i><span><strong>Works offline</strong>, auto-syncs when back online.</span></li>
-                        </ul>
-                        <a href="booth-registration.html" class="btn btn-primary">Capture Every Lead. Convert Faster.</a>
-                    </div>
-                    <div class="lead-capture-image">
-                        <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1722288339/lead-capture-qr_2_y3h1b8.png" alt="Phone scanning a QR code for lead capture">
-                    </div>
-                </div>
-            </div>
-        </section>
+            // Setup ARIA attributes
+            const menuId = `dropdown-menu-${index}`;
+            toggle.setAttribute('aria-haspopup', 'true');
+            toggle.setAttribute('aria-expanded', 'false');
+            menu.id = menuId;
+            toggle.setAttribute('aria-controls', menuId);
 
-        <!-- KEYNOTE SPEAKERS SECTION -->
-        <section id="keynote-speakers">
-            <div class="container">
-                <h2>Meet Our Keynote Speakers</h2>
-                <p class="subtitle">Insights from the vanguards of education, technology, and policy.</p>
-                <div class="speakers-grid">
-                    <!-- Speaker 1 -->
-                    <div class="speaker-card">
-                        <a href="#" class="speaker-linkedin" aria-label="Dr. Sarah Al-Mansouri's LinkedIn profile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        <img src="https://images.pexels.com/photos/762020/pexels-photo-762020.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Headshot of Dr. Sarah Al-Mansouri" class="speaker-photo">
-                        <h4>Dr. Sarah Al-Mansouri</h4>
-                        <p class="speaker-title">Director of Education Innovation</p>
-                        <p class="speaker-org">Qatar Foundation</p>
-                        <span class="speaker-tag">Digital Learning & EdTech</span>
-                    </div>
-                    <!-- Speaker 2 -->
-                    <div class="speaker-card">
-                        <a href="#" class="speaker-linkedin" aria-label="Prof. Ahmed Hassan's LinkedIn profile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        <img src="https://images.pexels.com/photos/1181599/pexels-photo-1181599.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Headshot of Prof. Ahmed Hassan" class="speaker-photo">
-                        <h4>Prof. Ahmed Hassan</h4>
-                        <p class="speaker-title">Dean of Engineering</p>
-                        <p class="speaker-org">Qatar University</p>
-                        <span class="speaker-tag">STEM Education</span>
-                    </div>
-                    <!-- Speaker 3 -->
-                    <div class="speaker-card">
-                        <a href="#" class="speaker-linkedin" aria-label="Ms. Fatima Al-Thani's LinkedIn profile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        <img src="https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Headshot of Ms. Fatima Al-Thani" class="speaker-photo">
-                        <h4>Ms. Fatima Al-Thani</h4>
-                        <p class="speaker-title">CEO</p>
-                        <p class="speaker-org">Education Excellence Institute</p>
-                        <span class="speaker-tag">Leadership in Education</span>
-                    </div>
-                    <!-- Speaker 4 -->
-                    <div class="speaker-card">
-                        <a href="#" class="speaker-linkedin" aria-label="Dr. Michael Chen's LinkedIn profile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        <img src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Headshot of Dr. Michael Chen" class="speaker-photo">
-                        <h4>Dr. Michael Chen</h4>
-                        <p class="speaker-title">Research Director</p>
-                        <p class="speaker-org">Cambridge Assessment</p>
-                        <span class="speaker-tag">Assessment & Analytics</span>
-                    </div>
-                    <!-- Speaker 5 -->
-                    <div class="speaker-card">
-                        <a href="#" class="speaker-linkedin" aria-label="Dr. Layla Abdulrahman's LinkedIn profile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        <img src="https://images.pexels.com/photos/1181424/pexels-photo-1181424.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Headshot of Dr. Layla Abdulrahman" class="speaker-photo">
-                        <h4>Dr. Layla Abdulrahman</h4>
-                        <p class="speaker-title">Head of Curriculum</p>
-                        <p class="speaker-org">Ministry of Education</p>
-                        <span class="speaker-tag">Curriculum Development</span>
-                    </div>
-                    <!-- Speaker 6 -->
-                    <div class="speaker-card">
-                        <a href="#" class="speaker-linkedin" aria-label="Mr. James Wilson's LinkedIn profile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        <img src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Headshot of Mr. James Wilson" class="speaker-photo">
-                        <h4>Mr. James Wilson</h4>
-                        <p class="speaker-title">Global Education Consultant</p>
-                        <p class="speaker-org">UNESCO</p>
-                        <span class="speaker-tag">International Education</span>
-                    </div>
-                    <!-- Speaker 7 -->
-                    <div class="speaker-card">
-                        <a href="#" class="speaker-linkedin" aria-label="Dr. Noor Al-Kuwari's LinkedIn profile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        <img src="https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Headshot of Dr. Noor Al-Kuwari" class="speaker-photo">
-                        <h4>Dr. Noor Al-Kuwari</h4>
-                        <p class="speaker-title">Vice Principal</p>
-                        <p class="speaker-org">Doha International School</p>
-                        <span class="speaker-tag">Student Development</span>
-                    </div>
-                    <!-- Speaker 8 -->
-                    <div class="speaker-card">
-                        <a href="#" class="speaker-linkedin" aria-label="Prof. Robert Martinez's LinkedIn profile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                        <img src="https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=300" alt="Headshot of Prof. Robert Martinez" class="speaker-photo">
-                        <h4>Prof. Robert Martinez</h4>
-                        <p class="speaker-title">Education Technology Pioneer</p>
-                        <p class="speaker-org">EdTech Global</p>
-                        <span class="speaker-tag">AI in Education</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+            // Click handler for mobile - toggles dropdown
+            toggle.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault(); // Prevent navigation on mobile tap
+                    e.stopPropagation(); // Prevent document click listener from firing
+                    
+                    const isCurrentlyOpen = dropdown.classList.contains('dropdown-open');
+
+                    // Close other open dropdowns
+                    document.querySelectorAll('.has-dropdown.dropdown-open').forEach(openDropdown => {
+                        if (openDropdown !== dropdown) {
+                            openDropdown.classList.remove('dropdown-open');
+                            openDropdown.querySelector('a')?.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+
+                    dropdown.classList.toggle('dropdown-open');
+                    toggle.setAttribute('aria-expanded', String(!isCurrentlyOpen));
+                }
+                // On desktop, the default link behavior is allowed, so no preventDefault.
+            });
+
+            // Mouse enter/leave handlers for desktop
+            dropdown.addEventListener('mouseenter', () => {
+                if (window.innerWidth > 768) {
+                    dropdown.classList.add('dropdown-open');
+                    toggle.setAttribute('aria-expanded', 'true');
+                }
+            });
+
+            dropdown.addEventListener('mouseleave', () => {
+                if (window.innerWidth > 768) {
+                    dropdown.classList.remove('dropdown-open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
         
-        <!-- 7. TESTIMONIALS -->
-        <section id="testimonials" class="bg-surface">
-            <div class="container">
-                <h2>Why Leaders are Backing QELE 2026</h2>
-                <p class="subtitle">Hear from industry experts on why this event is a crucial new platform for the MENA region.</p>
-                <div class="testimonials-grid">
-                    <div class="testimonial-card">
-                        <i class="fas fa-quote-left"></i>
-                        <blockquote>The quality of student interactions and B2B networking was exceptional. We exceeded our recruitment targets for the MENA region in just two days. A must-attend event.</blockquote>
-                        <div class="testimonial-author">
-                            <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Photo of Dr. Anya Sharma.">
-                            <div>
-                                <strong>Dr. Anya Sharma</strong>
-                                <span>Director of International Admissions, Cambridge University</span>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="testimonial-card">
-                        <i class="fas fa-quote-left"></i>
-                        <blockquote>QELE provided the perfect platform to launch our new EdTech solution. The access to school principals and government officials was unparalleled. The ROI was immediate.</blockquote>
-                        <div class="testimonial-author">
-                            <img src="https://i.pravatar.cc/150?u=a042581f4e29026704f" alt="Photo of Fatima Al-Khater.">
-                            <div>
-                                <strong>Fatima Al-Khater</strong>
-                                <span>CEO, EduVerse Technologies</span>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="testimonial-card">
-                        <i class="fas fa-quote-left"></i>
-                        <blockquote>As a Platinum Sponsor, the brand visibility was phenomenal. The team ensured our logo and message were front and center, connecting us with key decision-makers effortlessly.</blockquote>
-                        <div class="testimonial-author">
-                            <img src="https://i.pravatar.cc/150?u=a042581f4e29026704e" alt="Photo of Johnathan Chen.">
-                            <div>
-                                <strong>Johnathan Chen</strong>
-                                <span>MENA Partnerships Lead, Global Learning Inc.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        // This listener closes any open dropdown when a click happens anywhere else on the page.
+        // It's primarily for mobile touch interactions outside the menu.
+        document.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                document.querySelectorAll('.has-dropdown.dropdown-open').forEach(openDropdown => {
+                    openDropdown.classList.remove('dropdown-open');
+                    openDropdown.querySelector('a')?.setAttribute('aria-expanded', 'false');
+                });
+            }
+        });
+    }
 
-        <!-- 10. THREE WAYS TO JOIN -->
-        <section id="three-ways-to-join">
-            <div class="container">
-                <h2>Your 3 Ways to Join</h2>
-                <div class="ways-to-join-grid">
-                    <div class="way-card">
-                        <img src="https://images.pexels.com/photos/842876/pexels-photo-842876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Exhibition booth">
-                        <h3>Exhibit</h3>
-                        <p>Showcase Your Institution – Claim Your Booth</p>
-                    </div>
-                    <div class="way-card">
-                        <img src="https://images.pexels.com/photos/3184431/pexels-photo-3184431.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Person speaking at a conference">
-                        <h3>Speak</h3>
-                        <p>Inspire the Region – Host a Workshop or Talk</p>
-                    </div>
-                    <div class="way-card">
-                        <img src="https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Sponsored event stage">
-                        <h3>Sponsor</h3>
-                        <p>Lead the Change – Maximize MENA Visibility</p>
-                    </div>
-                </div>
-                 <div class="section-cta">
-                    <a href="contact.html" class="btn btn-primary">Get in Touch</a>
-                </div>
-            </div>
-        </section>
-    </main>
+    // --- Countdown Timer Logic ---
+    function initializeMainCountdown() {
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const countdownContainer = document.getElementById('countdown-timer');
+
+        if (daysEl && hoursEl && minutesEl && secondsEl && countdownContainer) {
+            const countdownDate = new Date('2026-04-19T08:00:00').getTime();
+
+            const triggerUpdateAnimation = (element: HTMLElement | null) => {
+                if (!element) return;
+                const parentUnit = element.closest('.timer-unit');
+                if (parentUnit) {
+                    parentUnit.classList.add('updated');
+                    parentUnit.addEventListener('animationend', () => {
+                        parentUnit.classList.remove('updated');
+                    }, { once: true });
+                }
+            };
+
+            const timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    countdownContainer.innerHTML = '<h4>The event has started!</h4>';
+                    return;
+                }
+
+                const days = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+                const hours = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+                const minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                const seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+                
+                if (daysEl.textContent !== days) {
+                    daysEl.textContent = days;
+                    triggerUpdateAnimation(daysEl);
+                }
+                if (hoursEl.textContent !== hours) {
+                    hoursEl.textContent = hours;
+                    triggerUpdateAnimation(hoursEl);
+                }
+                if (minutesEl.textContent !== minutes) {
+                    minutesEl.textContent = minutes;
+                    triggerUpdateAnimation(minutesEl);
+                }
+                if (secondsEl.textContent !== seconds) {
+                    secondsEl.textContent = seconds;
+                    triggerUpdateAnimation(secondsEl);
+                }
+            }, 1000);
+        }
+    }
     
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <a href="index.html" class="logo"><img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761223357/logo-white_1_pqcaph.png" alt="QELE 2026 Logo"></a>
-                    <p>The premier event connecting educational leaders, institutions, and innovators in the MENA region.</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Explore</h3>
-                    <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="about.html">About Expo</a></li>
-                        <li><a href="why-exhibit.html">For Exhibitors</a></li>
-                        <li><a href="sponsorship-tiers.html">For Sponsors</a></li>
-                        <li><a href="universities.html">Student Registration</a></li>
-                    </ul>
-                </div>
-                 <div class="footer-col">
-                    <h3>Support</h3>
-                    <ul class="footer-links">
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Connect With Us</h3>
-                    <ul class="footer-contact-info">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Sheraton Grand Doha, Qatar</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:partnerships@eduexpoqatar.com">partnerships@eduexpoqatar.com</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+97474449111">+974 7444 9111</a>
-                        </li>
-                    </ul>
-                    <div class="social-links">
-                        <a href="https://twitter.com/qatarexpo2026" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="https://linkedin.com/company/qatarexpo2026" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://instagram.com/qatarexpo2026" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 QELE. All Rights Reserved.</p>
-            </div>
-        </div>
-    </footer>
+    // --- Early Bird Countdown Timer ---
+    function initializeEarlyBirdCountdown() {
+        const countdownContainer = document.getElementById('early-bird-countdown');
+        if (!countdownContainer) return;
 
-    <!-- AI Chatbot -->
-    <div id="chatbot-fab-container">
-      <div id="chatbot-bubble" class="chatbot-bubble" style="display: none;"></div>
-      <div id="chatbot-fab" role="button" aria-label="Open AI Chat">
-          <i class="fas fa-comments"></i>
-      </div>
-    </div>
-    <div id="chatbot-window" class="chatbot-window" role="dialog" aria-modal="true" aria-labelledby="chatbot-header-title">
-        <div class="chatbot-header">
-            <div class="chatbot-header-info">
-                <div class="chatbot-avatar"><i class="fas fa-robot"></i></div>
-                <div>
-                    <h3 id="chatbot-header-title">QELE AI Assistant</h3>
-                    <span class="chatbot-status">Online</span>
-                </div>
-            </div>
-            <div class="chatbot-header-actions">
-                <button id="chatbot-clear-btn" aria-label="Clear Chat"><i class="fas fa-sync-alt"></i></button>
-                <button id="chatbot-close-btn" aria-label="Close Chat">&times;</button>
-            </div>
-        </div>
-        <div id="chatbot-messages" class="chatbot-messages" role="log" aria-live="polite">
-            <!-- Messages will be injected here -->
-        </div>
-        <div id="chatbot-suggestions" class="chatbot-suggestions">
-            <!-- Suggestion chips will be injected here -->
-        </div>
-        <form id="chatbot-form" class="chatbot-form">
-            <div class="chatbot-input-wrapper">
-                <input type="text" id="chatbot-input" placeholder="Ask a question..." autocomplete="off" aria-label="Your message">
-                <button type="submit" aria-label="Send Message"><i class="fas fa-paper-plane"></i></button>
-            </div>
-            <div class="form-group-consent-chatbot">
-                <input type="checkbox" id="chatbot-consent" name="chatbot-consent" required>
-                <label for="chatbot-consent">I consent to the processing of my data.</label>
-                <div class="error-message"></div>
-            </div>
-        </form>
-    </div>
+        const daysEl = document.getElementById('eb-days');
+        const hoursEl = document.getElementById('eb-hours');
+        const minutesEl = document.getElementById('eb-minutes');
+        const secondsEl = document.getElementById('eb-seconds');
 
-    <!-- Exit Intent Modal -->
-    <div id="exit-intent-modal" class="modal-overlay">
-        <div class="modal-content exit-intent-content" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title">
-            <button class="modal-close-btn" aria-label="Close">&times;</button>
-            <h3 id="exit-modal-title">Download The Deck Before You Leave!</h3>
-            <p>Get our official Exhibitor & Sponsorship Deck, including the floor plan and ROI details, sent straight to your inbox.</p>
-            <a href="contact.html" class="btn btn-primary">Get The Deck</a>
-        </div>
-    </div>
+        if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
 
-    <!-- Mobile Sticky Bar -->
-    <div id="mobile-sticky-bar">
-        <a href="universities.html" class="mobile-cta-btn"><i class="fas fa-user-check"></i><span>Register</span></a>
-        <a href="universities.html" class="mobile-cta-btn"><i class="fas fa-graduation-cap"></i><span>Student</span></a>
-        <a href="booth-registration.html" class="mobile-cta-btn"><i class="fas fa-chalkboard-user"></i><span>Exhibitor</span></a>
-        <a href="sponsorship-registration.html" class="mobile-cta-btn"><i class="fas fa-star"></i><span>Sponsor</span></a>
-    </div>
+        // The early bird offer ends on the morning of Nov 20, 2025.
+        const countdownDate = new Date('2025-11-20T08:00:00').getTime();
+
+        const timerInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                countdownContainer.innerHTML = '<h4>The early bird offer has ended!</h4>';
+                return;
+            }
+
+            const days = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, '0');
+            const hours = String(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+            const minutes = String(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            const seconds = String(Math.floor((distance % (1000 * 60)) / 1000)).padStart(2, '0');
+            
+            daysEl.textContent = days;
+            hoursEl.textContent = hours;
+            minutesEl.textContent = minutes;
+            secondsEl.textContent = seconds;
+
+        }, 1000);
+    }
+
+    // --- Form Submission Logic ---
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const successMessage = document.getElementById('form-success-message');
+
+    if (form && successMessage) {
+        const nameInput = document.getElementById('form-name') as HTMLInputElement;
+        const orgInput = document.getElementById('form-organization') as HTMLInputElement;
+        const emailInput = document.getElementById('form-email') as HTMLInputElement;
+        const phoneInput = document.getElementById('form-phone') as HTMLInputElement;
+        const interestSelect = document.getElementById('form-interest') as HTMLSelectElement;
+
+        const inputs: HTMLElement[] = [nameInput, orgInput, emailInput, phoneInput, interestSelect];
+
+        inputs.forEach(input => {
+            if (!input) return;
+            const eventType = input.tagName.toLowerCase() === 'select' ? 'change' : 'input';
+            input.addEventListener(eventType, () => validateField(input));
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Validate all fields on submit and check overall validity
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+
+            if (isFormValid) {
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+
+                // Trigger sponsorship deck download
+                const link = document.createElement('a');
+                link.href = '#'; // Placeholder for actual file
+                link.download = 'QELE2026-Sponsorship-Deck.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    }
+
+     // --- Student Registration Form Logic ---
+    function initializeStudentRegistrationForm() {
+        const form = document.getElementById('student-registration-form') as HTMLFormElement;
+        const successMessage = document.getElementById('student-form-success');
+        
+        if (!form || !successMessage) return;
+
+        const nameInput = document.getElementById('form-student-name') as HTMLInputElement;
+        const emailInput = document.getElementById('form-student-email') as HTMLInputElement;
+        const phoneInput = document.getElementById('form-student-phone') as HTMLInputElement;
+        const dobInput = document.getElementById('form-student-dob') as HTMLInputElement;
+        const nationalitySelect = document.getElementById('form-student-nationality') as HTMLSelectElement;
+        const schoolInput = document.getElementById('form-student-school') as HTMLInputElement;
+        const gradeSelect = document.getElementById('form-student-grade') as HTMLSelectElement;
+        const sourceSelect = document.getElementById('form-student-source') as HTMLSelectElement;
+        const consentCheckbox = document.getElementById('form-student-consent') as HTMLInputElement;
+        const interestsContainer = document.getElementById('form-student-interests');
+
+        const inputs: HTMLElement[] = [nameInput, emailInput, phoneInput, dobInput, nationalitySelect, schoolInput, gradeSelect, sourceSelect, consentCheckbox];
+
+        const validateInterestCheckboxes = (): boolean => {
+            if (!interestsContainer) return true;
+            const checkedCheckboxes = interestsContainer.querySelectorAll('input[type="checkbox"]:checked');
+            const isValid = checkedCheckboxes.length > 0;
+            if (isValid) {
+                clearError(interestsContainer);
+            } else {
+                showError(interestsContainer, 'Please select at least one area of interest.');
+            }
+            return isValid;
+        };
+
+        inputs.forEach(input => {
+            if (!input) return;
+            const eventType = input.tagName.toLowerCase() === 'select' || ['date', 'checkbox'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
+            input.addEventListener(eventType, () => validateField(input));
+        });
+
+        interestsContainer?.addEventListener('change', validateInterestCheckboxes);
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const areInputsValid = inputs.map(input => validateField(input)).every(Boolean);
+            const areInterestsValid = validateInterestCheckboxes();
+
+            if (areInputsValid && areInterestsValid) {
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+                window.scrollTo(0, 0); // Scroll to top to see message
+            }
+        });
+    }
+
+    // --- Booth Registration Form Logic ---
+    function initializeBoothRegistrationForm() {
+        const form = document.getElementById('booth-registration-form') as HTMLFormElement;
+        const successMessage = document.getElementById('booth-reg-form-success');
+
+        if (!form || !successMessage) return;
+
+        // Get form fields
+        const nameInput = document.getElementById('form-booth-name') as HTMLInputElement;
+        const titleInput = document.getElementById('form-booth-title') as HTMLInputElement;
+        const companyInput = document.getElementById('form-booth-company') as HTMLInputElement;
+        const emailInput = document.getElementById('form-booth-email') as HTMLInputElement;
+        const phoneInput = document.getElementById('form-booth-phone') as HTMLInputElement;
+        const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
+        const sourceSelect = document.getElementById('form-booth-source') as HTMLSelectElement;
+        const consentCheckbox = document.getElementById('form-booth-consent') as HTMLInputElement;
+        const boothIdInput = document.getElementById('form-booth-id') as HTMLInputElement;
+        const countrySelect = document.getElementById('form-booth-country') as HTMLSelectElement;
+        const websiteInput = document.getElementById('form-booth-website') as HTMLInputElement;
+        const companyFieldSelect = document.getElementById('form-booth-company-field') as HTMLSelectElement;
+
+
+        const inputs: HTMLElement[] = [nameInput, titleInput, companyInput, emailInput, phoneInput, packageSelect, sourceSelect, consentCheckbox, countrySelect, websiteInput, companyFieldSelect];
+
+        // Pre-fill form from URL parameters
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const pkg = urlParams.get('package');
+            const boothId = urlParams.get('boothId');
+            
+            if (pkg && packageSelect) {
+                const option = Array.from(packageSelect.options).find(opt => opt.value.toLowerCase() === pkg.toLowerCase());
+                if(option) option.selected = true;
+            }
+            if (boothId && boothIdInput) {
+                boothIdInput.value = boothId;
+            }
+        } catch (e) {
+            console.error("Error processing URL parameters:", e);
+        }
+        
+        // Add real-time validation listeners
+        inputs.forEach(input => {
+            if (!input) return;
+            const eventType = ['select', 'checkbox'].includes(input.tagName.toLowerCase()) || input.getAttribute('type') === 'checkbox' ? 'change' : 'input';
+            input.addEventListener(eventType, () => validateField(input));
+        });
+        
+        // Handle form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+            
+            if (isFormValid) {
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+                window.scrollTo(0, 0); // Scroll to top to see message
+            }
+        });
+    }
     
-    <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
-    <script type="module" src="index.tsx"></script>
-</body>
-</html>
+    // --- Sponsorship Registration Form Logic (UPDATED) ---
+    function initializeSponsorshipRegistrationForm() {
+        const form = document.getElementById('sponsorship-registration-form') as HTMLFormElement;
+        const successMessage = document.getElementById('sponsor-form-success');
+
+        if (!form || !successMessage) return;
+
+        // Get form fields
+        const nameInput = document.getElementById('form-sponsor-name') as HTMLInputElement;
+        const countrySelect = document.getElementById('form-sponsor-country') as HTMLSelectElement;
+        const phoneInput = document.getElementById('form-sponsor-phone') as HTMLInputElement;
+        const emailInput = document.getElementById('form-sponsor-email') as HTMLInputElement;
+        const websiteInput = document.getElementById('form-sponsor-website') as HTMLInputElement;
+        const companyInput = document.getElementById('form-sponsor-company') as HTMLInputElement;
+        const titleInput = document.getElementById('form-sponsor-title') as HTMLInputElement;
+        const companyFieldSelect = document.getElementById('form-sponsor-company-field') as HTMLSelectElement;
+        const messageTextarea = document.getElementById('form-sponsor-message') as HTMLTextAreaElement;
+        const consentCheckbox = document.getElementById('form-sponsor-consent') as HTMLInputElement;
+        
+        const inputs: HTMLElement[] = [
+            nameInput, countrySelect, phoneInput, emailInput, websiteInput, 
+            companyInput, titleInput, companyFieldSelect, messageTextarea, consentCheckbox
+        ];
+
+        // Add real-time validation listeners
+        inputs.forEach(input => {
+            if (!input) return;
+            const eventType = ['SELECT', 'TEXTAREA'].includes(input.tagName) || input.getAttribute('type') === 'checkbox' ? 'change' : 'input';
+            input.addEventListener(eventType, () => validateField(input));
+        });
+        
+        // Handle form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+            
+            if (isFormValid) {
+                form.style.display = 'none';
+                successMessage.style.display = 'block';
+                window.scrollTo(0, 0); // Scroll to top to see message
+            }
+        });
+    }
+
+    // --- AI Chatbot Logic ---
+    function initializeChatbot() {
+        const fab = document.getElementById('chatbot-fab');
+        const windowEl = document.getElementById('chatbot-window');
+        const closeBtn = document.getElementById('chatbot-close-btn');
+        const form = document.getElementById('chatbot-form') as HTMLFormElement;
+        const input = document.getElementById('chatbot-input') as HTMLInputElement;
+        const messagesContainer = document.getElementById('chatbot-messages');
+        const suggestionsContainer = document.getElementById('chatbot-suggestions');
+        const consentCheckbox = document.getElementById('chatbot-consent') as HTMLInputElement;
+        const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+        if (!fab || !windowEl || !closeBtn || !form || !input || !messagesContainer || !suggestionsContainer || !consentCheckbox || !submitBtn) return;
+
+        let chat: Chat;
+        let hasWelcomed = false;
+
+        const systemInstruction = `You are the official AI Assistant for the QATAR EDUCATION LEADERSHIP EXPO 2026 (QELE 2026). Your goal is to answer questions from potential exhibitors, sponsors, and attendees. Be friendly, professional, and concise.
+
+        Here is key information about the event:
+        - Event Name: QATAR EDUCATION LEADERSHIP EXPO 2026 (QELE 2026)
+        - Date: April 19 – 20, 2026
+        - Location: Sheraton Grand Doha Resort & Convention Hotel, Qatar.
+        - Organized by: Student Diwan, Qatar's leading EdTech platform.
+        - Early Bird Offer: 15% discount ends November 20, 2025.
+        
+        Market Opportunity:
+        - The MENA education market has over $100B+ in annual spending.
+        - There are over 60M+ K-12 students in the region.
+        - Qatar is the #1 education hub in the Gulf, with the highest GDP per capita globally and over 200+ international schools.
+
+        Audience (Who is Attending):
+        - 4000+ Students
+        - 100+ Universities & Colleges
+        - 50+ Edutech Companies
+        - 75+ Education Consultants
+        - 120+ Speakers & Influencers
+        - Government Representatives
+        - Decision-Makers breakdown: 45% from K-12 Schools (Principals, Teachers), 20% from Universities (Chancellors, Deans), 10% from Government, 10% from Consultants.
+
+        Exhibitor Benefits:
+        - Recruitment: Engage Grade 11-12 students.
+        - Visibility: Gain 1M+ brand impressions.
+        - Thought Leadership: Shape the agenda through panels and roundtables.
+        - Partnerships: Connect with leaders, government, and industry experts.
+
+        Booth Packages:
+        - There are four tiers: Basic, Silver, Gold, and Platinum.
+        - Basic: Standard booth, website listing, 2 passes.
+        - Silver: Priority booth, logo on website, 3 passes.
+        - Gold (Most Popular): High-traffic booth, catalog entry, 1 speaking slot, 4 passes.
+        - Platinum: Max visibility corner booth, premium furniture, homepage logo, 3 speaking slots, 8 passes, VIP lounge access.
+
+        IMPORTANT RULE: Prices for packages are NOT public. DO NOT provide any prices or estimates. Your goal is to highlight the value and encourage users to submit an inquiry. If asked for pricing, politely respond with: "Pricing details are provided in our official sponsorship deck. If you fill out the inquiry form on our website, our partnership team will send it to you right away."
+        
+        Contact for partnerships: partnerships@eduexpoqatar.com or call +974 7444 9111.
+        
+        LEAD CAPTURE RULE: If a user expresses a clear intent to purchase, book, or speak to a sales representative (e.g., "I want to buy a platinum package," "How do I book booth A2?", "Can I talk to someone about sponsoring?"), your primary goal is to capture their contact information. Politely ask for their name and email address so a partnership manager can get in touch with them. For example: "That's great to hear! I can have a partnership manager reach out to you directly. Could I get your name and email address, please?" Do not be pushy if they decline.`;
+
+        const addMessage = (text: string, sender: 'user' | 'ai' | 'system') => {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message', `${sender}-message`);
+        messageElement.textContent = text;
+        messagesContainer.appendChild(messageElement);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        };
+
+        const showTypingIndicator = () => {
+            const indicator = document.createElement('div');
+            indicator.textContent = 'Typing...';
+            indicator.classList.add('typing-indicator');
+            indicator.id = 'typing-indicator';
+            messagesContainer.appendChild(indicator);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        };
+
+        const hideTypingIndicator = () => {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        };
+
+        const showErrorForConsent = (message: string) => {
+            const formGroup = consentCheckbox.closest('.form-group-consent-chatbot');
+            const errorElement = formGroup?.querySelector('.error-message') as HTMLElement;
+            if (errorElement) {
+                errorElement.innerText = message;
+                errorElement.style.display = 'block';
+            }
+        };
+        
+        const clearErrorForConsent = () => {
+            const formGroup = consentCheckbox.closest('.form-group-consent-chatbot');
+            const errorElement = formGroup?.querySelector('.error-message') as HTMLElement;
+            if (errorElement) {
+                errorElement.innerText = '';
+                errorElement.style.display = 'none';
+            }
+        };
+
+        const validateChatForm = () => {
+            const message = input.value.trim();
+            const consentGiven = consentCheckbox.checked;
+            submitBtn.disabled = !message || !consentGiven;
+        };
+
+        const sendUserMessage = async (message: string) => {
+            if (!message) return;
+
+            if (!consentCheckbox.checked) {
+                showErrorForConsent('Please consent to continue.');
+                return;
+            }
+            clearErrorForConsent();
+
+            addMessage(message, 'user');
+            input.value = '';
+            validateChatForm();
+            suggestionsContainer.style.display = 'none';
+            showTypingIndicator();
+
+            try {
+                const response: GenerateContentResponse = await chat.sendMessage({ message: message });
+                hideTypingIndicator();
+                addMessage(response.text, 'ai');
+            } catch (error) {
+                console.error("Chatbot error:", error);
+                hideTypingIndicator();
+                addMessage("Sorry, I'm having trouble connecting right now. Please try again later.", 'ai');
+            }
+        };
+
+        const createSuggestionChips = () => {
+            suggestionsContainer.innerHTML = '';
+            suggestionsContainer.style.display = 'flex';
+            
+            const suggestions = ["Exhibitor Benefits", "Audience Demographics", "Event Dates"];
+            suggestions.forEach(suggestionText => {
+                const chip = document.createElement('button');
+                chip.classList.add('suggestion-chip');
+                chip.textContent = suggestionText;
+                chip.onclick = () => {
+                    sendUserMessage(suggestionText);
+                };
+                suggestionsContainer.appendChild(chip);
+            });
+        };
+
+        const openChat = () => {
+            windowEl.classList.add('visible');
+            if(fab) fab.style.display = 'none';
+            if (!chat) {
+                chat = ai.chats.create({
+                    model: 'gemini-2.5-flash',
+                    config: { systemInstruction },
+                });
+            }
+            if (!hasWelcomed) {
+                addMessage("Hello! I'm the QELE AI Assistant. How can I help you learn about the expo today?", 'ai');
+                createSuggestionChips();
+                hasWelcomed = true;
+            }
+            validateChatForm();
+        };
+        
+        const closeChat = () => {
+            windowEl.classList.remove('visible');
+            if(fab) fab.style.display = 'flex';
+        };
+
+        input.addEventListener('input', validateChatForm);
+        consentCheckbox.addEventListener('change', () => {
+            if (consentCheckbox.checked) {
+                clearErrorForConsent();
+            }
+            validateChatForm();
+        });
+
+        fab.addEventListener('click', openChat);
+        closeBtn.addEventListener('click', closeChat);
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            sendUserMessage(input.value.trim());
+        });
+
+        validateChatForm();
+    }
+    
+    // --- Proactive Chatbot Engagement ---
+    function initializeProactiveChat() {
+        const fabContainer = document.getElementById('chatbot-fab-container');
+        const bubble = document.getElementById('chatbot-bubble') as HTMLElement;
+        const chatbotWindow = document.getElementById('chatbot-window');
+
+        if (!fabContainer || !bubble || !chatbotWindow) return;
+        
+        let bubbleTimeout: number;
+
+        const showBubble = (message: string) => {
+            if (chatbotWindow?.classList.contains('visible') || bubble.style.display === 'block') {
+                return;
+            }
+            bubble.textContent = message;
+            bubble.style.display = 'block';
+
+            clearTimeout(bubbleTimeout);
+            bubbleTimeout = window.setTimeout(() => {
+                hideBubble();
+            }, 8000);
+        };
+        
+        const hideBubble = () => {
+            bubble.style.display = 'none';
+        };
+        
+        fabContainer.addEventListener('click', () => {
+            hideBubble();
+            // The main openChat logic is already on the fab itself.
+            if(!chatbotWindow.classList.contains('visible')) {
+            document.getElementById('chatbot-fab')?.click();
+            }
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    let message = '';
+                    if (entry.target.id === 'booth-packages') {
+                        message = 'Questions about packages?';
+                    }
+                    
+                    if (message) {
+                        setTimeout(() => showBubble(message), 2000);
+                    }
+                }
+            });
+        }, { threshold: 0.6 });
+
+        const sponsorshipSection = document.getElementById('booth-packages');
+        if (sponsorshipSection) observer.observe(sponsorshipSection);
+    }
+
+    // --- FAQ Accordion ---
+    function initializeFaqAccordion() {
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.closest('.faq-item');
+                if (item) {
+                    const isOpened = item.classList.toggle('open');
+                    button.setAttribute('aria-expanded', String(isOpened));
+                }
+            });
+        });
+    }
+
+    // --- Exit Intent Modal ---
+    function initializeExitIntentModal() {
+        const modal = document.getElementById('exit-intent-modal');
+        if (!modal) return;
+
+        const closeModalBtn = modal.querySelector('.modal-close-btn');
+        const modalShownInSession = sessionStorage.getItem('exitModalShown') === 'true';
+
+        if (modalShownInSession) {
+            return; // Don't set up anything if it's already been shown
+        }
+
+        const showModal = () => {
+            modal.classList.add('visible');
+            sessionStorage.setItem('exitModalShown', 'true');
+            // Clean up all triggers once shown
+            document.removeEventListener('mouseout', handleMouseOut);
+            window.removeEventListener('scroll', handleScroll);
+            clearTimeout(timer);
+        };
+
+        const hideModal = () => {
+            modal.classList.remove('visible');
+        };
+
+        const handleMouseOut = (e: MouseEvent) => {
+            // Check if mouse is leaving the viewport top
+            if (e.clientY <= 0 && e.relatedTarget == null) {
+                showModal();
+            }
+        };
+
+        const handleScroll = () => {
+            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            if (scrollPercent >= 50) {
+                showModal();
+            }
+        };
+
+        const timer = setTimeout(showModal, 10000);
+
+        // Add triggers
+        document.addEventListener('mouseout', handleMouseOut);
+        window.addEventListener('scroll', handleScroll);
+
+        // Add closing event listeners
+        closeModalBtn?.addEventListener('click', hideModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('visible')) {
+                hideModal();
+            }
+        });
+    }
+    
+    // --- Dynamic Partner Logos for Homepage ---
+    function initializeHomePartners() {
+        const logoGrid = document.getElementById('home-partners-grid');
+        if (!logoGrid) return;
+
+        const partners = [
+            { src: 'https://cdn.asp.events/CLIENT_Mark_All_D856883D_926F_07B7_E9D09EE4984A0639/sites/inclusive-education-mena/media/Logos/Ed-logo.png', alt: 'Ministry of Education Logo', customClass: 'moe-logo' },
+            { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/v1761216928/Blue_Bold_Office_Idea_Logo_50_x_50_px_10_l68irx.png', alt: 'Sheraton Grand Doha Logo' },
+            { src: 'https://i0.wp.com/blog.10times.com/wp-content/uploads/2019/09/cropped-10times-logo-hd.png?fit=3077%2C937&ssl=1', alt: '10times Logo' },
+            { src: 'https://www.eventbrite.com/blog/wp-content/uploads/2025/02/Eventbrite_Hero-Lock-up_Brite-Orange.png', alt: 'Eventbrite Logo', customClass: 'eventbrite-logo' }
+        ];
+        
+        logoGrid.innerHTML = '';
+
+        partners.forEach(partner => {
+            const logoItem = document.createElement('div');
+            logoItem.className = 'logo-item';
+            
+            const img = document.createElement('img');
+            img.src = partner.src;
+            img.alt = partner.alt;
+
+            if (partner.alt === 'Sheraton Grand Doha Logo') {
+                img.classList.add('sheraton-logo');
+            }
+             if (partner.customClass) {
+                img.classList.add(partner.customClass);
+            }
+            
+            logoItem.appendChild(img);
+            logoGrid.appendChild(logoItem);
+        });
+    }
+
+    // --- Dynamic Partner Logos for Sponsorship Page ---
+    function initializeSponsorPagePartners() {
+        const logoGrid = document.getElementById('sponsor-partners-grid');
+        if (!logoGrid) return;
+
+        const partners = [
+            { src: 'https://logo.clearbit.com/microsoft.com', alt: 'Microsoft Logo' },
+            { src: 'https://logo.clearbit.com/google.com', alt: 'Google for Education Logo' },
+            { src: 'https://logo.clearbit.com/coursera.org', alt: 'Coursera Logo' },
+            { src: 'https://logo.clearbit.com/qf.org.qa', alt: 'Qatar Foundation Logo' },
+            { src: 'https://logo.clearbit.com/qu.edu.qa', alt: 'Qatar University Logo' },
+            { src: 'https://logo.clearbit.com/britishcouncil.org', alt: 'British Council Logo' },
+            { src: 'https://logo.clearbit.com/vodafone.com', alt: 'Vodafone Logo' },
+            { src: 'https://logo.clearbit.com/qnb.com', alt: 'QNB Logo' },
+        ];
+        
+        logoGrid.innerHTML = '';
+
+        partners.forEach(partner => {
+            const logoItem = document.createElement('div');
+            logoItem.className = 'logo-item';
+            const img = document.createElement('img');
+            img.src = partner.src;
+            img.alt = partner.alt;
+            logoItem.appendChild(img);
+            logoGrid.appendChild(logoItem);
+        });
+    }
+
+
+    // --- Agenda Page Tabs ---
+    function initializeAgendaTabs() {
+        const tabsContainer = document.querySelector('.agenda-tabs');
+        if (!tabsContainer) return;
+
+        const tabButtons = tabsContainer.querySelectorAll('.tab-btn');
+        const contentPanels = document.querySelectorAll('.agenda-content');
+
+        tabsContainer.addEventListener('click', (e) => {
+            const clickedButton = (e.target as HTMLElement).closest('.tab-btn');
+            if (!clickedButton) return;
+
+            const tabId = (clickedButton as HTMLElement).dataset.tab;
+            
+            // Update buttons
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            clickedButton.classList.add('active');
+
+            // Update content panels
+            contentPanels.forEach(panel => {
+                panel.classList.toggle('active', panel.id === tabId);
+            });
+        });
+    }
+
+    // --- Floor Plan Logic ---
+    function initializeFloorPlan() {
+        if (!document.getElementById('floor-plan-section')) return;
+
+        const boothsData = [
+            { id: 'A1', package: 'Platinum', status: 'available' }, { id: 'A2', package: 'Platinum', status: 'sold' },
+            { id: 'A3', package: 'Gold', status: 'available' }, { id: 'A4', package: 'Gold', status: 'reserved' },
+            { id: 'A5', package: 'Gold', status: 'available' }, { id: 'A6', package: 'Gold', status: 'sold' },
+            { id: 'B1', package: 'Silver', status: 'available' }, { id: 'B2', package: 'Silver', status: 'available' },
+            { id: 'B3', package: 'Silver', status: 'reserved' }, { id: 'B4', package: 'Silver', status: 'available' },
+            { id: 'B5', package: 'Silver', status: 'sold' }, { id: 'B6', package: 'Silver', status: 'available' },
+            { id: 'C1', package: 'Basic', status: 'available' }, { id: 'C2', package: 'Basic', status: 'available' },
+            { id: 'C3', package: 'Basic', status: 'available' }, { id: 'C4', package: 'Basic', status: 'available' },
+            { id: 'C5', package: 'Basic', status: 'sold' }, { id: 'C6', package: 'Basic', status: 'sold' },
+        ];
+
+        const map = document.getElementById('floor-plan-map');
+        const tooltip = document.getElementById('floor-plan-tooltip');
+        const detailsModal = document.getElementById('booth-details-modal');
+        const closeModalBtn = detailsModal?.querySelector('.modal-close-btn');
+
+        let activeFilter = 'all';
+        
+        const packageDetails = {
+            'Basic': { size: '3x3 (9 sqm)', benefits: ['Standard-row booth', 'Name on website list', '2 exhibitor passes', 'Access to networking lounge'] },
+            'Silver': { size: '4x3 (12 sqm)', benefits: ['Priority row booth', 'Logo on event website', 'Name in event catalogs', '3 exhibitor passes'] },
+            'Gold': { size: '6x3 (18 sqm)', benefits: ['Prime hall location', 'Logo + 50-word catalog feature', '4 passes + 1 speaking slot', '10% off add-ons'] },
+            'Platinum': { size: '7x3 (21 sqm)', benefits: ['Entrance corner booth', 'Premium furniture & setup', 'Top-tier logo placement', '8 passes + 3 speaking slots', 'Access to VIP lounge'] }
+        };
+
+        const renderBooths = () => {
+            if (!map) return;
+            map.innerHTML = '';
+            boothsData.forEach(booth => {
+                const boothEl = document.createElement('div');
+                boothEl.className = `booth ${booth.status} ${booth.package.toLowerCase()}`;
+                boothEl.textContent = booth.id;
+                boothEl.dataset.id = booth.id;
+
+                if (activeFilter !== 'all' && booth.package.toLowerCase() !== activeFilter) {
+                    boothEl.classList.add('hidden');
+                }
+
+                boothEl.addEventListener('mousemove', (e) => showTooltip(e, booth));
+                boothEl.addEventListener('mouseleave', hideTooltip);
+                boothEl.addEventListener('click', () => {
+                    if (booth.status !== 'sold') {
+                        showDetailsModal(booth);
+                    }
+                });
+
+                map.appendChild(boothEl);
+            });
+        };
+
+        const updateCounts = () => {
+            document.getElementById('available-count')!.textContent = boothsData.filter(b => b.status === 'available').length.toString();
+            document.getElementById('reserved-count')!.textContent = boothsData.filter(b => b.status === 'reserved').length.toString();
+            document.getElementById('sold-count')!.textContent = boothsData.filter(b => b.status === 'sold').length.toString();
+        };
+
+        const showTooltip = (e: MouseEvent, booth: any) => {
+            if (!tooltip) return;
+            tooltip.style.display = 'block';
+            tooltip.innerHTML = `
+                <strong>Booth ${booth.id}</strong>
+                <p>Package: <span>${booth.package}</span></p>
+                <p>Status: <span class="status-${booth.status}">${booth.status}</span></p>
+            `;
+            tooltip.style.left = `${e.pageX + 15}px`;
+            tooltip.style.top = `${e.pageY + 15}px`;
+        };
+
+        const hideTooltip = () => {
+            if (tooltip) tooltip.style.display = 'none';
+        };
+
+        const showDetailsModal = (booth: any) => {
+            if (!detailsModal) return;
+            const details = packageDetails[booth.package as keyof typeof packageDetails];
+            
+            (detailsModal.querySelector('#details-modal-title') as HTMLElement).textContent = `${booth.package} Booth`;
+            (detailsModal.querySelector('#details-modal-booth-id') as HTMLElement).textContent = `ID: ${booth.id}`;
+            (detailsModal.querySelector('#details-modal-size') as HTMLElement).textContent = details.size;
+            
+            const benefitsList = detailsModal.querySelector('#details-modal-benefits') as HTMLElement;
+            benefitsList.innerHTML = details.benefits.map(b => `<li><i class="fas fa-check"></i> ${b}</li>`).join('');
+            
+            const statusEl = detailsModal.querySelector('#details-modal-status') as HTMLElement;
+            statusEl.textContent = booth.status;
+            statusEl.className = `status-tag ${booth.status}`;
+
+            const enquireBtn = detailsModal.querySelector('#enquire-from-details-btn') as HTMLAnchorElement;
+            enquireBtn.href = `booth-registration.html?boothId=${booth.id}&package=${booth.package}`;
+
+            detailsModal.classList.add('visible');
+        };
+
+        const hideDetailsModal = () => {
+            if (detailsModal) detailsModal.classList.remove('visible');
+        };
+
+        closeModalBtn?.addEventListener('click', hideDetailsModal);
+        detailsModal?.addEventListener('click', (e) => {
+            if (e.target === detailsModal) hideDetailsModal();
+        });
+
+        document.querySelectorAll('.fp-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.fp-filter-btn.active')?.classList.remove('active');
+                btn.classList.add('active');
+                activeFilter = (btn as HTMLElement).dataset.filter || 'all';
+                renderBooths();
+            });
+        });
+
+        renderBooths();
+        updateCounts();
+    }
+
+
+    highlightActiveNav();
+    initializeMobileNav();
+    initializeDropdowns();
+    initializeMainCountdown();
+    initializeStudentRegistrationForm();
+    initializeBoothRegistrationForm();
+    initializeSponsorshipRegistrationForm();
+    initializeChatbot();
+    initializeProactiveChat();
+    initializeFaqAccordion();
+    initializeExitIntentModal();
+    initializeEarlyBirdCountdown();
+    initializeHomePartners();
+    initializeSponsorPagePartners();
+    initializeAgendaTabs();
+    initializeFloorPlan();
+    });
