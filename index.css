@@ -2427,6 +2427,187 @@ textarea.invalid {
 #event-highlights .content-card h3 { font-size: 1.1rem; min-height: 0; flex-grow: 1; justify-content: center; }
 #event-highlights .content-card h3 i { font-size: 2rem; margin-bottom: 0.75rem; }
 
+/* --- Brand Exposure Page --- */
+.exposure-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+.stat-card-exposure {
+    background: var(--white);
+    padding: 2.5rem 2rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+.stat-card-exposure i {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.stat-card-exposure h4 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+}
+.stat-card-exposure p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #555;
+}
+
+/* Brand Journey Timeline */
+.brand-journey-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 2rem 0;
+}
+.brand-journey-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 40px;
+    height: 100%;
+    width: 4px;
+    background: var(--surface-color);
+    border-radius: 2px;
+}
+.journey-step {
+    position: relative;
+    padding-left: 100px;
+    margin-bottom: 3rem;
+}
+.journey-step:last-child {
+    margin-bottom: 0;
+}
+.journey-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80px;
+    height: 80px;
+    background: var(--gradient);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    box-shadow: 0 0 0 8px var(--bg-color);
+    z-index: 1;
+}
+.journey-content {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+.journey-content h3 {
+    text-align: left;
+    margin-top: 0;
+    font-size: 1.6rem;
+}
+.journey-content h3 span {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #711fb8;
+    margin-bottom: 0.25rem;
+}
+.journey-content p {
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+.journey-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.journey-content li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+.journey-content li i {
+    color: #d12386;
+    margin-top: 5px;
+}
+
+/* Brand Gallery */
+.brand-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+.gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: var(--white);
+    padding: 1.5rem 1rem 1rem;
+    font-weight: 700;
+    font-family: var(--heading-font);
+    font-size: 1.1rem;
+    text-align: right;
+}
+
+/* Final CTA for Brand Exposure page */
+#final-cta-brand-exposure {
+    background: var(--gradient);
+    color: var(--white);
+    padding: 80px 0;
+    text-align: center;
+}
+#final-cta-brand-exposure h2 {
+    color: var(--white);
+    font-size: 2.5rem;
+}
+#final-cta-brand-exposure p {
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.1rem;
+}
+#final-cta-brand-exposure .btn {
+    margin-top: 2rem;
+    transform: scale(1.1);
+    background: var(--white);
+    color: #711fb8;
+}
+#final-cta-brand-exposure .btn:hover {
+    background: #f0e6ff;
+    color: #711fb8;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
 @media(max-width: 768px) {
     .agenda-tabs { flex-direction: column; border-radius: 10px; }
     .agenda-tabs .tab-btn { font-size: 1rem; }
@@ -2436,4 +2617,17 @@ textarea.invalid {
     .timeline-time { padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
     .timeline-time h3 { position: static; }
     .session-tag { top: 5px; right: -40px; font-size: 0.7rem; }
+
+    .brand-journey-timeline::before {
+        left: 30px;
+    }
+    .journey-step {
+        padding-left: 80px;
+    }
+    .journey-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        box-shadow: 0 0 0 6px var(--bg-color);
+    }
 }
