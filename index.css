@@ -589,8 +589,6 @@ section {
     max-width: 100%;
     max-height: 70px;
     object-fit: contain;
-    filter: grayscale(100%);
-    opacity: 0.7;
     transition: filter 0.3s, opacity 0.3s;
 }
 .logo-item img:hover {
@@ -671,7 +669,7 @@ section {
 .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
 .benefit-card {
     background: var(--white);
-    padding: 2.5rem 2rem;
+    padding: 2.2rem 2rem;
     border-radius: 10px;
     box-shadow: var(--shadow);
     text-align: center;
@@ -682,14 +680,12 @@ section {
 .benefit-card:hover { transform: translateY(-10px); }
 .benefit-card i {
     font-size: 3rem;
-    margin-bottom: 1.5rem;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin-bottom: 1.2rem;
+    color: #711fb8;
 }
 .benefit-card h3 {
-    font-size: 1.5rem;
-    min-height: 3.6rem;
+    font-size: 1.4rem;
+    min-height: 3.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
