@@ -10,13 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.24.0"
-  }
-}
-</script>
 </head>
 <body>
 
@@ -85,7 +78,7 @@
             <div class="container">
                 <h2>In Good Company</h2>
                 <p class="subtitle">Join a prestigious group of institutions and companies who have successfully leveraged QELE to achieve their goals in the MENA region.</p>
-                <div class="logo-grid">
+                <div class="logo-grid" id="past-partners-grid">
                     <!-- Logos will be dynamically injected here -->
                 </div>
                  <div class="section-cta">
@@ -150,6 +143,11 @@
         </div>
     </footer>
 
+    <!-- WhatsApp Chat -->
+    <a href="https://wa.me/97474449111" class="whatsapp-fab" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <!-- Exit Intent Modal -->
     <div id="exit-intent-modal" class="modal-overlay">
         <div class="modal-content exit-intent-content" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title">
@@ -167,7 +165,7 @@
         <a href="booth-registration.html" class="mobile-cta-btn"><i class="fas fa-chalkboard-user"></i><span>Exhibitor</span></a>
         <a href="sponsorship-registration.html" class="mobile-cta-btn"><i class="fas fa-star"></i><span>Sponsor</span></a>
     </div>
-
+    
     <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
     <script type="module" src="index.tsx"></script>
 </body>

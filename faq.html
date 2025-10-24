@@ -10,13 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.24.0"
-  }
-}
-</script>
 </head>
 <body>
 
@@ -235,34 +228,10 @@
         </div>
     </footer>
 
-    <!-- AI Chatbot -->
-    <div id="chatbot-fab-container">
-      <div id="chatbot-bubble" class="chatbot-bubble" style="display: none;"></div>
-      <div id="chatbot-fab" role="button" aria-label="Open AI Chat">
-          <i class="fas fa-comments"></i>
-      </div>
-    </div>
-    <div id="chatbot-window" class="chatbot-window" role="dialog" aria-modal="true" aria-labelledby="chatbot-header-title">
-        <div class="chatbot-header">
-            <h3 id="chatbot-header-title">QELE AI Assistant</h3>
-            <button id="chatbot-close-btn" aria-label="Close Chat">&times;</button>
-        </div>
-        <div id="chatbot-messages" class="chatbot-messages" role="log" aria-live="polite">
-        </div>
-        <div id="chatbot-suggestions" class="chatbot-suggestions">
-        </div>
-        <form id="chatbot-form" class="chatbot-form">
-            <div class="chatbot-input-wrapper">
-                <input type="text" id="chatbot-input" placeholder="Ask a question..." autocomplete="off" aria-label="Your message">
-                <button type="submit" aria-label="Send Message"><i class="fas fa-paper-plane"></i></button>
-            </div>
-            <div class="form-group-consent-chatbot">
-                <input type="checkbox" id="chatbot-consent" name="chatbot-consent" required>
-                <label for="chatbot-consent">I consent to the processing of my data.</label>
-                <div class="error-message"></div>
-            </div>
-        </form>
-    </div>
+    <!-- WhatsApp Chat -->
+    <a href="https://wa.me/97474449111" class="whatsapp-fab" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <!-- Exit Intent Modal -->
     <div id="exit-intent-modal" class="modal-overlay">

@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,17 +94,18 @@
                 </div>
 
                 <form id="sponsorship-registration-form" novalidate style="background: var(--white); padding: 2.5rem; border-radius: 10px; border: 1px solid var(--border-color); color: var(--text-color); box-shadow: var(--shadow);">
-                    
+                    <input type="hidden" name="form_source" value="Sponsorship Inquiry">
+
                     <div class="form-group">
                         <label for="form-sponsor-name">Full Name - الاسم الكامل *</label>
-                        <input type="text" id="form-sponsor-name" required>
+                        <input type="text" id="form-sponsor-name" name="name" required>
                         <div class="error-message"></div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="form-sponsor-country">Country - الدولة *</label>
-                            <select id="form-sponsor-country" required>
+                            <select id="form-sponsor-country" name="country" required>
                                 <option value="" disabled selected>Select country</option>
                                 <option value="Qatar">Qatar</option>
                                 <option value="Saudi Arabia">Saudi Arabia</option>
@@ -121,7 +121,7 @@
                         </div>
                         <div class="form-group">
                             <label for="form-sponsor-phone">Mobile number - رقم الجوال *</label>
-                            <input type="tel" id="form-sponsor-phone" required>
+                            <input type="tel" id="form-sponsor-phone" name="phone" required>
                             <div class="error-message"></div>
                         </div>
                     </div>
@@ -129,12 +129,12 @@
                      <div class="form-row">
                         <div class="form-group">
                             <label for="form-sponsor-email">Email - البريد الالكتروني *</label>
-                            <input type="email" id="form-sponsor-email" required>
+                            <input type="email" id="form-sponsor-email" name="email" required>
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
                             <label for="form-sponsor-website">Website *</label>
-                            <input type="text" id="form-sponsor-website" placeholder="e.g., https://example.com" required>
+                            <input type="text" id="form-sponsor-website" name="website" placeholder="e.g., https://example.com" required>
                             <div class="error-message"></div>
                         </div>
                     </div>
@@ -142,19 +142,19 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="form-sponsor-company">Company - الشركة *</label>
-                            <input type="text" id="form-sponsor-company" required>
+                            <input type="text" id="form-sponsor-company" name="company" required>
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
                             <label for="form-sponsor-title">Position - المنصب *</label>
-                            <input type="text" id="form-sponsor-title" required>
+                            <input type="text" id="form-sponsor-title" name="job_title" required>
                             <div class="error-message"></div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="form-sponsor-company-field">Company field - مجال الشركة *</label>
-                        <select id="form-sponsor-company-field" required>
+                        <select id="form-sponsor-company-field" name="company_field" required>
                             <option value="" disabled selected>Please select an option</option>
                             <option value="Colleges, universities, institutes and schools">Colleges, universities, institutes and schools - الكليات، الجامعات، المعاهد والمدارس</option>
                             <option value="Educational service">Educational service - الخدمات التعليمية</option>
@@ -169,12 +169,12 @@
                    
                     <div class="form-group">
                         <label for="form-sponsor-message">Message - رسالة *</label>
-                        <textarea id="form-sponsor-message" rows="4" required></textarea>
+                        <textarea id="form-sponsor-message" name="message" rows="4" required></textarea>
                          <div class="error-message"></div>
                     </div>
 
                     <div class="form-group form-group-consent">
-                        <input type="checkbox" id="form-sponsor-consent" required>
+                        <input type="checkbox" id="form-sponsor-consent" name="consent" required>
                         <label for="form-sponsor-consent">I consent to be contacted by the QELE partnership team regarding sponsorship opportunities. *</label>
                         <div class="error-message"></div>
                     </div>

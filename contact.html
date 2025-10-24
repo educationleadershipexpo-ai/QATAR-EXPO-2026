@@ -10,13 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.24.0"
-  }
-}
-</script>
 </head>
 <body>
 
@@ -127,33 +120,34 @@
                             <p>Your message has been sent. Our team will get back to you shortly, and your sponsorship deck download should begin automatically.</p>
                         </div>
                         <form id="contact-form" novalidate>
+                             <input type="hidden" name="form_source" value="Contact Page Inquiry">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="form-name">Full Name *</label>
-                                    <input type="text" id="form-name" required>
+                                    <input type="text" id="form-name" name="name" required>
                                     <div class="error-message"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="form-organization">Organization *</label>
-                                    <input type="text" id="form-organization" required>
+                                    <input type="text" id="form-organization" name="organization" required>
                                     <div class="error-message"></div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="form-email">Email Address *</label>
-                                    <input type="email" id="form-email" required>
+                                    <input type="email" id="form-email" name="email" required>
                                     <div class="error-message"></div>
                                 </div>
                                 <div class="form-group">
                                     <label for="form-phone">Phone Number</label>
-                                    <input type="tel" id="form-phone">
+                                    <input type="tel" id="form-phone" name="phone">
                                     <div class="error-message"></div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="form-interest">I'm interested in... *</label>
-                                <select id="form-interest" required>
+                                <select id="form-interest" name="interest" required>
                                     <option value="" disabled selected>Select an option...</option>
                                     <option value="sponsoring">Sponsoring</option>
                                     <option value="exhibiting">Exhibiting / Booking a Booth</option>
@@ -264,6 +258,11 @@
             </div>
         </div>
     </footer>
+
+    <!-- WhatsApp Chat -->
+    <a href="https://wa.me/97474449111" class="whatsapp-fab" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <!-- Exit Intent Modal -->
     <div id="exit-intent-modal" class="modal-overlay">
