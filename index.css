@@ -2169,6 +2169,16 @@ textarea.invalid {
     .tier-benefits.two-column-list {
         grid-template-columns: 1fr;
     }
+
+    .journey-phase {
+        grid-template-columns: 1fr;
+    }
+    .journey-phase:nth-child(even) .journey-visual {
+        order: 1; /* Reset order for mobile */
+    }
+    .journey-visual {
+        margin-top: 2rem;
+    }
 }
 
 @media (max-width: 576px) {
@@ -2521,16 +2531,4 @@ textarea.invalid {
     border-radius: 10px;
     box-shadow: var(--shadow);
     border: 1px solid var(--border-color);
-}
-
-@media (max-width: 768px) {
-    .journey-phase {
-        grid-template-columns: 1fr;
-    }
-    .journey-phase:nth-child(even) .journey-visual {
-        order: 1; /* Reset order for mobile */
-    }
-    .journey-visual {
-        margin-top: 2rem;
-    }
 }
