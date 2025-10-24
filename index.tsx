@@ -243,9 +243,8 @@
             // Click handler for mobile - toggles dropdown
             toggle.addEventListener('click', (e) => {
                 if (window.innerWidth <= 768) {
-                    e.preventDefault(); // Prevent navigation on mobile tap
-                    e.stopPropagation(); // Prevent document click listener from firing
-                    
+                    e.preventDefault();
+
                     const isCurrentlyOpen = dropdown.classList.contains('dropdown-open');
 
                     // Close other open dropdowns
@@ -259,7 +258,6 @@
                     dropdown.classList.toggle('dropdown-open');
                     toggle.setAttribute('aria-expanded', String(!isCurrentlyOpen));
                 }
-                // On desktop, the default link behavior is allowed, so no preventDefault.
             });
 
             // Mouse enter/leave handlers for desktop
@@ -276,17 +274,6 @@
                     toggle.setAttribute('aria-expanded', 'false');
                 }
             });
-        });
-        
-        // This listener closes any open dropdown when a click happens anywhere else on the page.
-        // It's primarily for mobile touch interactions outside the menu.
-        document.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                document.querySelectorAll('.has-dropdown.dropdown-open').forEach(openDropdown => {
-                    openDropdown.classList.remove('dropdown-open');
-                    openDropdown.querySelector('a')?.setAttribute('aria-expanded', 'false');
-                });
-            }
         });
     }
 
@@ -951,7 +938,40 @@
             { src: 'https://logo.clearbit.com/vodafone.com', alt: 'Vodafone Logo' },
             { src: 'https://logo.clearbit.com/qnb.com', alt: 'QNB Logo' },
         ];
-        
+
+        logoGrid.innerHTML = '';
+
+        partners.forEach(partner => {
+            const logoItem = document.createElement('div');
+            logoItem.className = 'logo-item';
+            const img = document.createElement('img');
+            img.src = partner.src;
+            img.alt = partner.alt;
+            logoItem.appendChild(img);
+            logoGrid.appendChild(logoItem);
+        });
+    }
+
+    // --- Dynamic Partner Logos for Past Partners Page ---
+    function initializePastPartnersPage() {
+        const logoGrid = document.querySelector('.logo-grid');
+        if (!logoGrid || logoGrid.id === 'home-partners-grid' || logoGrid.id === 'sponsor-partners-grid') return;
+
+        const partners = [
+            { src: 'https://logo.clearbit.com/microsoft.com', alt: 'Microsoft Logo' },
+            { src: 'https://logo.clearbit.com/google.com', alt: 'Google for Education Logo' },
+            { src: 'https://logo.clearbit.com/coursera.org', alt: 'Coursera Logo' },
+            { src: 'https://logo.clearbit.com/qf.org.qa', alt: 'Qatar Foundation Logo' },
+            { src: 'https://logo.clearbit.com/qu.edu.qa', alt: 'Qatar University Logo' },
+            { src: 'https://logo.clearbit.com/britishcouncil.org', alt: 'British Council Logo' },
+            { src: 'https://logo.clearbit.com/vodafone.com', alt: 'Vodafone Logo' },
+            { src: 'https://logo.clearbit.com/qnb.com', alt: 'QNB Logo' },
+            { src: 'https://logo.clearbit.com/pearson.com', alt: 'Pearson Logo' },
+            { src: 'https://logo.clearbit.com/cambridge.org', alt: 'Cambridge Logo' },
+            { src: 'https://logo.clearbit.com/oracle.com', alt: 'Oracle Logo' },
+            { src: 'https://logo.clearbit.com/ibm.com', alt: 'IBM Logo' },
+        ];
+
         logoGrid.innerHTML = '';
 
         partners.forEach(partner => {
@@ -1126,6 +1146,7 @@
     initializeEarlyBirdCountdown();
     initializeHomePartners();
     initializeSponsorPagePartners();
+    initializePastPartnersPage();
     initializeAgendaTabs();
     initializeFloorPlan();
     });
