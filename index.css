@@ -2437,3 +2437,100 @@ textarea.invalid {
     .timeline-time h3 { position: static; }
     .session-tag { top: 5px; right: -40px; font-size: 0.7rem; }
 }
+
+/* --- NEW Brand Exposure Page Styles --- */
+.exposure-intro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+.exposure-intro-grid .stat-card {
+    background: var(--surface-color);
+    padding: 1.5rem;
+}
+.exposure-intro-grid .stat-card h4 {
+    font-size: 1.8rem;
+}
+
+.marketing-journey {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.journey-phase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.journey-phase:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.journey-phase:nth-child(even) .journey-visual {
+    order: -1;
+}
+
+.journey-text h3 {
+    text-align: left;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.journey-text h3 i {
+    font-size: 2rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.journey-text .phase-subtitle {
+    font-weight: 700;
+    color: #555;
+    margin-bottom: 1.5rem;
+    display: block;
+}
+.journey-text ul {
+    list-style: none;
+    padding: 0;
+}
+.journey-text ul li {
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.75rem;
+}
+.journey-text ul li::before {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    color: #d12386;
+}
+
+.journey-visual img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+    .journey-phase {
+        grid-template-columns: 1fr;
+    }
+    .journey-phase:nth-child(even) .journey-visual {
+        order: 1; /* Reset order for mobile */
+    }
+    .journey-visual {
+        margin-top: 2rem;
+    }
+}
