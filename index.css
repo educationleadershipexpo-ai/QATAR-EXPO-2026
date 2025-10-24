@@ -681,7 +681,11 @@ section {
 .benefit-card i {
     font-size: 3rem;
     margin-bottom: 1.2rem;
-    color: #711fb8;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
 }
 .benefit-card h3 {
     font-size: 1.4rem;
