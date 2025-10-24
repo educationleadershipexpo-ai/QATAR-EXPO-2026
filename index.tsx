@@ -1,5 +1,7 @@
 
 
+
+
     import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 
     declare var Panzoom: any;
@@ -589,6 +591,7 @@
         const fab = document.getElementById('chatbot-fab');
         const windowEl = document.getElementById('chatbot-window');
         const closeBtn = document.getElementById('chatbot-close-btn');
+        const clearBtn = document.getElementById('chatbot-clear-btn');
         const form = document.getElementById('chatbot-form') as HTMLFormElement;
         const input = document.getElementById('chatbot-input') as HTMLInputElement;
         const messagesContainer = document.getElementById('chatbot-messages');
@@ -596,77 +599,70 @@
         const consentCheckbox = document.getElementById('chatbot-consent') as HTMLInputElement;
         const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
 
-        if (!fab || !windowEl || !closeBtn || !form || !input || !messagesContainer || !suggestionsContainer || !consentCheckbox || !submitBtn) return;
+        if (!fab || !windowEl || !closeBtn || !clearBtn || !form || !input || !messagesContainer || !suggestionsContainer || !consentCheckbox || !submitBtn) return;
 
         let chat: Chat;
         let hasWelcomed = false;
 
-        const systemInstruction = `You are the official AI Assistant for the QATAR EDUCATION LEADERSHIP EXPO 2026 (QELE 2026). Your goal is to answer questions from potential exhibitors, sponsors, and attendees. Be friendly, professional, and concise.
+        const systemInstruction = `You are a lead collection AI Assistant for the QATAR EDUCATION LEADERSHIP EXPO 2026 (QELE 2026). Your primary goal is to identify potential exhibitors or sponsors, collect their contact information, and inform them that their details have been passed to the partnership team. Be friendly, professional, and follow the script below.
 
-        Here is key information about the event:
-        - Event Name: QATAR EDUCATION LEADERSHIP EXPO 2026 (QELE 2026)
-        - Date: April 19 – 20, 2026
-        - Location: Sheraton Grand Doha Resort & Convention Hotel, Qatar.
-        - Organized by: Student Diwan, Qatar's leading EdTech platform.
-        - Early Bird Offer: 15% discount ends November 20, 2025.
+        **Conversation Flow:**
         
-        Market Opportunity:
-        - The MENA education market has over $100B+ in annual spending.
-        - There are over 60M+ K-12 students in the region.
-        - Qatar is the #1 education hub in the Gulf, with the highest GDP per capita globally and over 200+ international schools.
-
-        Audience (Who is Attending):
-        - 4000+ Students
-        - 100+ Universities & Colleges
-        - 50+ Edutech Companies
-        - 75+ Education Consultants
-        - 120+ Speakers & Influencers
-        - Government Representatives
-        - Decision-Makers breakdown: 45% from K-12 Schools (Principals, Teachers), 20% from Universities (Chancellors, Deans), 10% from Government, 10% from Consultants.
-
-        Exhibitor Benefits:
-        - Recruitment: Engage Grade 11-12 students.
-        - Visibility: Gain 1M+ brand impressions.
-        - Thought Leadership: Shape the agenda through panels and roundtables.
-        - Partnerships: Connect with leaders, government, and industry experts.
-
-        Booth Packages:
-        - There are four tiers: Basic, Silver, Gold, and Platinum.
-        - Basic: Standard booth, website listing, 2 passes.
-        - Silver: Priority booth, logo on website, 3 passes.
-        - Gold (Most Popular): High-traffic booth, catalog entry, 1 speaking slot, 4 passes.
-        - Platinum: Max visibility corner booth, premium furniture, homepage logo, 3 speaking slots, 8 passes, VIP lounge access.
-
-        IMPORTANT RULE: Prices for packages are NOT public. DO NOT provide any prices or estimates. Your goal is to highlight the value and encourage users to submit an inquiry. If asked for pricing, politely respond with: "Pricing details are provided in our official sponsorship deck. If you fill out the inquiry form on our website, our partnership team will send it to you right away."
+        1.  **Greeting & Qualification:** Start by greeting the user and asking about their interest.
+            *   *Your first message MUST be:* "Hello! I'm the QELE AI Assistant. Are you interested in Exhibiting, Sponsoring, or have another question about the expo?"
         
-        Contact for partnerships: partnerships@eduexpoqatar.com or call +974 7444 9111.
+        2.  **Handle Responses:**
+            *   **If user is interested in "Exhibiting" or "Sponsoring":** Immediately transition to lead capture. Say: "That's great to hear! I can have our partnership team send you the detailed Exhibitor & Sponsorship deck with package details and pricing. I just need to collect a few details." Then, proceed to Step 3.
+            *   **If user asks a general question (e.g., about dates, location, benefits):** Answer the question concisely using the 'Key Information' below. AFTER answering, you MUST transition to lead capture. For example: "The event is on April 19–20, 2026. **To help you get all the details, I can have our team send you the official brochure. What is your full name?**"
         
-        LEAD CAPTURE RULE: If a user expresses a clear intent to purchase, book, or speak to a sales representative (e.g., "I want to buy a platinum package," "How do I book booth A2?", "Can I talk to someone about sponsoring?"), your primary goal is to capture their contact information. Politely ask for their name and email address so a partnership manager can get in touch with them. For example: "That's great to hear! I can have a partnership manager reach out to you directly. Could I get your name and email address, please?" Do not be pushy if they decline.`;
+        3.  **Lead Capture Sequence:** Ask for the following information ONE AT A TIME. Do not ask for everything at once.
+            *   "First, what is your **full name**?"
+            *   "Thank you. And what is the name of your **company or institution**?"
+            *   "Got it. What is your **job title or position**?"
+            *   "Perfect. And what is your **email address** so we can send you the deck?"
+            *   (Optional) "Great. Lastly, could I get a **phone number**? This is optional but helps our team connect with you faster."
+        
+        4.  **Confirmation and Closing:** After collecting the details, confirm them with the user.
+            *   "Amazing, thank you! Just to confirm, I have: Name: [User's Name], Company: [User's Company], Email: [User's Email]. Is that correct?"
+            *   **If they confirm:** Your final message MUST be: "Excellent. I've automatically sent your details to our partnerships team at **info@eduexpoqatar.com**. They will be in touch with you shortly with the full information deck. Thank you for your interest in QELE 2026!"
+            *   **If they correct you:** Apologize and ask for the correct information again. Once corrected, proceed to the final confirmation message.
+        
+        **Key Information for Answering Questions:**
+        - **Event Name:** QATAR EDUCATION LEADERSHIP EXPO 2026 (QELE 2026)
+        - **Date:** April 19 – 20, 2026
+        - **Location:** Sheraton Grand Doha Resort & Convention Hotel, Qatar.
+        - **Organizer:** Student Diwan.
+        - **Early Bird Offer:** 15% discount ends November 20, 2025.
+        - **Audience:** 4000+ Students, 100+ Universities, 50+ Edutech Companies, K-12 Leaders, Government Reps.
+        - **Exhibitor Benefits:** Recruitment, Visibility (1M+ impressions), Thought Leadership, Partnerships.
+        
+        **Strict Rules:**
+        - **DO NOT** provide pricing for packages. Your goal is to get them to request the deck. If asked for price, say: "Pricing details are available in our official sponsorship deck. I can have it sent to you right away if you provide your contact details."
+        - **ALWAYS** follow the conversational flow. Your primary objective is lead capture.
+        - Be polite and professional. Use markdown for **bolding** key terms.`;
 
-        const addMessage = (text: string, sender: 'user' | 'ai' | 'system') => {
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('chat-message', `${sender}-message`);
-        messageElement.textContent = text;
-        messagesContainer.appendChild(messageElement);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        const renderMarkdown = (text: string) => {
+            let html = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+                .replace(/\*(.*?)\*/g, '<em>$1</em>');       // Italic
+
+            // Handle lists
+            html = html.replace(/^\s*\n\* (.*)/gm, '<ul>\n<li>$1</li>')
+                       .replace(/^(<li>.*<\/li>)\s*\n\* (.*)/gm, '$1\n<li>$2</li>')
+                       .replace(/<\/li>\n<\/ul>/g, '</li></ul>');
+                       
+            return html;
         };
 
-        const showTypingIndicator = () => {
-            const indicator = document.createElement('div');
-            indicator.textContent = 'Typing...';
-            indicator.classList.add('typing-indicator');
-            indicator.id = 'typing-indicator';
-            messagesContainer.appendChild(indicator);
+        const addMessage = (text: string, sender: 'user' | 'ai') => {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('chat-message', `${sender}-message`);
+            messageElement.innerHTML = renderMarkdown(text);
+            messagesContainer.appendChild(messageElement);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            return messageElement;
         };
-
-        const hideTypingIndicator = () => {
-            const indicator = document.getElementById('typing-indicator');
-            if (indicator) {
-                indicator.remove();
-            }
-        };
-
+        
         const showErrorForConsent = (message: string) => {
             const formGroup = consentCheckbox.closest('.form-group-consent-chatbot');
             const errorElement = formGroup?.querySelector('.error-message') as HTMLElement;
@@ -690,6 +686,39 @@
             const consentGiven = consentCheckbox.checked;
             submitBtn.disabled = !message || !consentGiven;
         };
+        
+        const extractLeadDetailsFromHistory = (messageElements: HTMLElement[]) => {
+            const details: { [key: string]: string } = {
+                name: '',
+                company: '',
+                title: '',
+                email: '',
+                phone: ''
+            };
+
+            const questions: { [key: string]: RegExp } = {
+                name: /what is your full name/i,
+                company: /name of your company or institution/i,
+                title: /job title or position/i,
+                email: /what is your email address/i,
+                phone: /could I get a phone number/i
+            };
+
+            messageElements.forEach((msg, index) => {
+                const text = msg.textContent || '';
+                if (msg.classList.contains('ai-message')) {
+                    for (const key in questions) {
+                        if (Object.prototype.hasOwnProperty.call(questions, key) && questions[key].test(text)) {
+                            const nextMsg = messageElements[index + 1];
+                            if (nextMsg && nextMsg.classList.contains('user-message')) {
+                                details[key] = nextMsg.textContent?.trim() || '';
+                            }
+                        }
+                    }
+                }
+            });
+            return details;
+        };
 
         const sendUserMessage = async (message: string) => {
             if (!message) return;
@@ -703,17 +732,65 @@
             addMessage(message, 'user');
             input.value = '';
             validateChatForm();
+            submitBtn.disabled = true;
             suggestionsContainer.style.display = 'none';
-            showTypingIndicator();
+
+            let fullResponse = '';
+            const aiMessageElement = addMessage('', 'ai');
+            aiMessageElement.innerHTML = '<span class="blinking-cursor"></span>';
 
             try {
-                const response: GenerateContentResponse = await chat.sendMessage({ message: message });
-                hideTypingIndicator();
-                addMessage(response.text, 'ai');
+                const stream = await chat.sendMessageStream({ message: message });
+
+                for await (const chunk of stream) {
+                    fullResponse += chunk.text;
+                    aiMessageElement.innerHTML = renderMarkdown(fullResponse) + '<span class="blinking-cursor"></span>';
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+                aiMessageElement.innerHTML = renderMarkdown(fullResponse);
+
+                 // Check if the conversation is a lead submission
+                if (fullResponse.includes("I've automatically sent your details")) {
+                    const messageElements = Array.from(messagesContainer.querySelectorAll<HTMLElement>('.chat-message'));
+                    const leadDetails = extractLeadDetailsFromHistory(messageElements);
+
+                    const subject = "New Lead from QELE 2026 Website Chatbot";
+                    const body = `
+A new lead has been captured via the website chatbot.
+
+--- Lead Details ---
+Name: ${leadDetails.name || 'Not provided'}
+Company: ${leadDetails.company || 'Not provided'}
+Job Title: ${leadDetails.title || 'Not provided'}
+Email: ${leadDetails.email || 'Not provided'}
+Phone: ${leadDetails.phone || 'Not provided'}
+--------------------
+
+--- Full Chat Transcript ---
+${messageElements.map(m => {
+    const sender = m.classList.contains('user-message') ? 'User' : 'AI';
+    return `${sender}: ${m.textContent}`;
+}).join('\n')}
+--------------------------
+`;
+                    const mailtoLink = `mailto:info@eduexpoqatar.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.trim())}`;
+                    
+                    // Open user's default email client
+                    window.location.href = mailtoLink;
+
+                    // Log for debugging
+                    console.log("--- LEAD CAPTURED & MAILTO TRIGGERED ---");
+                    console.log(leadDetails);
+                    console.log("-----------------------------------------");
+                }
+
+
             } catch (error) {
                 console.error("Chatbot error:", error);
-                hideTypingIndicator();
-                addMessage("Sorry, I'm having trouble connecting right now. Please try again later.", 'ai');
+                 aiMessageElement.innerHTML = "Sorry, I'm having trouble connecting right now. Please try again later.";
+            } finally {
+                validateChatForm();
+                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
         };
 
@@ -721,7 +798,7 @@
             suggestionsContainer.innerHTML = '';
             suggestionsContainer.style.display = 'flex';
             
-            const suggestions = ["Exhibitor Benefits", "Audience Demographics", "Event Dates"];
+            const suggestions = ["Exhibiting", "Sponsoring", "Event Dates"];
             suggestions.forEach(suggestionText => {
                 const chip = document.createElement('button');
                 chip.classList.add('suggestion-chip');
@@ -733,26 +810,40 @@
             });
         };
 
+        const startNewChat = async () => {
+             chat = ai.chats.create({
+                model: 'gemini-2.5-flash',
+                config: { systemInstruction },
+            });
+
+            if (!hasWelcomed) {
+                // The AI is instructed to send the first message, but we can send an empty message to trigger it.
+                // Or, more simply, just display the first message manually to avoid an unnecessary API call.
+                addMessage("Hello! I'm the QELE AI Assistant. Are you interested in Exhibiting, Sponsoring, or have another question about the expo?", 'ai');
+                createSuggestionChips();
+                hasWelcomed = true;
+            }
+        }
+        
         const openChat = () => {
             windowEl.classList.add('visible');
             if(fab) fab.style.display = 'none';
             if (!chat) {
-                chat = ai.chats.create({
-                    model: 'gemini-2.5-flash',
-                    config: { systemInstruction },
-                });
-            }
-            if (!hasWelcomed) {
-                addMessage("Hello! I'm the QELE AI Assistant. How can I help you learn about the expo today?", 'ai');
-                createSuggestionChips();
-                hasWelcomed = true;
+                startNewChat();
             }
             validateChatForm();
+            input.focus();
         };
         
         const closeChat = () => {
             windowEl.classList.remove('visible');
             if(fab) fab.style.display = 'flex';
+        };
+
+        const clearChat = () => {
+            messagesContainer.innerHTML = '';
+            hasWelcomed = false;
+            startNewChat();
         };
 
         input.addEventListener('input', validateChatForm);
@@ -765,6 +856,7 @@
 
         fab.addEventListener('click', openChat);
         closeBtn.addEventListener('click', closeChat);
+        clearBtn.addEventListener('click', clearChat);
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
