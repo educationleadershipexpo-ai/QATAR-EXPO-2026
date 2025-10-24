@@ -688,6 +688,35 @@
         });
     }
 
+    // --- Dynamic Partner Logos for Brand Exposure Page ---
+    function initializeBrandExposurePartners() {
+        const logoGrid = document.getElementById('brand-exposure-partners-grid');
+        if (!logoGrid) return;
+
+        const partners = [
+            { src: 'https://logo.clearbit.com/microsoft.com', alt: 'Microsoft Logo' },
+            { src: 'https://logo.clearbit.com/google.com', alt: 'Google for Education Logo' },
+            { src: 'https://logo.clearbit.com/coursera.org', alt: 'Coursera Logo' },
+            { src: 'https://logo.clearbit.com/qf.org.qa', alt: 'Qatar Foundation Logo' },
+            { src: 'https://logo.clearbit.com/qu.edu.qa', alt: 'Qatar University Logo' },
+            { src: 'https://logo.clearbit.com/britishcouncil.org', alt: 'British Council Logo' },
+            { src: 'https://logo.clearbit.com/vodafone.com', alt: 'Vodafone Logo' },
+            { src: 'https://logo.clearbit.com/qnb.com', alt: 'QNB Logo' },
+        ];
+        
+        logoGrid.innerHTML = '';
+
+        partners.forEach(partner => {
+            const logoItem = document.createElement('div');
+            logoItem.className = 'logo-item';
+            const img = document.createElement('img');
+            img.src = partner.src;
+            img.alt = partner.alt;
+            logoItem.appendChild(img);
+            logoGrid.appendChild(logoItem);
+        });
+    }
+
 
     // --- Agenda Page Tabs ---
     function initializeAgendaTabs() {
@@ -851,4 +880,5 @@
     initializePastPartners();
     initializeAgendaTabs();
     initializeFloorPlan();
+    initializeBrandExposurePartners();
     });
