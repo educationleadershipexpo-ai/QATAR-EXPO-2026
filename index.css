@@ -1296,12 +1296,14 @@ section {
 }
 .way-card {
     border-radius: 10px;
-    overflow: hidden;
     box-shadow: var(--shadow);
     text-align: center;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    background: var(--white);
+    overflow: hidden;
 }
 .way-card:hover {
     transform: translateY(-8px);
@@ -1310,7 +1312,7 @@ section {
 .way-card img { 
     width: 100%; 
     height: 220px;
-    object-fit: cover; 
+    object-fit: cover;
 }
 .way-card-content {
     padding: 1.5rem;
@@ -1335,6 +1337,52 @@ section {
     width: 80%;
     margin: 0 auto;
 }
+
+/* Styles for differentiated cards */
+.way-card--speak {
+    border: 2px solid #d12386;
+}
+
+@media (min-width: 992px) {
+    .ways-to-join-grid {
+        align-items: center; /* Center items vertically for scale effect */
+    }
+    .way-card--speak {
+        transform: scale(1.05);
+        z-index: 5;
+    }
+    .way-card--speak:hover {
+        transform: scale(1.08) translateY(-8px);
+    }
+}
+
+.way-card-badge {
+    position: absolute;
+    top: 15px;
+    right: -40px;
+    background: var(--gradient);
+    color: var(--white);
+    padding: 6px 40px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 2;
+}
+
+.way-card--sponsor {
+    background-color: #101c35;
+    color: var(--white);
+}
+
+.way-card--sponsor .way-card-content h3 {
+    color: var(--white);
+}
+
+.way-card--sponsor .way-card-content p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
 
 /* --- Who Should Exhibit Section --- */
 .exhibitor-types-grid {
