@@ -102,8 +102,8 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="form-student-phone">Phone Number (Optional)</label>
-                            <input type="tel" id="form-student-phone" name="phone">
+                            <label for="form-student-phone">Phone Number *</label>
+                            <input type="tel" id="form-student-phone" name="phone" required>
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
@@ -189,7 +189,17 @@
                                 <input type="checkbox" id="interest-law" name="interests" value="law">
                                 <label for="interest-law">Law & International Relations</label>
                             </div>
+                             <div class="interest-checkbox-item">
+                                <input type="checkbox" id="interest-other" name="interests" value="other">
+                                <label for="interest-other">Other</label>
+                            </div>
                         </div>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <div id="other-interest-wrapper" class="form-group" style="display: none;">
+                        <label for="other-interest-text">If other, please specify *</label>
+                        <input type="text" id="other-interest-text" name="other_interest">
                         <div class="error-message"></div>
                     </div>
                     
