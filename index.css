@@ -2448,140 +2448,76 @@ textarea.invalid {
     .session-tag { top: 5px; right: -40px; font-size: 0.7rem; }
 }
 
-/* --- NEW Brand Exposure Page Redesign --- */
-
-/* Hero Section */
-#brand-exposure-hero {
-    background: linear-gradient(rgba(16, 28, 53, 0.85), rgba(16, 28, 53, 0.85)), url('https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover no-repeat;
-    color: var(--white);
-    padding: 100px 0;
-    text-align: center;
-}
-#brand-exposure-hero .page-header {
-    display: none;
-}
-#brand-exposure-hero h1 {
-    font-size: 3rem;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-    text-shadow: none;
-}
-#brand-exposure-hero .subtitle {
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.9);
-    max-width: 800px;
-    margin: 1.5rem auto 3rem;
-    text-align: center;
-}
-.hero-stats-grid {
+/* --- NEW Brand Exposure Page Styles --- */
+.exposure-intro-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5rem;
-    max-width: 1000px;
-    margin: 0 auto 3rem;
+    margin-top: 3rem;
 }
-.hero-stat-card {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 2rem 1.5rem;
-    border-radius: 10px;
+.exposure-intro-grid .stat-card {
+    background: var(--surface-color);
+    padding: 1.5rem;
 }
-.hero-stat-card .stat-number {
-    font-size: 3rem;
-    font-weight: 800;
-    font-family: var(--heading-font);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-.hero-stat-card .stat-label {
-    font-size: 1rem;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0;
+.exposure-intro-grid .stat-card h4 {
+    font-size: 1.8rem;
 }
 
-/* Exposure Journey Timeline */
-.exposure-timeline {
-    position: relative;
-    max-width: 900px;
-    margin: 3rem auto 0;
+.marketing-journey {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
 }
-.exposure-timeline::after {
-    content: '';
-    position: absolute;
-    width: 4px;
-    background-color: var(--border-color);
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    margin-left: -2px;
+
+.journey-phase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
 }
-.timeline-item {
-    padding: 10px 40px;
-    position: relative;
-    width: 50%;
+.journey-phase:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
 }
-.timeline-item::after {
-    content: '';
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    right: -13px;
-    background-color: var(--white);
-    border: 4px solid #d12386;
-    top: 25px;
-    border-radius: 50%;
-    z-index: 1;
+
+.journey-phase:nth-child(even) .journey-visual {
+    order: -1;
 }
-.timeline-item.left { left: 0; }
-.timeline-item.right { left: 50%; }
-.timeline-item.right::after { left: -12px; }
-.timeline-content {
-    padding: 2rem;
-    background-color: var(--white);
-    position: relative;
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border-color);
-}
-.timeline-content h3 {
+
+.journey-text h3 {
     text-align: left;
-    font-size: 1.8rem;
-    margin-top: 0;
+    font-size: 2rem;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 1rem;
 }
-.timeline-content h3 i {
+.journey-text h3 i {
     font-size: 2rem;
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-.timeline-content .phase-subtitle {
+.journey-text .phase-subtitle {
     font-weight: 700;
     color: #555;
     margin-bottom: 1.5rem;
     display: block;
 }
-.timeline-content ul {
+.journey-text ul {
     list-style: none;
     padding: 0;
-    margin: 0;
 }
-.timeline-content ul li {
-    padding-left: 1.8rem;
+.journey-text ul li {
+    padding-left: 2rem;
     position: relative;
     margin-bottom: 0.75rem;
-    font-size: 0.95rem;
 }
-.timeline-content ul li::before {
-    content: '\\f00c';
+.journey-text ul li::before {
+    content: '\f00c';
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     position: absolute;
@@ -2590,73 +2526,9 @@ textarea.invalid {
     color: #d12386;
 }
 
-/* Brand Spotlight Section */
-.spotlight-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-}
-.spotlight-card {
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    text-align: center;
-    background: var(--white);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.spotlight-card:hover {
-    transform: translateY(-8px);
-}
-.spotlight-card img {
+.journey-visual img {
     width: 100%;
-    height: 220px;
-    object-fit: cover;
-    border-bottom: 1px solid var(--border-color);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
-.spotlight-card h4 {
-    font-size: 1.2rem;
-    margin: 1.5rem 1rem;
-    text-align: center;
-}
-
-/* Partner Proof Section */
-#partner-proof h2 {
-    text-align: center;
-}
-#partner-proof .subtitle {
-    text-align: center;
-}
-
-/* Responsive for Timeline */
-@media screen and (max-width: 992px) {
-    #brand-exposure-hero h1 { font-size: 2.5rem; }
-    
-    .exposure-timeline::after {
-        left: 31px;
-    }
-    .timeline-item {
-        width: 100%;
-        padding-left: 70px;
-        padding-right: 25px;
-    }
-    .timeline-item.left::after,
-    .timeline-item.right::after {
-        left: 18px;
-    }
-    .timeline-item.right {
-        left: 0%;
-    }
-}
-@media (max-width: 768px) {
-    .journey-phase {
-        grid-template-columns: 1fr;
-    }
-    .journey-phase:nth-child(even) .journey-visual {
-        order: 1; /* Reset order for mobile */
-    }
-    .journey-visual {
-        margin-top: 2rem;
-    }
-}
-
