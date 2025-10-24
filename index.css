@@ -598,6 +598,26 @@ section {
     opacity: 1;
 }
 
+/* --- Homepage Partner Logo Overrides --- */
+#home-partners .logo-item img {
+    height: 80px;
+    max-height: 80px;
+    filter: none;
+    opacity: 1;
+    transition: transform 0.3s ease;
+}
+
+#home-partners .logo-item img:hover {
+    filter: none;
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+#home-partners .logo-item img.sheraton-logo {
+    height: 100px;
+    max-height: 100px;
+}
+
 
 /* Market Opportunity Section */
 .market-opportunity-grid {
