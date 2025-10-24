@@ -161,8 +161,19 @@
             <div class="container">
                 <h2>Visit Us At The Event</h2>
                 <p class="subtitle">Sheraton Grand Doha Resort & Convention Hotel</p>
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3607.962153289949!2d51.53351807593297!3d25.31930662580556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e45c4b315264627%3A0x310b9a674e797e59!2sSheraton%20Grand%20Doha%20Resort%20%26%20Convention%20Hotel!5e0!3m2!1sen!2sqa!4v1722363160495!5m2!1sen!2sqa" loading="lazy" title="Location of Sheraton Grand Doha Resort & Convention Hotel"></iframe>
+                 <div id="dynamic-map-container">
+                    <div id="map-loader">
+                        <div class="spinner"></div>
+                        <p>Fetching latest map details...</p>
+                    </div>
+                    <div id="map-content" style="display: none;">
+                        <p id="map-description"></p>
+                        <div id="map-actions"></div>
+                    </div>
+                    <div id="map-error" style="display: none;">
+                        <p>Sorry, we couldn't load the map details at this time. Please try again later.</p>
+                        <a href="https://maps.app.goo.gl/HDTEVNzNDCGYRWNQ7" target="_blank" class="btn btn-secondary">Open in Google Maps</a>
+                    </div>
                 </div>
             </div>
         </section>
