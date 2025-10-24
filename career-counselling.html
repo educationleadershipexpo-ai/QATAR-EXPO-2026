@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Become a Speaker - QELE 2026</title>
+    <title>Career Counselling - QELE 2026</title>
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,170 +69,37 @@
     <main>
         <section class="page-header">
             <div class="container">
-                <h1>Become a Speaker</h1>
-                <p>Share your expertise and inspire the future of education in the MENA region.</p>
+                <h1>Career Counselling</h1>
+                <p>Navigate your future with expert guidance.</p>
             </div>
         </section>
-
-        <section id="speaker-registration-form-section" class="bg-surface">
-            <div class="container" style="max-width: 900px;">
-                <h2>Speaker Application Form</h2>
-                <p class="subtitle">We are looking for passionate experts to lead keynotes, panels, and workshops. Please fill out the form below to submit your application. Our curation team will review all submissions and contact successful applicants.</p>
-                
-                <div id="speaker-form-success" style="display: none; background: var(--white); padding: 2.5rem; border-radius: 10px; border: 1px solid var(--border-color); text-align: center;">
-                     <i class="fas fa-check-circle" style="font-size: 3rem; color: #4db6ac; margin-bottom: 1rem;" aria-hidden="true"></i>
-                     <h3>Application Submitted!</h3>
-                     <p>Thank you for your interest in speaking at QELE 2026. Your application has been received. Our team will review your submission and will be in touch if your profile matches our program needs. We appreciate your contribution to the conversation!</p>
-                     <a href="index.html" class="btn btn-primary" style="margin-top: 1rem;">Back to Home</a>
+        
+        <section>
+            <div class="container">
+                <h2>Unlock Your Potential</h2>
+                <p class="subtitle">Our dedicated career counselling sessions are designed to help you make informed decisions about your academic and professional future.</p>
+                <div class="content-grid">
+                    <div class="content-card">
+                        <h3><i class="fas fa-user-tie"></i> One-on-One Sessions</h3>
+                        <p>Meet with experienced career counsellors for personalized advice tailored to your strengths, interests, and ambitions. Discuss university choices, course selections, and potential career paths.</p>
+                    </div>
+                    <div class="content-card">
+                        <h3><i class="fas fa-chart-line"></i> Psychometric Testing</h3>
+                        <p>Take internationally recognized psychometric tests to gain insight into your personality, skills, and ideal work environment. Our experts will help you interpret the results and align them with your goals.</p>
+                    </div>
+                    <div class="content-card">
+                        <h3><i class="fas fa-file-alt"></i> Resume & Profile Building</h3>
+                        <p>Learn how to craft a compelling resume and a professional online profile (like LinkedIn) that will catch the eye of university admissions officers and future employers. Get practical tips and feedback.</p>
+                    </div>
                 </div>
-
-                <form id="speaker-registration-form" novalidate style="background: var(--white); padding: 2.5rem; border-radius: 10px; border: 1px solid var(--border-color); color: var(--text-color); box-shadow: var(--shadow);">
-                    <input type="hidden" name="form_source" value="Speaker Application">
-                    
-                    <fieldset>
-                        <legend>Personal Information</legend>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="form-speaker-name">Full Name - الاسم الكامل *</label>
-                                <input type="text" id="form-speaker-name" name="name" required>
-                                <div class="error-message"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="form-speaker-job-org">Job Title & Organization - المسمى الوظيفي والمنظمة *</label>
-                                <input type="text" id="form-speaker-job-org" name="job_title_organization" required>
-                                <div class="error-message"></div>
-                            </div>
-                        </div>
-                         <div class="form-row">
-                            <div class="form-group">
-                                <label for="form-speaker-email">Email Address - البريد الالكتروني *</label>
-                                <input type="email" id="form-speaker-email" name="email" required>
-                                <div class="error-message"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="form-speaker-phone">Phone Number - رقم الجوال *</label>
-                                <input type="tel" id="form-speaker-phone" name="phone" required>
-                                <div class="error-message"></div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                             <div class="form-group">
-                                <label for="form-speaker-linkedin">LinkedIn Profile / Website</label>
-                                <input type="text" id="form-speaker-linkedin" name="linkedin_website">
-                                <div class="error-message"></div>
-                            </div>
-                            <div class="form-group">
-                                <label for="form-speaker-country">Country of Residence - بلد الإقامة *</label>
-                                <select id="form-speaker-country" name="country" required>
-                                    <option value="" disabled selected>Select country...</option>
-                                    <option value="Qatar">Qatar</option>
-                                    <option value="Saudi Arabia">Saudi Arabia</option>
-                                    <option value="United Arab Emirates">United Arab Emirates</option>
-                                    <option value="United States">United States</option>
-                                    <option value="United Kingdom">United Kingdom</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <div class="error-message"></div>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                    <fieldset>
-                        <legend>Session Preferences</legend>
-                        <div class="form-group interest-group-container" id="session-day1-group">
-                            <label>Which session would you like to speak in? Day 1 – February 10, 2026 *</label>
-                            <div class="session-selection-grid">
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s1" name="session-day1" value="Keynote: The Future of Education"><label for="d1-s1">Keynote: The Future of Education in the Digital Era</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s2" name="session-day1" value="Panel: AI & Innovation"><label for="d1-s2">Panel: AI & Innovation in Qatar’s Education Landscape</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s3" name="session-day1" value="Workshop: Modernizing LMS/ERP"><label for="d1-s3">Workshop: Modernizing LMS/ERP for Next-Gen Schools</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s4" name="session-day1" value="Panel: Cybersecurity"><label for="d1-s4">Panel: Cybersecurity & Data Protection in Education</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s5" name="session-day1" value="EdTech Pitch Showcase"><label for="d1-s5">EdTech Pitch Showcase</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s6" name="session-day1" value="Masterclass: AI Tools for Educators"><label for="d1-s6">Masterclass: AI Tools for Educators: Real Use Cases</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s7" name="session-day1" value="Workshop: Smart Tools Management"><label for="d1-s7">Workshop: Smart Tools for School & University Management</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s8" name="session-day1" value="Roundtable: Vision 2030"><label for="d1-s8">Roundtable (Closed): Shaping Qatar’s Education Vision 2030</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s9" name="session-day1" value="Panel: Blended Learning in GCC"><label for="d1-s9">Panel: Blended Learning in the GCC: What’s Working & What’s Not</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s10" name="session-day1" value="Panel: LMS Transitions"><label for="d1-s10">Panel: Triggers for LMS Transitions: Lessons from School Success Stories</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s11" name="session-day1" value="Parent Panel"><label for="d1-s11">Parent Panel: What Parents Expect from Schools in 2025</label></div>
-                                <div class="session-checkbox-item"><input type="checkbox" id="d1-s12" name="session-day1" value="Youth Panel"><label for="d1-s12">Youth Panel: The Ideal Learning Environment</label></div>
-                            </div>
-                            <div class="error-message"></div>
-                        </div>
-
-                         <div class="form-group interest-group-container" id="session-day2-group">
-                            <label>Which session would you like to speak in? Day 2 – February 11, 2026 *</label>
-                            <div class="session-selection-grid">
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s1" name="session-day2" value="Keynote: Shaping Schools of Tomorrow"><label for="d2-s1">Keynote: Shaping the Schools of Tomorrow</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s2" name="session-day2" value="Panel: Digital Equity"><label for="d2-s2">Panel: Digital Equity & Access in Education</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s3" name="session-day2" value="Masterclass: Future-Proof Curriculum"><label for="d2-s3">Masterclass: How to Design a Future-Proof Curriculum</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s4" name="session-day2" value="Panel: Public-Private Collaboration"><label for="d2-s4">Panel: Public-Private Collaboration in Education</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s5" name="session-day2" value="Showcase: University Projects"><label for="d2-s5">Showcase: University Engagement Projects</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s6" name="session-day2" value="Workshop: Teacher Empowerment"><label for="d2-s6">Workshop: Teacher Empowerment through Tech</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s7" name="session-day2" value="Training: Financial Planning"><label for="d2-s7">Training: Financial Planning for School Growth</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s8" name="session-day2" value="Roundtable: Private Education in GCC"><label for="d2-s8">Roundtable (Closed): Future of Private Education in GCC</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s9" name="session-day2" value="Teacher Innovation Spotlights"><label for="d2-s9">Teacher Innovation Spotlights</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s10" name="session-day2" value="Panel: EdTech in MENA"><label for="d2-s10">Panel: EdTech in MENA: Breakthroughs & Challenges</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s11" name="session-day2" value="Student Panel: Jobs of the Future"><label for="d2-s11">Student Panel: Preparing for Jobs of the Future</label></div>
-                               <div class="session-checkbox-item"><input type="checkbox" id="d2-s12" name="session-day2" value="Academic Pitch"><label for="d2-s12">Academic Pitch: Pitch Your Research</label></div>
-                            </div>
-                            <div class="error-message"></div>
-                        </div>
-                    </fieldset>
-                    
-                    <fieldset>
-                        <legend>Your Submission</legend>
-                        <div class="form-group">
-                            <label for="form-speaker-why">Why do you want to speak on this topic? (100–150 words) *</label>
-                            <textarea id="form-speaker-why" name="why_speak" rows="5" required></textarea>
-                            <div class="error-message"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="form-speaker-bio">Short Bio (100–150 words, third-person) *</label>
-                            <textarea id="form-speaker-bio" name="bio" rows="5" required></textarea>
-                            <div class="error-message"></div>
-                        </div>
-                         <div class="form-group">
-                            <label for="form-speaker-headshot">Professional Headshot Upload *</label>
-                             <div class="file-upload-wrapper">
-                                <input type="file" id="form-speaker-headshot" name="headshot" class="file-upload-input" accept="image/jpeg, image/png" required>
-                                <label for="form-speaker-headshot" class="file-upload-label">
-                                    <i class="fas fa-upload"></i>
-                                    <span class="file-upload-text">Choose a file...</span>
-                                </label>
-                            </div>
-                            <div class="error-message"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="form-speaker-experience">Past Speaking Experience (if any)</label>
-                            <textarea id="form-speaker-experience" name="past_experience" rows="4"></textarea>
-                        </div>
-                    </fieldset>
-
-                    <fieldset>
-                        <legend>Consents</legend>
-                        <div class="form-group-consent" id="consent-promotional-group">
-                            <label>Do you agree to deliver a non-promotional, education-focused session? *</label>
-                            <div class="consent-group">
-                                <div class="consent-radio-item"><input type="radio" id="promo-yes" name="consent-promotional" value="Yes" required><label for="promo-yes">Yes</label></div>
-                                <div class="consent-radio-item"><input type="radio" id="promo-no" name="consent-promotional" value="No" required><label for="promo-no">No</label></div>
-                            </div>
-                            <div class="error-message"></div>
-                        </div>
-                        <div class="form-group-consent" id="consent-recording-group">
-                            <label>Do you consent to your session being recorded and featured in highlights? *</label>
-                            <div class="consent-group">
-                                <div class="consent-radio-item"><input type="radio" id="record-yes" name="consent-recording" value="Yes" required><label for="record-yes">Yes</label></div>
-                                <div class="consent-radio-item"><input type="radio" id="record-no" name="consent-recording" value="No" required><label for="record-no">No</label></div>
-                            </div>
-                             <div class="error-message"></div>
-                        </div>
-                    </fieldset>
-                    
-                    <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.2rem; padding: 15px;">Submit Application</button>
-                </form>
+                 <div class="section-cta">
+                    <a href="universities.html" class="btn btn-primary">Register for Free</a>
+                </div>
             </div>
         </section>
-    </main>
 
+    </main>
+    
     <footer class="main-footer">
         <div class="container">
             <div class="footer-grid">
@@ -286,7 +153,30 @@
             </div>
         </div>
     </footer>
+
+    <!-- WhatsApp Chat -->
+    <a href="https://wa.me/97474449111" class="whatsapp-fab" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Exit Intent Modal -->
+    <div id="exit-intent-modal" class="modal-overlay">
+        <div class="modal-content exit-intent-content" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title">
+            <button class="modal-close-btn" aria-label="Close">&times;</button>
+            <h3 id="exit-modal-title">Download The Deck Before You Leave!</h3>
+            <p>Get our official Exhibitor & Sponsorship Deck, including the floor plan and ROI details, sent straight to your inbox.</p>
+            <a href="contact.html" class="btn btn-primary">Get The Deck</a>
+        </div>
+    </div>
     
+    <!-- Mobile Sticky Bar -->
+    <div id="mobile-sticky-bar">
+        <a href="universities.html" class="mobile-cta-btn"><i class="fas fa-user-check"></i><span>Register</span></a>
+        <a href="universities.html" class="mobile-cta-btn"><i class="fas fa-graduation-cap"></i><span>Student</span></a>
+        <a href="booth-registration.html" class="mobile-cta-btn"><i class="fas fa-chalkboard-user"></i><span>Exhibitor</span></a>
+        <a href="sponsorship-registration.html" class="mobile-cta-btn"><i class="fas fa-star"></i><span>Sponsor</span></a>
+    </div>
+
     <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
     <script type="module" src="index.tsx"></script>
 </body>
