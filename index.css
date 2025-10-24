@@ -2212,6 +2212,96 @@ textarea.invalid {
     color: #555;
 }
 
+/* --- Speaker Registration Form Styles --- */
+#speaker-registration-form-section fieldset {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+}
+#speaker-registration-form-section legend {
+    font-family: var(--heading-font);
+    font-weight: 800;
+    font-size: 1.3rem;
+    padding: 0 0.5rem;
+    margin-left: -0.5rem;
+}
+.session-selection-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 2rem;
+}
+.session-checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+.session-checkbox-item input[type="checkbox"] {
+    width: auto;
+    margin-top: 5px;
+    flex-shrink: 0;
+}
+.session-checkbox-item label {
+    font-weight: normal;
+    font-size: 0.9rem;
+    margin: 0;
+}
+.file-upload-wrapper {
+    position: relative;
+    width: 100%;
+}
+.file-upload-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.file-upload-label:hover {
+    background-color: var(--surface-color);
+}
+.file-upload-input:focus + .file-upload-label {
+    border-color: #711fb8;
+    box-shadow: 0 0 0 3px rgba(113, 31, 184, 0.2);
+}
+.file-upload-text {
+    font-weight: normal;
+}
+#speaker-registration-form-section .form-group-consent {
+    display: block;
+}
+#speaker-registration-form-section .form-group-consent label {
+    margin-bottom: 0.75rem;
+}
+.consent-group {
+    display: flex;
+    gap: 2rem;
+}
+.consent-radio-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.consent-radio-item input[type="radio"] {
+    width: auto;
+}
+.consent-radio-item label {
+    margin: 0;
+    font-weight: normal;
+}
+
+
 /* --- Responsive Styles --- */
 @media (max-width: 1200px) {
     .main-header .container {
@@ -2389,6 +2479,9 @@ textarea.invalid {
         grid-template-columns: 1fr;
     }
     .contact-cards-grid {
+        grid-template-columns: 1fr;
+    }
+    .session-selection-grid {
         grid-template-columns: 1fr;
     }
 }
