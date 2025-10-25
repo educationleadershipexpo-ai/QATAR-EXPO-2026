@@ -2792,3 +2792,65 @@ textarea.invalid {
     background-color: var(--surface-color);
     font-size: 1.5rem;
 }
+
+.session-content h4 {
+    margin: 0 0 0.25rem;
+    font-size: 1.05rem;
+    font-family: var(--primary-font);
+    font-weight: 700;
+}
+
+.session-content p {
+    margin: 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.session-tag {
+    position: absolute;
+    top: 10px;
+    right: -35px;
+    background: #6c757d;
+    color: var(--white);
+    padding: 5px 30px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    transform: rotate(45deg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.session-card.keynote { background: var(--gradient); color: var(--white); border-color: #d12386; }
+.session-card.keynote .session-icon { background: rgba(255,255,255,0.2); color: var(--white); }
+.session-card.keynote .session-content p { color: rgba(255,255,255,0.8); }
+
+.session-card.panel { border-color: #17a2b8; }
+.session-card.panel .session-icon { color: #17a2b8; }
+
+.session-card.track { border-color: #ffc107; }
+.session-card.track .session-icon { color: #ffc107; }
+
+.session-card.break { border-color: #6c757d; }
+.session-card.break .session-icon { color: #6c757d; }
+
+.session-card.closed { border-color: #dc3545; }
+.session-card.closed .session-icon { color: #dc3545; }
+
+.session-card.award { background: linear-gradient(to right, #f2c94c, #f2994a); color: var(--text-color); border-color: #f2994a; }
+.session-card.award .session-icon { background: rgba(255,255,255,0.4); color: #a06c14; }
+
+#event-highlights h2, #event-highlights .subtitle { text-align: center; }
+#event-highlights .content-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+#event-highlights .content-card { padding: 2rem 1.5rem; }
+#event-highlights .content-card h3 { font-size: 1.1rem; min-height: 0; flex-grow: 1; justify-content: center; }
+#event-highlights .content-card h3 i { font-size: 2rem; margin-bottom: 0.75rem; }
+
+@media(max-width: 768px) {
+    .agenda-tabs { flex-direction: column; border-radius: 10px; }
+    .agenda-tabs .tab-btn { font-size: 1rem; }
+    .timeline-block { grid-template-columns: 1fr; gap: 1.5rem; padding-left: 1.5rem; }
+    .agenda-timeline { padding-left: 1rem; }
+    .timeline-block::before { left: -1rem; }
+    .timeline-time { padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+    .timeline-time h3 { position: static; }
+    .session-tag { top: 5px; right: -40px; font-size: 0.7rem; }
+}
