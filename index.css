@@ -732,7 +732,7 @@ section {
 }
 .decision-makers-stats .stat-group {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
     padding: 1rem;
