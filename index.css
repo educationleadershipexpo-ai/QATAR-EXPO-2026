@@ -699,7 +699,6 @@ section {
 }
 .benefit-card h3 {
     font-size: 1.2rem;
-    min-height: 2.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1315,6 +1314,7 @@ section {
     position: relative;
     background: var(--white);
     overflow: hidden;
+    border: 2px solid black;
 }
 .way-card:hover {
     transform: translateY(-8px);
@@ -1351,7 +1351,6 @@ section {
 
 /* Styles for differentiated cards */
 .way-card--speak {
-    border: 2px solid #d12386;
 }
 
 @media (min-width: 992px) {
