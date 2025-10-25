@@ -93,34 +93,35 @@
                 </div>
 
                 <form id="student-registration-form" novalidate>
+                    <input type="hidden" name="form_source" value="Student Registration">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="form-student-name">Full Name *</label>
-                            <input type="text" id="form-student-name" required>
+                            <label for="form-student-name">Full Name / الاسم الكامل *</label>
+                            <input type="text" id="form-student-name" name="name" required>
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
-                            <label for="form-student-email">Email Address *</label>
-                            <input type="email" id="form-student-email" required>
+                            <label for="form-student-email">Email Address / البريد الإلكتروني *</label>
+                            <input type="email" id="form-student-email" name="email" required>
                             <div class="error-message"></div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="form-student-phone">Phone Number (Optional)</label>
-                            <input type="tel" id="form-student-phone">
+                            <label for="form-student-phone">Phone Number (Optional) / رقم الهاتف (اختياري)</label>
+                            <input type="tel" id="form-student-phone" name="phone">
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
-                            <label for="form-student-dob">Date of Birth *</label>
-                            <input type="date" id="form-student-dob" required>
+                            <label for="form-student-dob">Date of Birth / تاريخ الميلاد *</label>
+                            <input type="date" id="form-student-dob" name="date_of_birth" required>
                              <div class="error-message"></div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="form-student-nationality">Nationality *</label>
-                            <select id="form-student-nationality" required>
+                            <label for="form-student-nationality">Nationality / الجنسية *</label>
+                            <select id="form-student-nationality" name="nationality" required>
                                 <option value="" disabled selected>Select your nationality...</option>
                                 <option value="Qatari">Qatari</option>
                                 <option value="Indian">Indian</option>
@@ -133,15 +134,15 @@
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
-                            <label for="form-student-school">Current School/Institution *</label>
-                            <input type="text" id="form-student-school" required>
+                            <label for="form-student-school">Current School/Institution / المدرسة/المؤسسة الحالية *</label>
+                            <input type="text" id="form-student-school" name="school" required>
                             <div class="error-message"></div>
                         </div>
                     </div>
                      <div class="form-row">
                          <div class="form-group">
-                            <label for="form-student-grade">Grade / Year of Study *</label>
-                            <select id="form-student-grade" required>
+                            <label for="form-student-grade">Grade / Year of Study / الصف / سنة الدراسة *</label>
+                            <select id="form-student-grade" name="grade" required>
                                 <option value="" disabled selected>Select your grade...</option>
                                 <option value="Grade 10">Grade 10</option>
                                 <option value="Grade 11">Grade 11</option>
@@ -154,8 +155,8 @@
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
-                            <label for="form-student-source">How did you hear about us? *</label>
-                            <select id="form-student-source" required>
+                            <label for="form-student-source">How did you hear about us? / كيف سمعت عنا؟ *</label>
+                            <select id="form-student-source" name="source" required>
                                 <option value="" disabled selected>Select an option...</option>
                                 <option value="Social Media">Social Media (Instagram, Facebook, etc.)</option>
                                 <option value="School">From my School / Teacher</option>
@@ -168,39 +169,39 @@
                     </div>
 
                     <div class="form-group interest-group-container" id="form-student-interests">
-                        <label>Areas of Interest (Select at least one) *</label>
+                        <label>Areas of Interest (Select at least one) / مجالات الاهتمام (اختر واحداً على الأقل) *</label>
                         <div class="interest-checkbox-group">
                             <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-engineering" name="interest" value="engineering">
-                                <label for="interest-engineering">Engineering & Technology</label>
+                                <input type="checkbox" id="interest-engineering" name="interests" value="engineering">
+                                <label for="interest-engineering">Engineering & Technology / الهندسة والتكنولوجيا</label>
                             </div>
                              <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-medicine" name="interest" value="medicine">
-                                <label for="interest-medicine">Medicine & Health Sciences</label>
+                                <input type="checkbox" id="interest-medicine" name="interests" value="medicine">
+                                <label for="interest-medicine">Medicine & Health Sciences / الطب والعلوم الصحية</label>
                             </div>
                             <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-business" name="interest" value="business">
-                                <label for="interest-business">Business & Management</label>
+                                <input type="checkbox" id="interest-business" name="interests" value="business">
+                                <label for="interest-business">Business & Management / إدارة الأعمال</label>
                             </div>
                             <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-arts" name="interest" value="arts">
-                                <label for="interest-arts">Arts & Humanities</label>
+                                <input type="checkbox" id="interest-arts" name="interests" value="arts">
+                                <label for="interest-arts">Arts & Humanities / الفنون والعلوم الإنسانية</label>
                             </div>
                             <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-cs" name="interest" value="cs">
-                                <label for="interest-cs">Computer Science & AI</label>
+                                <input type="checkbox" id="interest-cs" name="interests" value="cs">
+                                <label for="interest-cs">Computer Science & AI / علوم الحاسوب والذكاء الاصطناعي</label>
                             </div>
                              <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-law" name="interest" value="law">
-                                <label for="interest-law">Law & International Relations</label>
+                                <input type="checkbox" id="interest-law" name="interests" value="law">
+                                <label for="interest-law">Law & International Relations / القانون والعلاقات الدولية</label>
                             </div>
                         </div>
                         <div class="error-message"></div>
                     </div>
                     
                     <div class="form-group form-group-consent">
-                        <input type="checkbox" id="form-student-consent" required>
-                        <label for="form-student-consent">I agree to the terms and conditions and privacy policy of QELE 2026. *</label>
+                        <input type="checkbox" id="form-student-consent" name="consent" required>
+                        <label for="form-student-consent">I agree to the terms and conditions and privacy policy of QELE 2026. * / أوافق على الشروط والأحكام وسياسة الخصوصية الخاصة بـ QELE 2026. *</label>
                         <div class="error-message"></div>
                     </div>
                     
