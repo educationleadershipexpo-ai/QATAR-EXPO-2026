@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +11,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.24.0"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -53,7 +61,6 @@
                          <ul class="dropdown-menu">
                             <li><a href="sponsorship-tiers.html">Sponsorship Tiers</a></li>
                             <li><a href="brand-exposure.html">Brand Exposure</a></li>
-                            <li><a href="sponsorship-registration.html">Become a Sponsor</a></li>
                         </ul>
                     </li>
                     <li><a href="contact.html" class="nav-link">Contact</a></li>
@@ -61,7 +68,7 @@
             </nav>
             <div class="header-ctas">
                 <a href="booth-registration.html" class="btn btn-primary btn-sm">Book a Booth</a>
-                <a href="sponsorship-registration.html" class="btn btn-primary btn-sm">Sponsor Now</a>
+                <a href="contact.html" class="btn btn-primary btn-sm">Sponsor Now</a>
             </div>
         </div>
     </header>
@@ -86,35 +93,34 @@
                      <a href="index.html" class="btn btn-primary" style="margin-top: 1rem;">Back to Home</a>
                 </div>
 
-                <form id="student-registration-form" novalidate>
-                    <input type="hidden" name="form_source" value="Student Registration">
+                <form id="student-registration-form" method="POST" action="https://formspree.io/f/mknlyjqd" novalidate>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="form-student-name">Full Name / الاسم الكامل *</label>
+                            <label for="form-student-name">Full Name *</label>
                             <input type="text" id="form-student-name" name="name" required>
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
-                            <label for="form-student-email">Email Address / البريد الإلكتروني *</label>
+                            <label for="form-student-email">Email Address *</label>
                             <input type="email" id="form-student-email" name="email" required>
                             <div class="error-message"></div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="form-student-phone">Phone Number (Optional) / رقم الهاتف (اختياري)</label>
+                            <label for="form-student-phone">Phone Number (Optional)</label>
                             <input type="tel" id="form-student-phone" name="phone">
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
-                            <label for="form-student-dob">Date of Birth / تاريخ الميلاد *</label>
+                            <label for="form-student-dob">Date of Birth *</label>
                             <input type="date" id="form-student-dob" name="date_of_birth" required>
                              <div class="error-message"></div>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="form-student-nationality">Nationality / الجنسية *</label>
+                            <label for="form-student-nationality">Nationality *</label>
                             <select id="form-student-nationality" name="nationality" required>
                                 <option value="" disabled selected>Select your nationality...</option>
                                 <option value="Qatari">Qatari</option>
@@ -128,14 +134,14 @@
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
-                            <label for="form-student-school">Current School/Institution / المدرسة/المؤسسة الحالية *</label>
+                            <label for="form-student-school">Current School/Institution *</label>
                             <input type="text" id="form-student-school" name="school" required>
                             <div class="error-message"></div>
                         </div>
                     </div>
                      <div class="form-row">
                          <div class="form-group">
-                            <label for="form-student-grade">Grade / Year of Study / الصف / سنة الدراسة *</label>
+                            <label for="form-student-grade">Grade / Year of Study *</label>
                             <select id="form-student-grade" name="grade" required>
                                 <option value="" disabled selected>Select your grade...</option>
                                 <option value="Grade 10">Grade 10</option>
@@ -149,7 +155,7 @@
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
-                            <label for="form-student-source">How did you hear about us? / كيف سمعت عنا؟ *</label>
+                            <label for="form-student-source">How did you hear about us? *</label>
                             <select id="form-student-source" name="source" required>
                                 <option value="" disabled selected>Select an option...</option>
                                 <option value="Social Media">Social Media (Instagram, Facebook, etc.)</option>
@@ -163,49 +169,39 @@
                     </div>
 
                     <div class="form-group interest-group-container" id="form-student-interests">
-                        <label>Areas of Interest (Select at least one) / مجالات الاهتمام (اختر واحداً على الأقل) *</label>
+                        <label>Areas of Interest (Select at least one) *</label>
                         <div class="interest-checkbox-group">
                             <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-engineering" name="interests" value="engineering">
-                                <label for="interest-engineering">Engineering & Technology / الهندسة والتكنولوجيا</label>
+                                <input type="checkbox" id="interest-engineering" name="interest" value="engineering">
+                                <label for="interest-engineering">Engineering & Technology</label>
                             </div>
                              <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-medicine" name="interests" value="medicine">
-                                <label for="interest-medicine">Medicine & Health Sciences / الطب والعلوم الصحية</label>
+                                <input type="checkbox" id="interest-medicine" name="interest" value="medicine">
+                                <label for="interest-medicine">Medicine & Health Sciences</label>
                             </div>
                             <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-business" name="interests" value="business">
-                                <label for="interest-business">Business & Management / إدارة الأعمال</label>
+                                <input type="checkbox" id="interest-business" name="interest" value="business">
+                                <label for="interest-business">Business & Management</label>
                             </div>
                             <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-arts" name="interests" value="arts">
-                                <label for="interest-arts">Arts & Humanities / الفنون والعلوم الإنسانية</label>
+                                <input type="checkbox" id="interest-arts" name="interest" value="arts">
+                                <label for="interest-arts">Arts & Humanities</label>
                             </div>
                             <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-cs" name="interests" value="cs">
-                                <label for="interest-cs">Computer Science & AI / علوم الحاسوب والذكاء الاصطناعي</label>
+                                <input type="checkbox" id="interest-cs" name="interest" value="cs">
+                                <label for="interest-cs">Computer Science & AI</label>
                             </div>
                              <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-law" name="interests" value="law">
-                                <label for="interest-law">Law & International Relations / القانون والعلاقات الدولية</label>
-                            </div>
-                             <div class="interest-checkbox-item">
-                                <input type="checkbox" id="interest-other" name="interests" value="other">
-                                <label for="interest-other">Other / أخرى</label>
+                                <input type="checkbox" id="interest-law" name="interest" value="law">
+                                <label for="interest-law">Law & International Relations</label>
                             </div>
                         </div>
-                        <div class="error-message"></div>
-                    </div>
-
-                    <div class="form-group" id="other-interest-group" style="display: none;">
-                        <label for="interest-other-text">If other, please specify / إذا كان الاختيار "أخرى"، يرجى التحديد</label>
-                        <input type="text" id="interest-other-text" name="interest_other_text" placeholder="Your area of interest...">
                         <div class="error-message"></div>
                     </div>
                     
                     <div class="form-group form-group-consent">
                         <input type="checkbox" id="form-student-consent" name="consent" required>
-                        <label for="form-student-consent">I agree to the terms and conditions and privacy policy of QELE 2026. * / أوافق على الشروط والأحكام وسياسة الخصوصية الخاصة بـ QELE 2026. *</label>
+                        <label for="form-student-consent">I agree to the terms and conditions and privacy policy of QELE 2026. *</label>
                         <div class="error-message"></div>
                     </div>
                     
@@ -242,20 +238,9 @@
                 </div>
                 <div class="footer-col">
                     <h3>Connect With Us</h3>
-                    <ul class="footer-contact-info">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Sheraton Grand Doha, Qatar</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:partnerships@eduexpoqatar.com">partnerships@eduexpoqatar.com</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+97474449111">+974 7444 9111</a>
-                        </li>
-                    </ul>
+                    <p><i class="fas fa-map-marker-alt"></i> Sheraton Grand Doha, Qatar</p>
+                    <p><i class="fas fa-envelope"></i> partnerships@eduexpoqatar.com</p>
+                    <p><i class="fas fa-phone"></i> +974 7444 9111</p>
                     <div class="social-links">
                         <a href="https://twitter.com/qatarexpo2026" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                         <a href="https://linkedin.com/company/qatarexpo2026" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
@@ -284,7 +269,7 @@
         <a href="universities.html" class="mobile-cta-btn"><i class="fas fa-user-check"></i><span>Register</span></a>
         <a href="universities.html" class="mobile-cta-btn"><i class="fas fa-graduation-cap"></i><span>Student</span></a>
         <a href="booth-registration.html" class="mobile-cta-btn"><i class="fas fa-chalkboard-user"></i><span>Exhibitor</span></a>
-        <a href="sponsorship-registration.html" class="mobile-cta-btn"><i class="fas fa-star"></i><span>Sponsor</span></a>
+        <a href="sponsorship-tiers.html" class="mobile-cta-btn"><i class="fas fa-star"></i><span>Sponsor</span></a>
     </div>
 
     <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
