@@ -5,11 +5,11 @@
     document.addEventListener('DOMContentLoaded', () => {
 
     // --- FORMSPREE INTEGRATION ---
-    // IMPORTANT: Replace the 'action' URL in your HTML forms with your own Formspree endpoint.
+    // IMPORTANT: Replace this with your own Formspree endpoint.
     // 1. Go to https://formspree.io and create a free account.
-    // 2. Create forms for your different pages (contact, sponsorship, etc.).
-    //    Set the destination email for exhibitor and sponsorship forms to partnerships@eduexpoqatar.com.
-    // 3. Formspree will give you a URL for each form. Use it in the 'action' attribute of the <form> tag in the corresponding HTML file.
+    // 2. Create a new form. Set the destination email for exhibitor and sponsorship forms to partnerships@eduexpoqatar.com.
+    // 3. Formspree will give you a URL like this one. Replace the placeholder below.
+    const formspreeEndpoint = 'https://formspree.io/f/mknlyjqd'; // Example endpoint. All forms currently point here.
 
 
     // --- Reusable Form Validation Helpers ---
@@ -398,8 +398,6 @@
 
         if (isFormValid && isCustomValid) {
             const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-            const originalButtonText = submitButton?.textContent;
-            
             if(submitButton) {
                 submitButton.disabled = true;
                 submitButton.textContent = 'Submitting...';
@@ -407,8 +405,8 @@
 
             try {
                 const formData = new FormData(form);
-                const response = await fetch(form.action, {
-                    method: form.method,
+                const response = await fetch(formspreeEndpoint, {
+                    method: 'POST',
                     body: formData,
                     headers: { 'Accept': 'application/json' }
                 });
@@ -418,16 +416,14 @@
                     successMessage.style.display = 'block';
                     window.scrollTo(0, 0);
                 } else {
-                    const errorData = await response.json();
-                    const errorMessage = errorData.errors?.map((e: { message: string }) => e.message).join(', ') || 'Form submission failed on the server.';
-                    throw new Error(errorMessage);
+                    throw new Error('Form submission failed');
                 }
             } catch (error) {
                 console.error('Submission error:', error);
                 alert('There was an error submitting your form. Please try again or contact us directly.');
                  if(submitButton) {
                     submitButton.disabled = false;
-                    submitButton.textContent = originalButtonText || 'Submit'; // Reset button text
+                    submitButton.textContent = 'Submit'; // Reset button text
                 }
             }
         }
