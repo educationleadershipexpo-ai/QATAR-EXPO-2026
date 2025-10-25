@@ -7,9 +7,9 @@
     // --- FORMSPREE INTEGRATION ---
     // IMPORTANT: Replace this with your own Formspree endpoint.
     // 1. Go to https://formspree.io and create a free account.
-    // 2. Create a new form and set the destination email to info@eduexpoqatar.com.
+    // 2. Create a new form. Set the destination email for exhibitor and sponsorship forms to partnerships@eduexpoqatar.com.
     // 3. Formspree will give you a URL like this one. Replace the placeholder below.
-    const formspreeEndpoint = 'https://formspree.io/f/YOUR_UNIQUE_ID';
+    const formspreeEndpoint = 'https://formspree.io/f/mknlyjqd'; // Example endpoint. All forms currently point here.
 
 
     // --- Reusable Form Validation Helpers ---
@@ -21,7 +21,8 @@
             errorElement.innerText = message;
             errorElement.style.display = 'block';
         }
-        if (input.tagName.toLowerCase() !== 'div') {
+        // FIX: Cast `input` to `HTMLInputElement` to safely access the 'type' property.
+        if (input.tagName.toLowerCase() !== 'div' && (input as HTMLInputElement).type !== 'file' && !input.closest('.consent-group')) {
             input.classList.add('invalid');
         }
     };
@@ -34,7 +35,8 @@
             errorElement.innerText = '';
             errorElement.style.display = 'none';
         }
-         if (input.tagName.toLowerCase() !== 'div') {
+        // FIX: Cast `input` to `HTMLInputElement` to safely access the 'type' property.
+         if (input.tagName.toLowerCase() !== 'div' && (input as HTMLInputElement).type !== 'file' && !input.closest('.consent-group')) {
             input.classList.remove('invalid');
         }
     };
@@ -56,6 +58,7 @@
             case 'form-booth-name':
             case 'form-student-name':
             case 'form-sponsor-name':
+            case 'form-speaker-name':
                 if (value === '') {
                     showError(field, 'Name is required.');
                     isValid = false;
@@ -66,6 +69,7 @@
             case 'form-booth-company':
             case 'form-student-school':
             case 'form-sponsor-company':
+            case 'form-speaker-job-org':
                 if (value === '') {
                     const fieldName = (field.id === 'form-booth-company' || field.id === 'form-sponsor-company') ? 'Company' : (field.id === 'form-student-school') ? 'School/Institution' : 'Organization';
                     showError(field, `${fieldName} is required.`);
@@ -77,6 +81,7 @@
             case 'form-booth-email':
             case 'form-student-email':
             case 'form-sponsor-email':
+            case 'form-speaker-email':
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (value === '') {
                     showError(field, 'Email is required.');
@@ -91,8 +96,9 @@
             case 'form-student-phone':
             case 'form-booth-phone':
             case 'form-sponsor-phone':
+            case 'form-speaker-phone':
                 const phoneRegex = /^[\d\s()+-]+$/;
-                if ((field.id === 'form-booth-phone' || field.id === 'form-sponsor-phone') && value === '') {
+                 if ((field.hasAttribute('required') && value === '')) {
                     showError(field, 'Mobile number is required.');
                     isValid = false;
                 } else if (value !== '' && !phoneRegex.test(value)) {
@@ -112,19 +118,22 @@
             
             case 'form-booth-website':
             case 'form-sponsor-website':
+            case 'form-speaker-linkedin':
                 const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$/i;
-                if (value === '') {
-                    showError(field, 'Website is required.');
-                    isValid = false;
-                } else if (!urlRegex.test(value)) {
+                if (field.hasAttribute('required') && value === '') {
+                     showError(field, 'Website is required.');
+                     isValid = false;
+                } else if (value !== '' && !urlRegex.test(value)) {
                     showError(field, 'Please enter a valid website URL.');
                     isValid = false;
                 }
                 break;
 
             case 'form-sponsor-message':
+            case 'form-speaker-why':
+            case 'form-speaker-bio':
                 if (textarea.value.trim() === '') {
-                    showError(field, 'Message is required.');
+                    showError(field, 'This field is required.');
                     isValid = false;
                 }
                 break;
@@ -139,6 +148,7 @@
             case 'form-booth-company-field':
             case 'form-sponsor-country':
             case 'form-sponsor-company-field':
+            case 'form-speaker-country':
                 if (select.value === '') {
                     showError(field, 'Please make a selection.');
                     isValid = false;
@@ -452,18 +462,43 @@
         
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         const interestsContainer = document.getElementById('form-student-interests');
+        const otherCheckbox = document.getElementById('interest-other') as HTMLInputElement;
+        const otherInterestGroup = document.getElementById('other-interest-group') as HTMLElement;
+        const otherTextInput = document.getElementById('interest-other-text') as HTMLInputElement;
+
+        if (otherCheckbox && otherInterestGroup && otherTextInput) {
+            otherCheckbox.addEventListener('change', () => {
+                otherInterestGroup.style.display = otherCheckbox.checked ? 'block' : 'none';
+                if (!otherCheckbox.checked) {
+                    otherTextInput.value = ''; // Clear value when unchecked
+                    clearError(otherTextInput); // Also clear potential errors
+                }
+            });
+        }
 
         const validateInterestCheckboxes = (): boolean => {
             if (!interestsContainer) return true;
             const checkedCheckboxes = interestsContainer.querySelectorAll('input[type="checkbox"]:checked');
-            const isValid = checkedCheckboxes.length > 0;
-            if (isValid) clearError(interestsContainer);
-            else showError(interestsContainer, 'Please select at least one area of interest.');
-            return isValid;
+            const isGroupValid = checkedCheckboxes.length > 0;
+            
+            if (!isGroupValid) {
+                showError(interestsContainer, 'Please select at least one area of interest.');
+                return false;
+            }
+            
+            clearError(interestsContainer);
+
+            if (otherCheckbox?.checked && otherTextInput?.value.trim() === '') {
+                showError(otherTextInput, 'Please specify your area of interest.');
+                return false;
+            }
+            
+            if (otherTextInput) clearError(otherTextInput);
+            
+            return true;
         };
 
         inputs.forEach(input => {
-            // FIX: Cast 'input' to HTMLInputElement to access the 'type' property.
             const eventType = ['select-one', 'date', 'checkbox'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
             input.addEventListener(eventType, () => validateField(input));
         });
@@ -520,6 +555,88 @@
 
         form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs));
     }
+
+    function initializeSpeakerRegistrationForm() {
+        const form = document.getElementById('speaker-registration-form') as HTMLFormElement;
+        const successMessage = document.getElementById('speaker-form-success');
+        if (!form || !successMessage) return;
+
+        const inputs: HTMLElement[] = Array.from(form.querySelectorAll('input[required], select[required], textarea[required]'));
+        const day1Container = document.getElementById('session-day1-group');
+        const day2Container = document.getElementById('session-day2-group');
+        const headshotInput = document.getElementById('form-speaker-headshot') as HTMLInputElement;
+        const consentPromoGroup = document.getElementById('consent-promotional-group');
+        const consentRecordGroup = document.getElementById('consent-recording-group');
+        const fileUploadText = form.querySelector('.file-upload-text');
+
+
+        headshotInput?.addEventListener('change', () => {
+             if (headshotInput.files && headshotInput.files.length > 0 && fileUploadText) {
+                fileUploadText.textContent = headshotInput.files[0].name;
+                validateField(headshotInput);
+            } else if (fileUploadText) {
+                fileUploadText.textContent = 'Choose a file...';
+            }
+        });
+        
+        const customValidation = (): boolean => {
+            let allValid = true;
+
+            // Validate Day 1 Sessions
+            const day1Checked = day1Container?.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+            if (day1Container && !day1Checked) {
+                showError(day1Container, 'Please select at least one session for Day 1.');
+                allValid = false;
+            } else if(day1Container) {
+                clearError(day1Container);
+            }
+
+            // Validate Day 2 Sessions
+            const day2Checked = day2Container?.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+            if (day2Container && !day2Checked) {
+                showError(day2Container, 'Please select at least one session for Day 2.');
+                allValid = false;
+            } else if(day2Container) {
+                clearError(day2Container);
+            }
+
+            // Validate Headshot
+            if (headshotInput?.files?.length === 0) {
+                showError(headshotInput, 'A professional headshot is required.');
+                allValid = false;
+            } else if(headshotInput) {
+                clearError(headshotInput);
+            }
+
+            // Validate Promotional Consent
+            const promoChecked = consentPromoGroup?.querySelector('input[type="radio"]:checked');
+            if(consentPromoGroup && !promoChecked) {
+                showError(consentPromoGroup, 'Please select an option.');
+                allValid = false;
+            } else if (consentPromoGroup) {
+                 clearError(consentPromoGroup);
+            }
+            
+            // Validate Recording Consent
+            const recordChecked = consentRecordGroup?.querySelector('input[type="radio"]:checked');
+            if(consentRecordGroup && !recordChecked) {
+                showError(consentRecordGroup, 'Please select an option.');
+                allValid = false;
+            } else if (consentRecordGroup) {
+                 clearError(consentRecordGroup);
+            }
+
+            return allValid;
+        };
+        
+        inputs.forEach(input => {
+            const eventType = ['select-one', 'textarea', 'checkbox', 'file', 'radio'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
+            input.addEventListener(eventType, () => validateField(input));
+        });
+
+        form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs, customValidation));
+    }
+
 
     // --- FAQ Accordion ---
     function initializeFaqAccordion() {
@@ -842,6 +959,7 @@
     initializeStudentRegistrationForm();
     initializeBoothRegistrationForm();
     initializeSponsorshipRegistrationForm();
+    initializeSpeakerRegistrationForm();
     initializeFaqAccordion();
     initializeExitIntentModal();
     initializeEarlyBirdCountdown();
