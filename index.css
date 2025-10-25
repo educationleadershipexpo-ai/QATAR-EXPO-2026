@@ -1398,15 +1398,17 @@ section {
     color: rgba(255, 255, 255, 0.8);
 }
 
-#three-ways-to-join .way-card--sponsor .btn.btn-outline-light {
-    background-color: var(--white);
-    color: black;
-    border: 2px solid black;
+/* Unified button style for the "3 Ways to Join" section */
+#three-ways-to-join .way-card .btn {
+    background-color: black;
+    color: white;
+    border-color: black;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-#three-ways-to-join .way-card--sponsor .btn.btn-outline-light:hover {
-    background-color: black;
-    color: var(--white);
+#three-ways-to-join .way-card .btn:hover {
+    background-color: white;
+    color: black;
 }
 
 
