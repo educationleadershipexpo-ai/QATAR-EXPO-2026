@@ -401,6 +401,16 @@ section {
     margin-right: 0.5rem;
 }
 
+.btn-outline-dark {
+    background: transparent;
+    border: 2px solid #101c35;
+    color: #101c35;
+}
+.btn-outline-dark:hover {
+    background: #101c35;
+    color: var(--white);
+}
+
 
 /* --- Hero Section --- */
 #hero {
@@ -1371,8 +1381,13 @@ section {
 }
 
 .way-card--sponsor {
-    background: var(--gradient);
+    background: linear-gradient(135deg, #d12386, #711fb8);
     color: var(--white);
+    box-shadow: 0 8px 25px rgba(113, 31, 184, 0.25);
+}
+
+.way-card--sponsor:hover {
+    box-shadow: 0 12px 35px rgba(113, 31, 184, 0.35);
 }
 
 .way-card--sponsor .way-card-content h3 {
