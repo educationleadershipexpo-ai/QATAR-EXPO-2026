@@ -698,8 +698,8 @@ section {
     text-fill-color: transparent;
 }
 .benefit-card h3 {
-    font-size: 1.3rem;
-    min-height: 2.4rem;
+    font-size: 1.2rem;
+    min-height: 2.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1306,7 +1306,7 @@ section {
 }
 .way-card {
     border-radius: 10px;
-    box-shadow: var(--shadow);
+    box-shadow: 0 8px 25px rgba(184, 43, 144, 0.15);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -1317,7 +1317,7 @@ section {
 }
 .way-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 35px rgba(113, 31, 184, 0.25);
 }
 .way-card img { 
     width: 100%; 
