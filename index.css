@@ -1398,6 +1398,17 @@ section {
     color: rgba(255, 255, 255, 0.8);
 }
 
+#three-ways-to-join .way-card--sponsor .btn.btn-outline-light {
+    background-color: var(--white);
+    color: black;
+    border: 2px solid black;
+}
+
+#three-ways-to-join .way-card--sponsor .btn.btn-outline-light:hover {
+    background-color: black;
+    color: var(--white);
+}
+
 
 /* --- Who Should Exhibit Section --- */
 .exhibitor-types-grid {
