@@ -704,6 +704,7 @@ section {
     align-items: center;
     justify-content: center;
     margin: 0 0 1rem;
+    white-space: nowrap;
 }
 .benefit-card p { font-size: 0.95rem; margin-bottom: 0; }
 
