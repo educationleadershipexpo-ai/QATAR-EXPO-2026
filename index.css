@@ -2174,7 +2174,8 @@ a.contact-email:hover {
     margin: 0 auto;
 }
 
-.coming-soon-content .fa-clock {
+.coming-soon-content .fa-clock,
+.coming-soon-content .fa-exclamation-triangle {
     font-size: 4rem;
     color: var(--text-color);
     opacity: 0.8;
