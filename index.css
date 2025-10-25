@@ -1296,17 +1296,21 @@ section {
 }
 
 
-/* --- 3 Ways to Join Section --- */
-#three-ways-to-join { background-color: var(--white); }
+/* --- 3 Ways to Join Section (NEW UI/UX) --- */
+#three-ways-to-join .subtitle {
+    margin-bottom: 4rem;
+}
+
 .ways-to-join-grid { 
     display: grid; 
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     gap: 2rem; 
     align-items: stretch;
 }
+
 .way-card {
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(184, 43, 144, 0.15);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -1314,99 +1318,96 @@ section {
     position: relative;
     background: var(--white);
     overflow: hidden;
-    border: 2px solid black;
+    border: 1px solid var(--border-color);
 }
+
 .way-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 35px rgba(113, 31, 184, 0.25);
+    box-shadow: 0 12px 35px rgba(113, 31, 184, 0.2);
 }
-.way-card img { 
-    width: 100%; 
-    height: 220px;
-    object-fit: cover;
-}
+
 .way-card-content {
-    padding: 1.5rem;
+    padding: 2.5rem 2rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
-.way-card-content h3 {
-    margin: 0 0 0.5rem; 
-    font-size: 1.6rem;
+
+.way-card-icon {
+    margin-bottom: 1.5rem;
 }
+
+.way-card-icon i {
+    font-size: 3rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.way-card-content h3 {
+    margin: 0 0 1rem; 
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
 .way-card-content p {
-    padding: 0;
-    margin: 0 0 1.5rem;
+    margin: 0 0 2rem;
     flex-grow: 1;
     color: #555;
+    font-size: 1rem;
+    line-height: 1.7;
 }
+
 .way-card-cta {
     margin-top: auto;
 }
-.way-card .btn {
-    width: 80%;
-    margin: 0 auto;
+
+.way-card--primary {
+    background: var(--gradient);
+    color: var(--white);
+    border: none;
+    box-shadow: 0 10px 30px rgba(113, 31, 184, 0.3);
 }
 
-/* Styles for differentiated cards */
-.way-card--speak {
+.way-card--primary .way-card-icon i {
+    background: var(--white);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.way-card--primary h3 {
+    color: var(--white);
+}
+.way-card--primary p {
+    color: rgba(255, 255, 255, 0.85);
 }
 
 @media (min-width: 992px) {
     .ways-to-join-grid {
-        align-items: center; /* Center items vertically for scale effect */
+        align-items: center;
     }
-    .way-card--speak {
+    .way-card--primary {
         transform: scale(1.05);
         z-index: 5;
     }
-    .way-card--speak:hover {
+    .way-card--primary:hover {
         transform: scale(1.08) translateY(-8px);
+        box-shadow: 0 15px 40px rgba(113, 31, 184, 0.4);
     }
 }
 
 .way-card-badge {
     position: absolute;
-    top: 15px;
-    right: -40px;
-    background: var(--gradient);
-    color: var(--white);
-    padding: 6px 40px;
+    top: 18px;
+    right: -45px;
+    background: var(--white);
+    color: #711fb8;
+    padding: 8px 40px;
     font-size: 0.8rem;
     font-weight: 700;
     transform: rotate(45deg);
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     z-index: 2;
-}
-
-.way-card--sponsor {
-    background: linear-gradient(135deg, #d12386, #711fb8);
-    color: var(--white);
-    box-shadow: 0 8px 25px rgba(113, 31, 184, 0.25);
-}
-
-.way-card--sponsor:hover {
-    box-shadow: 0 12px 35px rgba(113, 31, 184, 0.35);
-}
-
-.way-card--sponsor .way-card-content h3 {
-    color: var(--white);
-}
-
-.way-card--sponsor .way-card-content p {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-#three-ways-to-join .way-card--sponsor .btn.btn-outline-light {
-    background-color: var(--white);
-    color: black;
-    border: 2px solid black;
-}
-
-#three-ways-to-join .way-card--sponsor .btn.btn-outline-light:hover {
-    background-color: black;
-    color: var(--white);
 }
 
 
