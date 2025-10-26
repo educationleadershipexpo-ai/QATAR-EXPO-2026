@@ -544,27 +544,20 @@
         });
 
         form.addEventListener('submit', (event) => {
-            // Run validation on all required fields
+            // Run validation on all required fields.
             const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
             
             if (!isFormValid) {
-                // If the form is invalid, prevent the default submission
+                // If the form is invalid, prevent the default submission.
                 event.preventDefault();
                 
-                // Find the first error and scroll to it for better UX
+                // Find the first error and scroll to it for better UX.
                 const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
                 if (firstInvalidField) {
                     firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-            } else {
-                // If the form is valid, disable the button and let the browser submit it natively.
-                // This allows formsubmit.co to handle the CAPTCHA and redirection.
-                const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-                if (submitButton) {
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Submitting...';
-                }
             }
+            // If the form is valid, this function does nothing, allowing the browser to proceed with the native form submission.
         });
     }
 
