@@ -873,7 +873,6 @@ section {
     margin: 0 0 1.5rem;
     border-left: 3px solid #d12386;
     padding-left: 1.5rem;
-    flex-grow: 1;
 }
 .testimonial-author {
     display: flex;
