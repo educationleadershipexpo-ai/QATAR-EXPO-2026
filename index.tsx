@@ -568,9 +568,9 @@
                 // --- EMAILJS INTEGRATION ---
                 // IMPORTANT: Replace with your actual EmailJS Service ID, Template ID, and Public Key.
                 // To send a confirmation email to the user, set up an "Auto-Reply" template in your EmailJS account dashboard.
-                const serviceID = 'YOUR_SERVICE_ID';
-                const templateID = 'YOUR_TEMPLATE_ID';
-                const publicKey = 'YOUR_PUBLIC_KEY';
+                const serviceID = 'service_yhlugvr';
+                const templateID = 'template_rr0cvnj';
+                const publicKey = 'WijJQheEI1A3ij-XD';
 
                 // --- GOOGLE SHEETS INTEGRATION ---
                 // IMPORTANT: Replace with your Google Apps Script Web App URL.
