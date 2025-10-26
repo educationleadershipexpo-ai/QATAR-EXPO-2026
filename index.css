@@ -810,6 +810,7 @@ section {
     color: #666;
     font-size: 0.9rem;
     margin-bottom: 1.5rem;
+    flex-grow: 1;
 }
 .speaker-tag {
     display: inline-block;
@@ -819,7 +820,6 @@ section {
     border-radius: 50px;
     font-size: 0.8rem;
     font-weight: 700;
-    margin-top: auto;
 }
 .speaker-linkedin {
     position: absolute;
@@ -881,6 +881,7 @@ section {
     gap: 1rem;
     padding-top: 1rem;
     border-top: 1px solid var(--border-color);
+    margin-top: auto;
 }
 .testimonial-author img {
     width: 50px;
