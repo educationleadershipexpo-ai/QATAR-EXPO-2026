@@ -517,8 +517,7 @@
     
     function initializeBoothRegistrationForm() {
         const form = document.getElementById('booth-registration-form') as HTMLFormElement;
-        const successMessage = document.getElementById('booth-form-success');
-        if (!form || !successMessage) return;
+        if (!form) return;
 
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
@@ -544,7 +543,29 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formspreeEndpoint, successMessage, inputs));
+        form.addEventListener('submit', (event) => {
+            // Run validation on all required fields
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+            
+            if (!isFormValid) {
+                // If the form is invalid, prevent the default submission
+                event.preventDefault();
+                
+                // Find the first error and scroll to it for better UX
+                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else {
+                // If the form is valid, disable the button and let the browser submit it natively.
+                // This allows formsubmit.co to handle the CAPTCHA and redirection.
+                const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Submitting...';
+                }
+            }
+        });
     }
 
     function initializeSponsorshipRegistrationForm() {
