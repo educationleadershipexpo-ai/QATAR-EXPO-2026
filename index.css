@@ -774,10 +774,15 @@ section {
     text-align: center;
     position: relative;
     transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
 }
 .speaker-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+.speaker-info {
+    flex-grow: 1;
 }
 .speaker-photo {
     width: 120px;
@@ -868,18 +873,19 @@ section {
     margin: 0 0 1.5rem;
     border-left: 3px solid #d12386;
     padding-left: 1.5rem;
+    flex-grow: 1;
 }
 .testimonial-author {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
     margin-top: auto;
-    padding-top: 1rem;
+    padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
 }
 .testimonial-author img {
-    width: 65px;
-    height: 65px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -896,7 +902,6 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 50px; 
 }
 
 
