@@ -6,11 +6,15 @@
     document.addEventListener('DOMContentLoaded', () => {
 
     // --- FORMSPREE INTEGRATION ---
-    // IMPORTANT: Replace this with your own Formspree endpoint.
+    // IMPORTANT: Replace this with your own Formspree endpoint for forms other than booth registration.
     // 1. Go to https://formspree.io and create a free account.
     // 2. Create a new form. Set the destination email for exhibitor and sponsorship forms to partnerships@eduexpoqatar.com.
     // 3. Formspree will give you a URL like this one. Replace the placeholder below.
     const formspreeEndpoint = 'https://formspree.io/f/mknlyjqd'; // Example endpoint. All forms currently point here.
+
+    // --- FORMSPARK INTEGRATION (FOR BOOTH REGISTRATION) ---
+    // IMPORTANT: Replace this with your own Formspark URL for the booth registration form.
+    const formsparkBoothEndpoint = 'https://submit-form.com/IhCIygi1K';
 
 
     // --- Reusable Form Validation Helpers ---
@@ -519,17 +523,17 @@
         const form = document.getElementById('booth-registration-form') as HTMLFormElement;
         const successMessage = document.getElementById('booth-form-success');
         if (!form || !successMessage) return;
-
+    
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
         const boothIdInput = document.getElementById('form-booth-id') as HTMLInputElement;
-
+    
         // Pre-fill form from URL parameters
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const pkg = urlParams.get('package');
             const boothId = urlParams.get('boothId');
-
+            
             if (pkg && packageSelect) {
                 const option = Array.from(packageSelect.options).find(opt => opt.value.toLowerCase() === pkg.toLowerCase());
                 if(option) option.selected = true;
@@ -538,98 +542,13 @@
         } catch (e) {
             console.error("Error processing URL parameters:", e);
         }
-
+    
         inputs.forEach(input => {
             const eventType = ['select-one', 'checkbox'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
             input.addEventListener(eventType, () => validateField(input));
         });
-
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-
-            // Run validation on all required fields.
-            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
-
-            if (!isFormValid) {
-                // Find the first error and scroll to it for better UX.
-                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
-                if (firstInvalidField) {
-                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-                return;
-            }
-
-            const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-            if (submitButton) {
-                submitButton.disabled = true;
-                submitButton.textContent = 'Submitting...';
-            }
-
-            try {
-                // Create Supabase client
-                const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-                const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-                const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2');
-                const supabase = createClient(supabaseUrl, supabaseKey);
-
-                // Prepare form data
-                const formData = new FormData(form);
-                const registrationData = {
-                    name: formData.get('name') as string,
-                    email: formData.get('email') as string,
-                    phone: formData.get('phone') as string,
-                    country: formData.get('country') as string,
-                    website: formData.get('website') as string,
-                    company: formData.get('company') as string,
-                    job_title: formData.get('job_title') as string,
-                    company_field: formData.get('company_field') as string,
-                    package: formData.get('package') as string,
-                    source: formData.get('source') as string,
-                    message: formData.get('message') as string || '',
-                    form_source: formData.get('form_source') as string,
-                    consent: true
-                };
-
-                // Insert into database
-                const { error: dbError } = await supabase
-                    .from('booth_registrations')
-                    .insert([registrationData]);
-
-                if (dbError) {
-                    throw new Error(`Database error: ${dbError.message}`);
-                }
-
-                // Send emails via edge function
-                const emailResponse = await fetch(
-                    `${supabaseUrl}/functions/v1/send-booth-registration-emails`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${supabaseKey}`,
-                        },
-                        body: JSON.stringify(registrationData)
-                    }
-                );
-
-                if (!emailResponse.ok) {
-                    console.error('Failed to send emails, but registration was saved');
-                }
-
-                // Show success message
-                form.style.display = 'none';
-                successMessage.style.display = 'block';
-                window.scrollTo(0, 0);
-
-            } catch (error) {
-                console.error('Submission error:', error);
-                alert('There was an error submitting your form. Please try again or contact us directly at partnerships@eduexpoqatar.com.');
-                if (submitButton) {
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Submit Registration';
-                }
-            }
-        });
+    
+        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formsparkBoothEndpoint, successMessage, inputs));
     }
 
     function initializeSponsorshipRegistrationForm() {
