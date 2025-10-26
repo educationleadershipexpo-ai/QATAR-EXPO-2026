@@ -1422,6 +1422,7 @@ section {
     justify-content: center;
     max-width: 900px;
     margin: 0 auto;
+    align-items: stretch; /* This ensures all cards in a row have the same height */
 }
 .exhibitor-type-card {
     background: var(--white);
