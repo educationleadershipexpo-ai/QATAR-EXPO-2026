@@ -1323,9 +1323,9 @@ section {
     flex-direction: column;
     transition: transform 0.3s, box-shadow 0.3s;
     position: relative;
-    background: var(--white);
+    background: linear-gradient(135deg, #d12386, #711fb8);
+    color: var(--white);
     overflow: hidden;
-    border: 2px solid black;
 }
 .way-card:hover {
     transform: translateY(-8px);
@@ -1345,12 +1345,13 @@ section {
 .way-card-content h3 {
     margin: 0 0 0.5rem; 
     font-size: 1.6rem;
+    color: var(--white);
 }
 .way-card-content p {
     padding: 0;
     margin: 0 0 1.5rem;
     flex-grow: 1;
-    color: #555;
+    color: rgba(255, 255, 255, 0.8);
 }
 .way-card-cta {
     margin-top: auto;
@@ -1392,21 +1393,11 @@ section {
 }
 
 .way-card--sponsor {
-    background: linear-gradient(135deg, #d12386, #711fb8);
-    color: var(--white);
     box-shadow: 0 8px 25px rgba(113, 31, 184, 0.25);
 }
 
 .way-card--sponsor:hover {
     box-shadow: 0 12px 35px rgba(113, 31, 184, 0.35);
-}
-
-.way-card--sponsor .way-card-content h3 {
-    color: var(--white);
-}
-
-.way-card--sponsor .way-card-content p {
-    color: rgba(255, 255, 255, 0.8);
 }
 
 /* Unified button style for the "3 Ways to Join" section */
@@ -1426,31 +1417,42 @@ section {
 /* --- Who Should Exhibit Section --- */
 .exhibitor-types-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
     justify-content: center;
-    max-width: 780px;
+    max-width: 900px;
     margin: 0 auto;
 }
 .exhibitor-type-card {
     background: var(--white);
     border: 1px solid var(--border-color);
-    padding: 2rem 1rem;
-    border-radius: 10px;
+    padding: 2.5rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.exhibitor-type-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 .exhibitor-type-card i {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 .exhibitor-type-card p {
     margin: 0;
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    color: var(--text-color);
 }
 
 /* --- Lead Capture Section --- */
