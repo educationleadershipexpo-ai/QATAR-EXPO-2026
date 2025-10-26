@@ -511,8 +511,7 @@
     
     function initializeBoothRegistrationForm() {
         const form = document.getElementById('booth-registration-form') as HTMLFormElement;
-        const successMessage = document.getElementById('booth-form-success');
-        if (!form || !successMessage) return;
+        if (!form) return;
 
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
@@ -539,7 +538,15 @@
         });
 
         form.addEventListener('submit', (event) => {
-            handleFormSubmit(event, form, successMessage, inputs);
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+            if (!isFormValid) {
+                event.preventDefault(); // Stop submission if validation fails
+                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                if(firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+            // If the form is valid, the browser will proceed with the default form submission.
         });
     }
 
