@@ -1,6 +1,7 @@
 
 
     declare var Panzoom: any;
+    declare var emailjs: any;
 
     document.addEventListener('DOMContentLoaded', () => {
 
@@ -548,13 +549,105 @@
 
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         inputs.forEach(input => {
-            // FIX: Cast 'input' to HTMLInputElement to access the 'type' property.
             const eventType = ['select-one', 'textarea', 'checkbox'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs));
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+
+            if (isFormValid) {
+                const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Submitting...';
+                }
+
+                // --- EMAILJS INTEGRATION ---
+                // IMPORTANT: Replace with your actual EmailJS Service ID, Template ID, and Public Key.
+                // To send a confirmation email to the user, set up an "Auto-Reply" template in your EmailJS account dashboard.
+                const serviceID = 'YOUR_SERVICE_ID';
+                const templateID = 'YOUR_TEMPLATE_ID';
+                const publicKey = 'YOUR_PUBLIC_KEY';
+
+                // --- GOOGLE SHEETS INTEGRATION ---
+                // IMPORTANT: Replace with your Google Apps Script Web App URL.
+                // To set this up:
+                // 1. Create a new Google Sheet.
+                // 2. Go to Extensions -> Apps Script.
+                // 3. Paste the following code into the script editor, replacing the existing content:
+                /*
+                function doPost(e) {
+                  try {
+                    // Make sure your sheet is named "Sponsorships" or change the name here
+                    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sponsorships");
+                    if (!sheet) {
+                       sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet("Sponsorships");
+                       // Set headers on new sheet
+                       sheet.appendRow(["form_source", "name", "country", "phone", "email", "website", "company", "job_title", "company_field", "message", "consent"]);
+                    }
+                    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+                    var newRow = headers.map(function(header) {
+                      // Add a timestamp for new entries
+                      if (header.toLowerCase() === "timestamp") {
+                          return new Date();
+                      }
+                      return e.parameter[header] ? e.parameter[header] : "";
+                    });
+                    sheet.appendRow(newRow);
+                    return ContentService.createTextOutput(JSON.stringify({ "result": "success" })).setMimeType(ContentService.MimeType.JSON);
+                  } catch (error) {
+                    return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() })).setMimeType(ContentService.MimeType.JSON);
+                  }
+                }
+                */
+                // 4. In your Google Sheet, create a header row with these exact column titles (order doesn't matter, but spelling does):
+                //    Timestamp, form_source, name, country, phone, email, website, company, job_title, company_field, message, consent
+                // 5. Deploy the script: Click Deploy > New deployment. Select "Web app" as the type.
+                // 6. Under "Who has access", select "Anyone". Click Deploy.
+                // 7. Authorize the script with your Google account.
+                // 8. Copy the provided Web app URL and paste it here.
+                const googleSheetWebAppUrl = 'YOUR_GOOGLE_SHEET_WEB_APP_URL';
+
+                // Primary action: Send email via EmailJS
+                emailjs.sendForm(serviceID, templateID, form, publicKey)
+                    .then(() => {
+                        // On success, show confirmation to the user immediately.
+                        form.style.display = 'none';
+                        successMessage.style.display = 'block';
+                        window.scrollTo(0, 0);
+
+                        // Secondary action: Send data to Google Sheets (fire and forget).
+                        // This won't block the user or show an error if it fails.
+                        const formData = new FormData(form);
+                        fetch(googleSheetWebAppUrl, {
+                            method: 'POST',
+                            body: formData,
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                console.error('Silent Error: Google Sheet submission failed.', response);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Silent Error: Google Sheet submission failed.', error);
+                        });
+
+                    }, (error: any) => {
+                        // This block only runs if EmailJS fails.
+                        console.error('EmailJS submission error:', error);
+                        alert('There was an error submitting your form. Please try again or contact us directly.');
+                        if (submitButton) {
+                            submitButton.disabled = false;
+                            submitButton.textContent = 'Submit Inquiry';
+                        }
+                    });
+            }
+        });
     }
+
 
     function initializeSpeakerRegistrationForm() {
         const form = document.getElementById('speaker-registration-form') as HTMLFormElement;
