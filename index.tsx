@@ -424,8 +424,14 @@
                 alert('There was an error submitting your form. Please try again or contact us directly.');
                  if(submitButton) {
                     submitButton.disabled = false;
-                    submitButton.textContent = 'Submit'; // Reset button text
+                    const originalButtonText = form.id === 'sponsorship-registration-form' ? 'Submit Inquiry' : 'Submit Registration';
+                    submitButton.textContent = originalButtonText; // Reset button text
                 }
+            }
+        } else {
+            const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+            if (firstInvalidField) {
+                firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
     }
@@ -511,7 +517,8 @@
     
     function initializeBoothRegistrationForm() {
         const form = document.getElementById('booth-registration-form') as HTMLFormElement;
-        if (!form) return;
+        const successMessage = document.getElementById('booth-form-success');
+        if (!form || !successMessage) return;
 
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
@@ -538,15 +545,7 @@
         });
 
         form.addEventListener('submit', (event) => {
-            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
-            if (!isFormValid) {
-                event.preventDefault(); // Stop submission if validation fails
-                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
-                if(firstInvalidField) {
-                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }
-            // If the form is valid, the browser will proceed with the default form submission.
+            handleFormSubmit(event, form, successMessage, inputs);
         });
     }
 
@@ -663,6 +662,11 @@
                             submitButton.textContent = 'Submit Inquiry';
                         }
                     });
+            } else {
+                 const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }
         });
     }
