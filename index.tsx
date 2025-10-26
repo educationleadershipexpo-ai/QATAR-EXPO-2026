@@ -565,19 +565,89 @@
                     submitButton.textContent = 'Submitting...';
                 }
 
-                // --- EMAILJS INTEGRATION ---
-                // IMPORTANT: Replace with your actual EmailJS Service ID, Template ID, and Public Key.
-                // To send a confirmation email to the user, set up an "Auto-Reply" template in your EmailJS account dashboard.
+                // --- STEP 1: EmailJS INTEGRATION ---
+                // =========================================================================================
+                // IMPORTANT: Replace placeholders with your actual EmailJS credentials.
+                // 1. Get your Service ID and Public Key from your EmailJS Account settings.
+                // 2. Create TWO email templates in your EmailJS dashboard:
+                //    - Admin Template: To receive form details. (e.g., template_rr0cvnj)
+                //    - User Confirmation Template: An "Auto-Reply" to thank the user. (e.g., template_userconfirmation)
+                // =========================================================================================
                 const serviceID = 'service_yhlugvr';
-                const templateID = 'template_pbzyn4i';
+                const adminTemplateID = 'template_fn65myy'; // Sends email to you (partnerships@...)
+                const userConfirmationTemplateID = 'template_rr0cvnj'; // Sends confirmation email to the user
                 const publicKey = 'WijJQheEI1A3ij-XD';
 
-                emailjs.sendForm(serviceID, templateID, form, publicKey)
+                // --- STEP 2: GOOGLE SHEETS INTEGRATION (Optional but recommended) ---
+                // =========================================================================================
+                // INSTRUCTIONS:
+                // 1. Create a new Google Sheet.
+                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "Sponsorships".
+                // 3. Add the following headers in the first row, in this exact order:
+                //    Timestamp, form_source, name, country, phone, email, website, company, job_title, company_field, message, consent
+                // 4. Go to Extensions > Apps Script.
+                // 5. Paste the following code into the script editor, replacing any existing code:
+                //
+                //    function doPost(e) {
+                //      try {
+                //        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sponsorships");
+                //        var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+                //        var newRow = headers.map(function(header) {
+                //          if (header.toLowerCase() === "timestamp") { return new Date(); }
+                //          return e.parameter[header] ? e.parameter[header] : "";
+                //        });
+                //        sheet.appendRow(newRow);
+                //        return ContentService.createTextOutput(JSON.stringify({ "result": "success" })).setMimeType(ContentService.MimeType.JSON);
+                //      } catch (error) {
+                //        return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() })).setMimeType(ContentService.MimeType.JSON);
+                //      }
+                //    }
+                //
+                // 6. Click Deploy > New deployment.
+                // 7. For "Select type", choose "Web app".
+                // 8. For "Who has access", select "Anyone".
+                // 9. Click Deploy. Authorize the script when prompted (you may need to click "Advanced" > "Go to...").
+                // 10. Copy the Web app URL and paste it below.
+                // =========================================================================================
+                const googleSheetWebAppUrl = 'YOUR_GOOGLE_SHEET_WEB_APP_URL';
+
+
+                // --- SUBMISSION LOGIC ---
+                // Send the primary email notification to the admin
+                emailjs.sendForm(serviceID, adminTemplateID, form, publicKey)
                     .then(() => {
+                        // If the admin email is successful, proceed with other actions.
+
+                        // 1. Send confirmation email to the user (fire and forget)
+                        const templateParams = {
+                            name: (form.querySelector('#form-sponsor-name') as HTMLInputElement)?.value,
+                            email: (form.querySelector('#form-sponsor-email') as HTMLInputElement)?.value,
+                        };
+                        emailjs.send(serviceID, userConfirmationTemplateID, templateParams, publicKey)
+                            .catch((err: any) => {
+                                // Log if the confirmation email fails, but don't block the user.
+                                console.error('Failed to send confirmation email:', err);
+                            });
+
+                        // 2. Send data to Google Sheets (fire and forget)
+                        if (googleSheetWebAppUrl && googleSheetWebAppUrl !== 'YOUR_GOOGLE_SHEET_WEB_APP_URL') {
+                            fetch(googleSheetWebAppUrl, {
+                                method: 'POST',
+                                body: new URLSearchParams(new FormData(form) as any),
+                                mode: 'no-cors' // Use no-cors for simple cross-origin POSTs to Apps Script
+                            }).catch(err => {
+                                // Log if the sheet submission fails, but don't block the user.
+                                console.error('Failed to send data to Google Sheet:', err);
+                            });
+                        }
+
+                        // 3. Show success message to the user
                         form.style.display = 'none';
                         successMessage.style.display = 'block';
                         window.scrollTo(0, 0);
+
                     }, (error: any) => {
+                        // This block runs only if the primary admin email fails
                         console.error('EmailJS submission error:', error);
                         alert('There was an error submitting your form. Please try again or contact us directly.');
                         if (submitButton) {
