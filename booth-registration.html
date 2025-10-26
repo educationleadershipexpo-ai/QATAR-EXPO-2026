@@ -90,17 +90,14 @@
                 <div id="booth-form-success" style="display: none; background: var(--white); padding: 2.5rem; border-radius: 10px; border: 1px solid var(--border-color); text-align: center;">
                      <i class="fas fa-check-circle" style="font-size: 3rem; color: #4db6ac; margin-bottom: 1rem;" aria-hidden="true"></i>
                      <h3>Thank You for Your Interest!</h3>
-                     <p>Your registration inquiry has been successfully submitted. Our partnership team will review your information and contact you shortly to finalize your booking. We are excited about the possibility of having you at QELE 2026!</p>
+                     <p>Your registration inquiry has been successfully submitted. Our partnership team will review your information and contact you shortly to finalize your booking. A confirmation email has been sent to you as well. We are excited about the possibility of having you at QELE 2026!</p>
                      <a href="index.html" class="btn btn-primary" style="margin-top: 1rem;">Back to Home</a>
                 </div>
 
-                <form id="booth-registration-form" action="https://formsubmit.co/partnerships@eduexpoqatar.com" method="POST" novalidate style="background: var(--white); padding: 2.5rem; border-radius: 10px; border: 1px solid var(--border-color); color: var(--text-color); box-shadow: var(--shadow);">
+                <form id="booth-registration-form" novalidate style="background: var(--white); padding: 2.5rem; border-radius: 10px; border: 1px solid var(--border-color); color: var(--text-color); box-shadow: var(--shadow);">
                     <!-- Form Fields -->
                     <input type="hidden" id="form-booth-id" name="booth_id">
                     <input type="hidden" name="form_source" value="Exhibitor Registration">
-                    <input type="hidden" name="_next" value="thank-you.html">
-                    <input type="hidden" name="_subject" value="New Booth Registration Inquiry - QELE 2026">
-                    <input type="hidden" name="_autoresponse" value="Thank you for your interest in exhibiting at QELE 2026! Your registration has been received, and a member of our partnership team will contact you shortly to finalize your booking.">
                     
                     <div class="form-group">
                         <label for="form-booth-name">Full Name - الاسم الكامل *</label>
@@ -276,6 +273,7 @@
     </div>
 
     <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="module" src="index.tsx"></script>
 </body>
 </html>
