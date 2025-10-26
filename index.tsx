@@ -1,5 +1,4 @@
 
-
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -544,24 +543,21 @@
         });
 
         form.addEventListener('submit', (event) => {
-            // Prevent AJAX submission to allow for standard form submission,
-            // which is required for formsubmit.co's auto-response feature to work.
-            event.preventDefault(); 
-
             const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
 
-            if (isFormValid) {
+            if (!isFormValid) {
+                // If the form is not valid, prevent the native submission.
+                event.preventDefault();
+                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            } else {
+                // If the form is valid, disable the button and allow the native submission to proceed.
                 const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
                 if (submitButton) {
                     submitButton.disabled = true;
                     submitButton.textContent = 'Submitting...';
-                }
-                // Natively submit the form to its 'action' URL. This will trigger a page load.
-                form.submit();
-            } else {
-                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
-                if (firstInvalidField) {
-                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             }
         });
