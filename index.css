@@ -776,6 +776,8 @@ section {
     text-align: center;
     position: relative;
     transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
 }
 .speaker-card:hover {
     transform: translateY(-10px);
@@ -817,6 +819,7 @@ section {
     border-radius: 50px;
     font-size: 0.8rem;
     font-weight: 700;
+    margin-top: auto;
 }
 .speaker-linkedin {
     position: absolute;
