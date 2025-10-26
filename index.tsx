@@ -1,4 +1,5 @@
 
+
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -516,7 +517,8 @@
     
     function initializeBoothRegistrationForm() {
         const form = document.getElementById('booth-registration-form') as HTMLFormElement;
-        if (!form) return;
+        const successMessage = document.getElementById('booth-form-success');
+        if (!form || !successMessage) return;
 
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
@@ -542,25 +544,7 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (event) => {
-            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
-
-            if (!isFormValid) {
-                // If the form is not valid, prevent the native submission.
-                event.preventDefault();
-                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
-                if (firstInvalidField) {
-                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            } else {
-                // If the form is valid, disable the button and allow the native submission to proceed.
-                const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-                if (submitButton) {
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Submitting...';
-                }
-            }
-        });
+        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formspreeEndpoint, successMessage, inputs));
     }
 
     function initializeSponsorshipRegistrationForm() {
