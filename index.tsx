@@ -517,13 +517,11 @@
     
     function initializeBoothRegistrationForm() {
         const form = document.getElementById('booth-registration-form') as HTMLFormElement;
-        const successMessage = document.getElementById('booth-form-success');
-        if (!form || !successMessage) return;
+        if (!form) return;
 
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
         const boothIdInput = document.getElementById('form-booth-id') as HTMLInputElement;
-        const formSubmitEndpoint = 'https://formsubmit.co/partnerships@eduexpoqatar.com';
 
         // Pre-fill form from URL parameters
         try {
@@ -546,7 +544,26 @@
         });
 
         form.addEventListener('submit', (event) => {
-            handleFormSubmit(event, form, formSubmitEndpoint, successMessage, inputs);
+            // Prevent AJAX submission to allow for standard form submission,
+            // which is required for formsubmit.co's auto-response feature to work.
+            event.preventDefault(); 
+
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+
+            if (isFormValid) {
+                const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Submitting...';
+                }
+                // Natively submit the form to its 'action' URL. This will trigger a page load.
+                form.submit();
+            } else {
+                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
         });
     }
 
