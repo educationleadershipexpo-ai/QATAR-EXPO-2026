@@ -1,5 +1,7 @@
 
 
+
+
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -565,89 +567,68 @@
                     submitButton.textContent = 'Submitting...';
                 }
 
-                // --- STEP 1: EmailJS INTEGRATION ---
+                // --- EmailJS INTEGRATION ---
                 // =========================================================================================
-                // IMPORTANT: Replace placeholders with your actual EmailJS credentials.
-                // 1. Get your Service ID and Public Key from your EmailJS Account settings.
-                // 2. Create TWO email templates in your EmailJS dashboard:
-                //    - Admin Template: To receive form details. (e.g., template_rr0cvnj)
-                //    - User Confirmation Template: An "Auto-Reply" to thank the user. (e.g., template_userconfirmation)
+                // INSTRUCTIONS: TO FIX BOTH ISSUES (ADMIN EMAIL + USER CONFIRMATION)
+                //
+                // STEP 1: FIX THE ADMIN EMAIL (MISSING DETAILS)
+                // The email you receive is missing details because your EmailJS template is empty.
+                // - Go to your EmailJS dashboard -> Email Templates.
+                // - Edit the template with ID: 'template_fn65myy'.
+                // - In the email body, you MUST add placeholders for each piece of data. For example:
+                //
+                //   <h3>New Sponsorship Inquiry</h3>
+                //   <p><strong>Name:</strong> {{name}}</p>
+                //   <p><strong>Company:</strong> {{company}}</p>
+                //   <p><strong>Email:</strong> {{email}}</p>
+                //   <p><strong>Phone:</strong> {{phone}}</p>
+                //   <p><strong>Message:</strong> {{message}}</p>
+                //
+                // - Add placeholders for all fields: {{name}}, {{email}}, {{phone}}, {{country}}, {{company}}, {{website}}, {{job_title}}, {{company_field}}, {{message}}
+                // - Make sure the "Reply-To" field in the template settings is set to {{email}}.
+                //
+                // STEP 2: FIX THE USER CONFIRMATION EMAIL (NOT SENDING)
+                // We will use EmailJS's built-in "Auto-Reply" feature. This is more reliable.
+                // - In your EmailJS dashboard, create a NEW, separate email template for the user (e.g., name it "Sponsorship Auto-Reply"). Your existing template 'template_rr0cvnj' is perfect for this.
+                // - Design this template with a thank you message, e.g., "Dear {{name}}, thank you for your inquiry..."
+                // - NOW, go back and Edit your ADMIN template ('template_fn65myy').
+                // - Click on the "Settings" tab inside the template editor.
+                // - Find the "Auto Reply" section.
+                // - Enable it and select the user confirmation template you just prepared ('template_rr0cvnj').
+                // - In the "To Email" field for the auto-reply, type in `{{email}}`. This tells EmailJS to send it to the user's email address from the form.
+                // - Save everything.
                 // =========================================================================================
+
                 const serviceID = 'service_yhlugvr';
-                const adminTemplateID = 'template_fn65myy'; // Sends email to you (partnerships@...)
-                const userConfirmationTemplateID = 'template_rr0cvnj'; // Sends confirmation email to the user
+                const adminTemplateID = 'template_fn65myy'; // This is your main template for admin notifications.
                 const publicKey = 'WijJQheEI1A3ij-XD';
 
-                // --- STEP 2: GOOGLE SHEETS INTEGRATION (Optional but recommended) ---
-                // =========================================================================================
-                // INSTRUCTIONS:
-                // 1. Create a new Google Sheet.
-                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "Sponsorships".
-                // 3. Add the following headers in the first row, in this exact order:
-                //    Timestamp, form_source, name, country, phone, email, website, company, job_title, company_field, message, consent
-                // 4. Go to Extensions > Apps Script.
-                // 5. Paste the following code into the script editor, replacing any existing code:
-                //
-                //    function doPost(e) {
-                //      try {
-                //        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sponsorships");
-                //        var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-                //        var newRow = headers.map(function(header) {
-                //          if (header.toLowerCase() === "timestamp") { return new Date(); }
-                //          return e.parameter[header] ? e.parameter[header] : "";
-                //        });
-                //        sheet.appendRow(newRow);
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "success" })).setMimeType(ContentService.MimeType.JSON);
-                //      } catch (error) {
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() })).setMimeType(ContentService.MimeType.JSON);
-                //      }
-                //    }
-                //
-                // 6. Click Deploy > New deployment.
-                // 7. For "Select type", choose "Web app".
-                // 8. For "Who has access", select "Anyone".
-                // 9. Click Deploy. Authorize the script when prompted (you may need to click "Advanced" > "Go to...").
-                // 10. Copy the Web app URL and paste it below.
-                // =========================================================================================
-                const googleSheetWebAppUrl = 'YOUR_GOOGLE_SHEET_WEB_APP_URL';
-
+                // --- Collect all form data into a single object ---
+                const templateParams = {
+                    name: (form.querySelector('#form-sponsor-name') as HTMLInputElement)?.value,
+                    email: (form.querySelector('#form-sponsor-email') as HTMLInputElement)?.value,
+                    phone: (form.querySelector('#form-sponsor-phone') as HTMLInputElement)?.value,
+                    country: (form.querySelector('#form-sponsor-country') as HTMLSelectElement)?.value,
+                    company: (form.querySelector('#form-sponsor-company') as HTMLInputElement)?.value,
+                    website: (form.querySelector('#form-sponsor-website') as HTMLInputElement)?.value,
+                    job_title: (form.querySelector('#form-sponsor-title') as HTMLInputElement)?.value,
+                    company_field: (form.querySelector('#form-sponsor-company-field') as HTMLSelectElement)?.value,
+                    message: (form.querySelector('#form-sponsor-message') as HTMLTextAreaElement)?.value,
+                };
 
                 // --- SUBMISSION LOGIC ---
-                // Send the primary email notification to the admin
-                emailjs.sendForm(serviceID, adminTemplateID, form, publicKey)
+                // This single call sends the admin notification email.
+                // The user confirmation is now handled automatically by the "Auto-Reply" feature you set up in the EmailJS template settings.
+                emailjs.send(serviceID, adminTemplateID, templateParams, publicKey)
                     .then(() => {
-                        // If the admin email is successful, proceed with other actions.
-
-                        // 1. Send confirmation email to the user (fire and forget)
-                        const templateParams = {
-                            name: (form.querySelector('#form-sponsor-name') as HTMLInputElement)?.value,
-                            email: (form.querySelector('#form-sponsor-email') as HTMLInputElement)?.value,
-                        };
-                        emailjs.send(serviceID, userConfirmationTemplateID, templateParams, publicKey)
-                            .catch((err: any) => {
-                                // Log if the confirmation email fails, but don't block the user.
-                                console.error('Failed to send confirmation email:', err);
-                            });
-
-                        // 2. Send data to Google Sheets (fire and forget)
-                        if (googleSheetWebAppUrl && googleSheetWebAppUrl !== 'YOUR_GOOGLE_SHEET_WEB_APP_URL') {
-                            fetch(googleSheetWebAppUrl, {
-                                method: 'POST',
-                                body: new URLSearchParams(new FormData(form) as any),
-                                mode: 'no-cors' // Use no-cors for simple cross-origin POSTs to Apps Script
-                            }).catch(err => {
-                                // Log if the sheet submission fails, but don't block the user.
-                                console.error('Failed to send data to Google Sheet:', err);
-                            });
-                        }
-
-                        // 3. Show success message to the user
+                        // This block runs if the admin email is sent successfully.
+                        // Now, just show the success message to the user.
                         form.style.display = 'none';
                         successMessage.style.display = 'block';
                         window.scrollTo(0, 0);
 
                     }, (error: any) => {
-                        // This block runs only if the primary admin email fails
+                        // This block runs only if the email fails to send.
                         console.error('EmailJS submission error:', error);
                         alert('There was an error submitting your form. Please try again or contact us directly.');
                         if (submitButton) {
