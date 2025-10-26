@@ -389,7 +389,7 @@
     }
 
     // --- Universal Form Submission Handler ---
-    async function handleFormSubmit(event: SubmitEvent, form: HTMLFormElement, successMessage: HTMLElement, inputsToValidate: HTMLElement[], customValidation?: () => boolean) {
+    async function handleFormSubmit(event: SubmitEvent, form: HTMLFormElement, endpoint: string, successMessage: HTMLElement, inputsToValidate: HTMLElement[], customValidation?: () => boolean) {
         event.preventDefault();
 
         // Standard validation
@@ -406,7 +406,7 @@
 
             try {
                 const formData = new FormData(form);
-                const response = await fetch(formspreeEndpoint, {
+                const response = await fetch(endpoint, {
                     method: 'POST',
                     body: formData,
                     headers: { 'Accept': 'application/json' }
@@ -449,7 +449,7 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs, () => {
+        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formspreeEndpoint, successMessage, inputs, () => {
              if (form.id === 'contact-form' && (form.querySelector('#form-interest') as HTMLSelectElement)?.value === 'exhibiting') {
                 const link = document.createElement('a');
                 link.href = '#'; // Placeholder for actual file
@@ -512,7 +512,7 @@
 
         interestsContainer?.addEventListener('change', validateInterestCheckboxes);
 
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs, validateInterestCheckboxes));
+        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formspreeEndpoint, successMessage, inputs, validateInterestCheckboxes));
     }
     
     function initializeBoothRegistrationForm() {
@@ -523,6 +523,7 @@
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
         const boothIdInput = document.getElementById('form-booth-id') as HTMLInputElement;
+        const formSubmitEndpoint = 'https://formsubmit.co/partnerships@eduexpoqatar.com';
 
         // Pre-fill form from URL parameters
         try {
@@ -545,7 +546,7 @@
         });
 
         form.addEventListener('submit', (event) => {
-            handleFormSubmit(event, form, successMessage, inputs);
+            handleFormSubmit(event, form, formSubmitEndpoint, successMessage, inputs);
         });
     }
 
@@ -749,7 +750,7 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs, customValidation));
+        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formspreeEndpoint, successMessage, inputs, customValidation));
     }
 
 
