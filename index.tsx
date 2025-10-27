@@ -6,15 +6,11 @@
     document.addEventListener('DOMContentLoaded', () => {
 
     // --- FORMSPREE INTEGRATION ---
-    // IMPORTANT: Replace this with your own Formspree endpoint for forms other than booth registration.
+    // IMPORTANT: Replace this with your own Formspree endpoint.
     // 1. Go to https://formspree.io and create a free account.
     // 2. Create a new form. Set the destination email for exhibitor and sponsorship forms to partnerships@eduexpoqatar.com.
     // 3. Formspree will give you a URL like this one. Replace the placeholder below.
     const formspreeEndpoint = 'https://formspree.io/f/mknlyjqd'; // Example endpoint. All forms currently point here.
-
-    // --- FORMSPARK INTEGRATION (FOR BOOTH REGISTRATION) ---
-    // IMPORTANT: Replace this with your own Formspark URL for the booth registration form.
-    const formsparkBoothEndpoint = 'https://submit-form.com/IhCIygi1K';
 
 
     // --- Reusable Form Validation Helpers ---
@@ -393,7 +389,7 @@
     }
 
     // --- Universal Form Submission Handler ---
-    async function handleFormSubmit(event: SubmitEvent, form: HTMLFormElement, endpoint: string, successMessage: HTMLElement, inputsToValidate: HTMLElement[], customValidation?: () => boolean) {
+    async function handleFormSubmit(event: SubmitEvent, form: HTMLFormElement, successMessage: HTMLElement, inputsToValidate: HTMLElement[], customValidation?: () => boolean) {
         event.preventDefault();
 
         // Standard validation
@@ -410,7 +406,7 @@
 
             try {
                 const formData = new FormData(form);
-                const response = await fetch(endpoint, {
+                const response = await fetch(formspreeEndpoint, {
                     method: 'POST',
                     body: formData,
                     headers: { 'Accept': 'application/json' }
@@ -453,7 +449,7 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formspreeEndpoint, successMessage, inputs, () => {
+        form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs, () => {
              if (form.id === 'contact-form' && (form.querySelector('#form-interest') as HTMLSelectElement)?.value === 'exhibiting') {
                 const link = document.createElement('a');
                 link.href = '#'; // Placeholder for actual file
@@ -516,18 +512,18 @@
 
         interestsContainer?.addEventListener('change', validateInterestCheckboxes);
 
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formspreeEndpoint, successMessage, inputs, validateInterestCheckboxes));
+        form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs, validateInterestCheckboxes));
     }
     
     function initializeBoothRegistrationForm() {
         const form = document.getElementById('booth-registration-form') as HTMLFormElement;
         const successMessage = document.getElementById('booth-form-success');
         if (!form || !successMessage) return;
-    
+
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
         const boothIdInput = document.getElementById('form-booth-id') as HTMLInputElement;
-    
+
         // Pre-fill form from URL parameters
         try {
             const urlParams = new URLSearchParams(window.location.search);
@@ -542,13 +538,72 @@
         } catch (e) {
             console.error("Error processing URL parameters:", e);
         }
-    
+
         inputs.forEach(input => {
             const eventType = ['select-one', 'checkbox'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
             input.addEventListener(eventType, () => validateField(input));
         });
-    
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formsparkBoothEndpoint, successMessage, inputs));
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+
+            if (isFormValid) {
+                const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Submitting...';
+                }
+
+                // --- EmailJS INTEGRATION ---
+                // =========================================================================================
+                // IMPORTANT: Replace placeholders with your actual EmailJS credentials.
+                // 1. Get your Service ID and Public Key from your EmailJS Account settings.
+                // 2. Create TWO email templates in your EmailJS dashboard:
+                //    - Admin Template: To receive booth registration details to partnerships@eduexpoqatar.com.
+                //    - User Confirmation Template: An "Auto-Reply" to thank the user for their booth inquiry.
+                // =========================================================================================
+                const serviceID = 'service_iblwokf'; // Replace with your Service ID from EmailJS
+                const adminTemplateID = 'Ytemplate_4ugdv8w'; // The template that sends details to you
+                const userConfirmationTemplateID = 'template_3m3w7lj'; // The template sent to the user
+                const publicKey = 'j8eixFmDU-o4UEzTF'; // Your Public Key from EmailJS
+
+                // Send the primary email notification to the admin
+                emailjs.sendForm(serviceID, adminTemplateID, form, publicKey)
+                    .then(() => {
+                        // If the admin email is successful, send confirmation to user
+                        const templateParams = {
+                            name: (form.querySelector('#form-booth-name') as HTMLInputElement)?.value,
+                            email: (form.querySelector('#form-booth-email') as HTMLInputElement)?.value,
+                        };
+                        emailjs.send(serviceID, userConfirmationTemplateID, templateParams, publicKey)
+                            .catch((err: any) => {
+                                // Log if confirmation email fails, but don't block the user from seeing success
+                                console.error('Failed to send user confirmation email:', err);
+                            });
+
+                        // Show success message to the user
+                        form.style.display = 'none';
+                        successMessage.style.display = 'block';
+                        window.scrollTo(0, 0);
+
+                    }, (error: any) => {
+                        // This block runs if the primary admin email fails
+                        console.error('EmailJS submission error:', error);
+                        alert('There was an error submitting your form. Please try again or contact us directly.');
+                        if (submitButton) {
+                            submitButton.disabled = false;
+                            submitButton.textContent = 'Submit Registration';
+                        }
+                    });
+            } else {
+                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
     }
 
     function initializeSponsorshipRegistrationForm() {
@@ -751,7 +806,7 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, formspreeEndpoint, successMessage, inputs, customValidation));
+        form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs, customValidation));
     }
 
 
