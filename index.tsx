@@ -567,15 +567,16 @@
                 
                 try {
                     if (googleSheetWebAppUrl) {
-                        // Create FormData object directly from the form.
+                        // Convert the form data to URLSearchParams. This sends the data as
+                        // 'application/x-www-form-urlencoded', which is a more robust method
+                        // for Google Apps Scripts and avoids common redirect issues.
                         const formData = new FormData(form);
+                        const data = new URLSearchParams(formData as any);
 
-                        // The browser will automatically set the Content-Type to 'multipart/form-data'
-                        // when the body is a FormData object. Google Apps Script handles this format correctly.
                         await fetch(googleSheetWebAppUrl, {
                             method: 'POST',
-                            body: formData,
-                            mode: 'no-cors' // 'no-cors' is needed to avoid CORS preflight issues with Apps Script.
+                            body: data,
+                            mode: 'no-cors' // 'no-cors' is needed to avoid CORS preflight issues.
                         });
                     }
                     // Show success message to the user regardless of the background sheet submission result.
