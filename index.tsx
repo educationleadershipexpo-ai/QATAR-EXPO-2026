@@ -8,18 +8,12 @@
 
 
 
+
+
     declare var Panzoom: any;
     declare var emailjs: any;
 
     document.addEventListener('DOMContentLoaded', () => {
-
-    // --- FORMSPREE INTEGRATION ---
-    // IMPORTANT: Replace this with your own Formspree endpoint.
-    // 1. Go to https://formspree.io and create a free account.
-    // 2. Create a new form. Set the destination email for exhibitor and sponsorship forms to partnerships@eduexpoqatar.com.
-    // 3. Formspree will give you a URL like this one. Replace the placeholder below.
-    const formspreeEndpoint = 'https://formspree.io/f/mknlyjqd'; // Example endpoint. All forms currently point here.
-
 
     // --- Reusable Form Validation Helpers ---
     const showError = (input: HTMLElement, message: string) => {
@@ -566,7 +560,7 @@
 
         interestsContainer?.addEventListener('change', validateInterestCheckboxes);
 
-        form.addEventListener('submit', (event) => {
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
@@ -580,59 +574,28 @@
                 }
 
                 // --- GOOGLE SHEETS INTEGRATION ---
-                // =========================================================================================
-                // INSTRUCTIONS:
-                // 1. Create a new Google Sheet.
-                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "StudentRegistrations".
-                // 3. Add the following headers in the first row, in this exact order:
-                //    Timestamp,form_source,name,email,phone,date_of_birth,nationality,school,grade,source,interests,interest_other_text,consent
-                // 4. Go to Extensions > Apps Script.
-                // 5. Paste the following code into the script editor, replacing any existing code:
-                //
-                //    function doPost(e) {
-                //      try {
-                //        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("StudentRegistrations");
-                //        var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-                //        var newRow = headers.map(function(header) {
-                //          if (header.toLowerCase() === "timestamp") { return new Date(); }
-                //          // This part handles multiple values from checkboxes (e.g., interests)
-                //          if (e.parameters[header]) { return e.parameters[header].join(', '); }
-                //          return e.parameter[header] ? e.parameter[header] : "";
-                //        });
-                //        sheet.appendRow(newRow);
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "success" })).setMimeType(ContentService.MimeType.JSON);
-                //      } catch (error) {
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() })).setMimeType(ContentService.MimeType.JSON);
-                //      }
-                //    }
-                //
-                // 6. Click Deploy > New deployment.
-                // 7. For "Select type", choose "Web app".
-                // 8. For "Who has access", select "Anyone".
-                // 9. Click Deploy. Authorize the script when prompted (you may need to click "Advanced" > "Go to...").
-                // 10. Copy the Web app URL and paste it below.
-                // =========================================================================================
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbwcU6H5gCI05acF53zpz-vn-F34Op1VTW7ZaOUYY2Ysn8R4UzofymgaWfjRYVyngWNa/exec';
 
-                // The submission process is "fire and forget" to Google Sheets.
-                // We show success immediately and log any errors in the console.
-                if (googleSheetWebAppUrl) {
-                    fetch(googleSheetWebAppUrl, {
-                        method: 'POST',
-                        body: new URLSearchParams(new FormData(form) as any),
-                        mode: 'no-cors'
-                    }).catch(err => {
-                        console.error('Failed to send data to Google Sheet:', err);
-                        // We don't block the user on this error, as it's a background task.
-                    });
-                } else {
-                     console.warn('Google Sheet Web App URL is not configured for the student form.');
-                }
+                try {
+                    if (googleSheetWebAppUrl) {
+                        await fetch(googleSheetWebAppUrl, {
+                            method: 'POST',
+                            body: new URLSearchParams(new FormData(form) as any),
+                            mode: 'no-cors'
+                        });
+                    }
+                     // Show success message to the user regardless of the background sheet submission result
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    window.scrollTo(0, 0);
 
-                // Show success message to the user regardless of the background sheet submission result
-                form.style.display = 'none';
-                successMessage.style.display = 'block';
-                window.scrollTo(0, 0);
+                } catch (error) {
+                     console.error('Failed to send data to Google Sheet:', error);
+                    // Still show success to the user, as this is a background task.
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    window.scrollTo(0, 0);
+                }
 
             } else {
                 const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
@@ -978,11 +941,9 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        // Replace the old submit listener with this new one
-        form.addEventListener('submit', async (event) => {
+        form.addEventListener('submit', (event) => {
             event.preventDefault();
 
-            // Perform validation
             const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
             const isCustomValid = customValidation();
 
@@ -992,59 +953,56 @@
                     submitButton.disabled = true;
                     submitButton.textContent = 'Submitting...';
                 }
-                
-                // --- GOOGLE SHEETS INTEGRATION ---
-                // =========================================================================================
-                // INSTRUCTIONS:
-                // 1. Create a new Google Sheet.
-                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "SpeakerApplications".
-                // 3. Add the headers I provided in the previous message to the first row.
-                // 4. Go to Extensions > Apps Script.
-                // 5. Paste the Apps Script code I provided into the script editor.
-                // 6. Click Deploy > New deployment > Web app. Set "Who has access" to "Anyone".
-                // 7. Authorize the script and copy the final Web app URL.
-                // 8. Paste your Web app URL below, replacing the placeholder.
-                // =========================================================================================
+
+                const serviceID = 'service_yhlugvr';
+                const adminTemplateID = 'template_fn65myy';
+                const userConfirmationTemplateID = 'template_rr0cvnj';
+                const publicKey = 'WijJQheEI1A3ij-XD';
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbzoaXOK4Mq6I3GAK_lA4Z20hR5YB6jKUhdy2WiT4f3UmB4mRAdC230q2ZhH1eh0tahY/exec';
 
-                const formData = new FormData(form);
-                
-                // Send data to Google Sheets (fire and forget).
-                // This runs in the background and does not block the main submission.
-                // FIX: Removed redundant check for a placeholder URL, as the real URL is now hardcoded.
+                // --- DECOUPLED SUBMISSION LOGIC ---
+
+                // 1. Send data to Google Sheets first (fire and forget)
+                // This ensures data is captured even if the email with attachment fails.
+                const sheetFormData = new FormData(form);
+                sheetFormData.delete('headshot'); // Remove file from sheet data
                 if (googleSheetWebAppUrl) {
                     fetch(googleSheetWebAppUrl, {
                         method: 'POST',
-                        body: new URLSearchParams(formData as any),
+                        body: new URLSearchParams(sheetFormData as any),
                         mode: 'no-cors'
                     }).catch(err => {
-                        console.error('Failed to send data to Google Sheet:', err);
+                        console.error('Failed to send speaker data to Google Sheet:', err);
                     });
                 }
 
-                // --- FORMSPREE INTEGRATION (Primary Action for file upload) ---
-                try {
-                    const response = await fetch(formspreeEndpoint, {
-                        method: 'POST',
-                        body: formData,
-                        headers: { 'Accept': 'application/json' }
-                    });
+                // 2. Send the primary email with attachment to the admin via EmailJS
+                emailjs.sendForm(serviceID, adminTemplateID, form, publicKey)
+                    .then(() => {
+                        // Email was successful, now send user confirmation
+                        const templateParams = {
+                            name: (form.querySelector('#form-speaker-name') as HTMLInputElement)?.value,
+                            email: (form.querySelector('#form-speaker-email') as HTMLInputElement)?.value,
+                        };
+                        emailjs.send(serviceID, userConfirmationTemplateID, templateParams, publicKey)
+                            .catch((err: any) => {
+                                console.error('Failed to send speaker confirmation email:', err);
+                            });
 
-                    if (response.ok) {
+                        // Show success message
                         form.style.display = 'none';
                         successMessage.style.display = 'block';
                         window.scrollTo(0, 0);
-                    } else {
-                        throw new Error('Formspree submission failed');
-                    }
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    alert('There was an error submitting your form. Please try again or contact us directly.');
-                    if (submitButton) {
-                        submitButton.disabled = false;
-                        submitButton.textContent = 'Submit Application';
-                    }
-                }
+
+                    }, (error: any) => {
+                        // This block runs if the primary email fails
+                        console.error('EmailJS submission error for speaker form:', error);
+                        alert('There was an error submitting your form. Please try again or contact us directly.');
+                        if (submitButton) {
+                            submitButton.disabled = false;
+                            submitButton.textContent = 'Submit Application';
+                        }
+                    });
             } else {
                 const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
                 if (firstInvalidField) {
