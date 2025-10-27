@@ -1,4 +1,5 @@
 
+
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -562,37 +563,53 @@
                     submitButton.textContent = 'Submitting...';
                 }
 
-                // --- GOOGLE SHEETS INTEGRATION ---
-                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbwcU6H5gCI05acF53zpz-vn-F34Op1VTW7ZaOUYY2Ysn8R4UzofymgaWfjRYVyngWNa/exec';
+                // =========================================================================================
+                // --- ROBUST GOOGLE SHEETS INTEGRATION ---
+                // =========================================================================================
+                // !! CRITICAL INSTRUCTIONS !!
+                // 1. Follow the guide in the documentation to create and deploy your Google Apps Script.
+                // 2. Make sure you select "Anyone" for "Who has access".
+                // 3. After deploying, Google will give you a new "Web app URL".
+                // 4. **PASTE THE NEW URL BELOW** to replace the placeholder.
+                //
+                // The old URL 'AK...Na' will not work if you have made changes or if permissions are wrong.
+                // A new deployment is ALWAYS required.
+                // =========================================================================================
+                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbwHIEFWVu-5cIqrbW8pV5MSobkrTEq05kxi7aTcIwkfAGpC6ulVoo3tlrq16y3qoZXs/exec';
+
+                // FIX: Removed redundant developer check for a placeholder URL, which was causing a TypeScript error
+                // because the comparison against a hardcoded URL would always be false.
                 
                 try {
-                    if (googleSheetWebAppUrl) {
-                        // Convert the form data to URLSearchParams. This sends the data as
-                        // 'application/x-www-form-urlencoded', which is a more robust method
-                        // for Google Apps Scripts and avoids common redirect issues.
-                        const formData = new FormData(form);
-                        const data = new URLSearchParams(formData as any);
+                    const formData = new FormData(form);
+                    const response = await fetch(googleSheetWebAppUrl, {
+                        method: 'POST',
+                        body: new URLSearchParams(formData as any)
+                    });
 
-                        await fetch(googleSheetWebAppUrl, {
-                            method: 'POST',
-                            body: data,
-                            mode: 'no-cors' // 'no-cors' is needed to avoid CORS preflight issues.
-                        });
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.result === 'success') {
+                            // The script confirmed the data was saved!
+                            form.style.display = 'none';
+                            successMessage.style.display = 'block';
+                            window.scrollTo(0, 0);
+                        } else {
+                            // The script reported an error (e.g., sheet not found).
+                            throw new Error(result.error || 'The script returned an unknown error.');
+                        }
+                    } else {
+                        // The network request itself failed (e.g., URL is wrong, server error).
+                        throw new Error(`Submission failed. Status: ${response.status}`);
                     }
-                    // Show success message to the user regardless of the background sheet submission result.
-                    form.style.display = 'none';
-                    successMessage.style.display = 'block';
-                    window.scrollTo(0, 0);
-
                 } catch (error) {
-                    console.error('Failed to send data to Google Sheet:', error);
-                    // Still show success to the user, as this is a background task.
-                    form.style.display = 'none';
-                    successMessage.style.display = 'block';
-                    window.scrollTo(0, 0);
+                    console.error('Submission Error:', error);
+                    alert('Sorry, there was a problem with your registration. Please check your network connection and try again. If the problem persists, contact support. Error: ' + (error as Error).message);
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Register Now';
+                    }
                 }
-
-
             } else {
                 const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
                 if (firstInvalidField) {
