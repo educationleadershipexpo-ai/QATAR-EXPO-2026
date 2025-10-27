@@ -565,7 +565,7 @@
                 //    - User Confirmation Template: An "Auto-Reply" to thank the user for their booth inquiry.
                 // =========================================================================================
                 const serviceID = 'service_iblwokf'; // Replace with your Service ID from EmailJS
-                const adminTemplateID = 'Ytemplate_4ugdv8w'; // The template that sends details to you
+                const adminTemplateID = 'template_4ugdv8w'; // The template that sends details to you
                 const userConfirmationTemplateID = 'template_3m3w7lj'; // The template sent to the user
                 const publicKey = 'j8eixFmDU-o4UEzTF'; // Your Public Key from EmailJS
 
