@@ -1,5 +1,8 @@
 
 
+
+
+
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -155,6 +158,17 @@
                 }
                 break;
             
+            case 'form-speaker-headshot-link':
+                const urlRegexForHeadshot = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$/i;
+                if (value === '') {
+                    showError(field, 'A link to your headshot is required.');
+                    isValid = false;
+                } else if (!urlRegexForHeadshot.test(value)) {
+                    showError(field, 'Please enter a valid URL.');
+                    isValid = false;
+                }
+                break;
+
             case 'form-booth-consent':
             case 'form-student-consent':
             case 'form-sponsor-consent':
@@ -428,64 +442,51 @@
                 // 3. Add the following headers in the first row, in this exact order:
                 //    Timestamp, form_source, name, organization, email, phone, interest
                 // 4. Go to Extensions > Apps Script.
-                // 5. Paste the following code into the script editor, replacing any existing code:
-                //
-                //    function doPost(e) {
-                //      try {
-                //        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ContactInquiries");
-                //        var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-                //        var newRow = headers.map(function(header) {
-                //          if (header.toLowerCase() === "timestamp") { return new Date(); }
-                //          return e.parameter[header] ? e.parameter[header] : "";
-                //        });
-                //        sheet.appendRow(newRow);
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "success" })).setMimeType(ContentService.MimeType.JSON);
-                //      } catch (error) {
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() })).setMimeType(ContentService.MimeType.JSON);
-                //      }
-                //    }
-                //
+                // 5. Paste the universal script code into the script editor.
                 // 6. Click Deploy > New deployment.
-                // 7. For "Select type", choose "Web app".
-                // 8. For "Who has access", select "Anyone".
-                // 9. Click Deploy. Authorize the script when prompted.
-                // 10. Copy the Web app URL and paste it below.
+                // 7. For "Select type", choose "Web app", and set "Who has access" to "Anyone".
+                // 8. Click Deploy, authorize the script, and copy the new Web app URL.
+                // 9. Paste the new URL into the 'googleSheetWebAppUrl' constant below.
                 // =========================================================================================
-                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbwRXqwgnjnqheo_EONW3xZbzL_NBI2FM1N3h92I50ekM3lwDBf5j0CtDqOF_a7Ct1NXAg/exec';
-
-                // Send data to Google Sheets (fire and forget).
-                // FIX: Removed redundant check against placeholder URL, as the URL is now hardcoded.
-                if (googleSheetWebAppUrl) {
-                    fetch(googleSheetWebAppUrl, {
-                        method: 'POST',
-                        body: new URLSearchParams(new FormData(form) as any),
-                        mode: 'no-cors'
-                    }).catch(err => {
-                        console.error('Failed to send data to Google Sheet:', err);
-                    });
-                }
+                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbxUS76iFHL00oqCytiDjvpPfY9wONwwttdI00R6nhhoAkyED2ogZviUb3yXXRDAqAs7tg/exec';
+                const basinEndpoint = 'https://usebasin.com/f/8b6d8aeec167';
 
                 try {
-                    // --- BASIN INTEGRATION (Primary Action) ---
-                    const basinEndpoint = 'https://usebasin.com/f/8b6d8aeec167'; 
-                    
                     const formData = new FormData(form);
-                    const response = await fetch(basinEndpoint, {
+                    
+                    // --- Primary Action: Google Sheets Integration ---
+                    const googleSheetResponse = await fetch(googleSheetWebAppUrl, {
+                        method: 'POST',
+                        body: new URLSearchParams(formData as any)
+                    });
+
+                    if (!googleSheetResponse.ok) {
+                        throw new Error(`Google Sheets submission failed. Status: ${googleSheetResponse.status}`);
+                    }
+
+                    const result = await googleSheetResponse.json();
+                    if (result.result !== 'success') {
+                        throw new Error(result.error || 'The script returned an unknown error. Please check the sheet name and headers.');
+                    }
+
+                    // --- Secondary Action: Basin Integration (Fire-and-forget is fine here) ---
+                    fetch(basinEndpoint, {
                         method: 'POST',
                         body: formData,
                         headers: { 'Accept': 'application/json' }
+                    }).catch(err => {
+                        // Log error but don't block user success message, as primary action succeeded.
+                        console.error('Basin form submission failed:', err);
                     });
 
-                    if (response.ok) {
-                        form.style.display = 'none';
-                        successMessage.style.display = 'block';
-                        window.scrollTo(0, 0);
-                    } else {
-                        throw new Error('Basin form submission failed');
-                    }
+                    // --- Show success to user ---
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    window.scrollTo(0, 0);
+
                 } catch (error) {
                     console.error('Submission error:', error);
-                    alert('There was an error submitting your form. Please try again or contact us directly.');
+                    alert('Sorry, there was a problem with your inquiry. Please check your network connection and try again. Error: ' + (error as Error).message);
                     if (submitButton) {
                         submitButton.disabled = false;
                         submitButton.textContent = 'Submit Inquiry & Get Deck';
@@ -648,7 +649,7 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (event) => {
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
@@ -660,90 +661,51 @@
                     submitButton.textContent = 'Submitting...';
                 }
 
-                // --- EmailJS INTEGRATION ---
-                const serviceID = 'service_iblwokf';
-                const adminTemplateID = 'template_4ugdv8w';
-                const userConfirmationTemplateID = 'template_3m3w7lj';
-                const publicKey = 'j8eixFmDU-o4UEzTF';
-
-                // --- GOOGLE SHEETS INTEGRATION ---
                 // =========================================================================================
-                // INSTRUCTIONS:
-                // 1. Create a new Google Sheet.
-                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "BoothRegistrations".
-                // 3. Add the following headers in the first row, in this exact order:
+                // --- ROBUST GOOGLE SHEETS INTEGRATION FOR BOOTH REGISTRATIONS ---
+                // =========================================================================================
+                // !! CRITICAL INSTRUCTIONS !!
+                // 1. Create a new, separate Google Sheet for booth registrations.
+                // 2. IMPORTANT: Rename the first sheet (the tab at the bottom) to exactly "BoothRegistrations".
+                // 3. In the first row of the "BoothRegistrations" sheet, add these exact headers:
                 //    Timestamp, form_source, name, country, phone, email, website, company, job_title, company_field, package, booth_id, source, message, consent
-                // 4. Go to Extensions > Apps Script.
-                // 5. Paste the following code into the script editor, replacing any existing code:
-                //
-                //    function doPost(e) {
-                //      try {
-                //        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BoothRegistrations");
-                //        var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-                //        var newRow = headers.map(function(header) {
-                //          if (header.toLowerCase() === "timestamp") { return new Date(); }
-                //          return e.parameter[header] ? e.parameter[header] : "";
-                //        });
-                //        sheet.appendRow(newRow);
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "success" })).setMimeType(ContentService.MimeType.JSON);
-                //      } catch (error) {
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() })).setMimeType(ContentService.MimeType.JSON);
-                //      }
-                //    }
-                //
-                // 6. Click Deploy > New deployment.
-                // 7. For "Select type", choose "Web app".
-                // 8. For "Who has access", select "Anyone".
-                // 9. Click Deploy. Authorize the script when prompted (you may need to click "Advanced" > "Go to...").
-                // 10. Copy the Web app URL and paste it below.
+                // 4. Go to Extensions > Apps Script and paste the universal script code.
+                // 5. Click Deploy > New deployment.
+                // 6. Choose "Web app", set "Who has access" to "Anyone", and click Deploy.
+                // 7. Copy the NEW Web app URL and paste it into the constant below.
                 // =========================================================================================
-                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbyiHq-DsfHYFqOI5HxxzE_AmKzHtSG8dX6522x_PlgG_aD3DxIFRetQ3TRE-yMdFSDQ/exec';
-
-
-                // --- SUBMISSION LOGIC ---
-                // Send the primary email notification to the admin
-                emailjs.sendForm(serviceID, adminTemplateID, form, publicKey)
-                    .then(() => {
-                        // If the admin email is successful, proceed with other actions.
-
-                        // 1. Send confirmation to user (fire and forget)
-                        const templateParams = {
-                            name: (form.querySelector('#form-booth-name') as HTMLInputElement)?.value,
-                            email: (form.querySelector('#form-booth-email') as HTMLInputElement)?.value,
-                        };
-                        emailjs.send(serviceID, userConfirmationTemplateID, templateParams, publicKey)
-                            .catch((err: any) => {
-                                // Log if confirmation email fails, but don't block the user from seeing success
-                                console.error('Failed to send user confirmation email:', err);
-                            });
-                        
-                        // 2. Send data to Google Sheets (fire and forget)
-                        // FIX: Removed redundant check against placeholder URL, as the URL is now hardcoded.
-                        if (googleSheetWebAppUrl) {
-                            fetch(googleSheetWebAppUrl, {
-                                method: 'POST',
-                                body: new URLSearchParams(new FormData(form) as any),
-                                mode: 'no-cors' // Use no-cors for simple cross-origin POSTs to Apps Script
-                            }).catch(err => {
-                                // Log if the sheet submission fails, but don't block the user.
-                                console.error('Failed to send data to Google Sheet:', err);
-                            });
-                        }
-
-                        // 3. Show success message to the user
-                        form.style.display = 'none';
-                        successMessage.style.display = 'block';
-                        window.scrollTo(0, 0);
-
-                    }, (error: any) => {
-                        // This block runs if the primary admin email fails
-                        console.error('EmailJS submission error:', error);
-                        alert('There was an error submitting your form. Please try again or contact us directly.');
-                        if (submitButton) {
-                            submitButton.disabled = false;
-                            submitButton.textContent = 'Submit Registration';
-                        }
+                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbxW3MBK-rPB1L2rOKMQ9mqkeGagcrnDcFpT7cZYvEFy4WzNxxnU2ZzLnMAQGwvSZZaQ/exec';
+                
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(googleSheetWebAppUrl, {
+                        method: 'POST',
+                        body: new URLSearchParams(formData as any)
                     });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.result === 'success') {
+                            // The script confirmed the data was saved!
+                            form.style.display = 'none';
+                            successMessage.style.display = 'block';
+                            window.scrollTo(0, 0);
+                        } else {
+                            // The script reported an error (e.g., sheet not found).
+                            throw new Error(result.error || 'The script returned an unknown error.');
+                        }
+                    } else {
+                        // The network request itself failed.
+                        throw new Error(`Submission failed. Status: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error('Booth Registration Error:', error);
+                    alert('Sorry, there was a problem with your registration. Please check your network connection and try again. If the problem persists, contact support. Error: ' + (error as Error).message);
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Submit Registration';
+                    }
+                }
             } else {
                 const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
                 if (firstInvalidField) {
@@ -757,118 +719,73 @@
         const form = document.getElementById('sponsorship-registration-form') as HTMLFormElement;
         const successMessage = document.getElementById('sponsor-form-success');
         if (!form || !successMessage) return;
-
+    
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
         inputs.forEach(input => {
             const eventType = ['select-one', 'textarea', 'checkbox'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
             input.addEventListener(eventType, () => validateField(input));
         });
-
-        form.addEventListener('submit', (event) => {
+    
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
-
+    
             const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
-
+    
             if (isFormValid) {
                 const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
                 if (submitButton) {
                     submitButton.disabled = true;
                     submitButton.textContent = 'Submitting...';
                 }
-
-                // --- STEP 1: EmailJS INTEGRATION ---
+    
                 // =========================================================================================
-                // IMPORTANT: Replace placeholders with your actual EmailJS credentials.
-                // 1. Get your Service ID and Public Key from your EmailJS Account settings.
-                // 2. Create TWO email templates in your EmailJS dashboard:
-                //    - Admin Template: To receive form details. (e.g., template_rr0cvnj)
-                //    - User Confirmation Template: An "Auto-Reply" to thank the user. (e.g., template_userconfirmation)
+                // --- ROBUST GOOGLE SHEETS INTEGRATION FOR SPONSORSHIPS ---
                 // =========================================================================================
-                const serviceID = 'service_yhlugvr';
-                const adminTemplateID = 'template_fn65myy'; // Sends email to you (partnerships@...)
-                const userConfirmationTemplateID = 'template_rr0cvnj'; // Sends confirmation email to the user
-                const publicKey = 'WijJQheEI1A3ij-XD';
-
-                // --- STEP 2: GOOGLE SHEETS INTEGRATION (Optional but recommended) ---
-                // =========================================================================================
-                // INSTRUCTIONS:
-                // 1. Create a new Google Sheet.
-                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "Sponsorships".
-                // 3. Add the following headers in the first row, in this exact order:
+                // !! CRITICAL INSTRUCTIONS !!
+                // 1. Create a new, separate Google Sheet for sponsorship inquiries.
+                // 2. IMPORTANT: Rename the first sheet (the tab at the bottom) to exactly "SponsorshipRegistrations".
+                // 3. In the first row of the "SponsorshipRegistrations" sheet, add these exact headers:
                 //    Timestamp, form_source, name, country, phone, email, website, company, job_title, company_field, message, consent
-                // 4. Go to Extensions > Apps Script.
-                // 5. Paste the following code into the script editor, replacing any existing code:
-                //
-                //    function doPost(e) {
-                //      try {
-                //        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Sponsorships");
-                //        var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-                //        var newRow = headers.map(function(header) {
-                //          if (header.toLowerCase() === "timestamp") { return new Date(); }
-                //          return e.parameter[header] ? e.parameter[header] : "";
-                //        });
-                //        sheet.appendRow(newRow);
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "success" })).setMimeType(ContentService.MimeType.JSON);
-                //      } catch (error) {
-                //        return ContentService.createTextOutput(JSON.stringify({ "result": "error", "error": error.toString() })).setMimeType(ContentService.MimeType.JSON);
-                //      }
-                //    }
-                //
-                // 6. Click Deploy > New deployment.
-                // 7. For "Select type", choose "Web app".
-                // 8. For "Who has access", select "Anyone".
-                // 9. Click Deploy. Authorize the script when prompted (you may need to click "Advanced" > "Go to...").
-                // 10. Copy the Web app URL and paste it below.
+                // 4. Go to Extensions > Apps Script and paste the universal script code provided in the documentation.
+                // 5. Click Deploy > New deployment.
+                // 6. Choose "Web app", set "Who has access" to "Anyone", and click Deploy.
+                // 7. Authorize the script when prompted.
+                // 8. Copy the NEW Web app URL and provide it in the next prompt so I can insert it below.
                 // =========================================================================================
-                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbzOLK3CZ1udZB5PaiYiHRdcXtK7ForCuDLjoTinoV32on5O8oXTdNLBghhNd3LBRAfG/exec';
-
-
-                // --- SUBMISSION LOGIC ---
-                // Send the primary email notification to the admin
-                emailjs.sendForm(serviceID, adminTemplateID, form, publicKey)
-                    .then(() => {
-                        // If the admin email is successful, proceed with other actions.
-
-                        // 1. Send confirmation email to the user (fire and forget)
-                        const templateParams = {
-                            name: (form.querySelector('#form-sponsor-name') as HTMLInputElement)?.value,
-                            email: (form.querySelector('#form-sponsor-email') as HTMLInputElement)?.value,
-                        };
-                        emailjs.send(serviceID, userConfirmationTemplateID, templateParams, publicKey)
-                            .catch((err: any) => {
-                                // Log if the confirmation email fails, but don't block the user.
-                                console.error('Failed to send confirmation email:', err);
-                            });
-
-                        // 2. Send data to Google Sheets (fire and forget)
-                        // FIX: Removed redundant check against placeholder URL, as the URL is now hardcoded.
-                        if (googleSheetWebAppUrl) {
-                            fetch(googleSheetWebAppUrl, {
-                                method: 'POST',
-                                body: new URLSearchParams(new FormData(form) as any),
-                                mode: 'no-cors' // Use no-cors for simple cross-origin POSTs to Apps Script
-                            }).catch(err => {
-                                // Log if the sheet submission fails, but don't block the user.
-                                console.error('Failed to send data to Google Sheet:', err);
-                            });
-                        }
-
-                        // 3. Show success message to the user
-                        form.style.display = 'none';
-                        successMessage.style.display = 'block';
-                        window.scrollTo(0, 0);
-
-                    }, (error: any) => {
-                        // This block runs only if the primary admin email fails
-                        console.error('EmailJS submission error:', error);
-                        alert('There was an error submitting your form. Please try again or contact us directly.');
-                        if (submitButton) {
-                            submitButton.disabled = false;
-                            submitButton.textContent = 'Submit Inquiry';
-                        }
+                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbwq3S7GQikOlmmWhh5d3aIkC8uTWtIG6UnXcaPzmwdlZ8m5b3kIRKgafYW9zQV1rB-u/exec';
+    
+                try {
+                    // FIX: Removed redundant developer check for a placeholder URL. Since the URL is
+                    // now hardcoded, this comparison would always be false and was flagged as an
+                    // error by the TypeScript compiler.
+                    const formData = new FormData(form);
+                    const response = await fetch(googleSheetWebAppUrl, {
+                        method: 'POST',
+                        body: new URLSearchParams(formData as any)
                     });
+    
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.result === 'success') {
+                            form.style.display = 'none';
+                            successMessage.style.display = 'block';
+                            window.scrollTo(0, 0);
+                        } else {
+                            throw new Error(result.error || 'The script returned an unknown error.');
+                        }
+                    } else {
+                        throw new Error(`Submission failed. Status: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error('Sponsorship Inquiry Error:', error);
+                    alert('Sorry, there was a problem with your inquiry. Please check your network and try again. Error: ' + (error as Error).message);
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Submit Inquiry';
+                    }
+                }
             } else {
-                 const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
                 if (firstInvalidField) {
                     firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
@@ -884,20 +801,9 @@
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('input[required], select[required], textarea[required]'));
         const day1Container = document.getElementById('session-day1-group');
         const day2Container = document.getElementById('session-day2-group');
-        const headshotInput = document.getElementById('form-speaker-headshot') as HTMLInputElement;
         const consentPromoGroup = document.getElementById('consent-promotional-group');
         const consentRecordGroup = document.getElementById('consent-recording-group');
-        const fileUploadText = form.querySelector('.file-upload-text');
 
-        headshotInput?.addEventListener('change', () => {
-             if (headshotInput.files && headshotInput.files.length > 0 && fileUploadText) {
-                fileUploadText.textContent = headshotInput.files[0].name;
-                clearError(headshotInput);
-            } else if (fileUploadText) {
-                fileUploadText.textContent = 'Choose a file...';
-            }
-        });
-        
         const customValidation = (): boolean => {
             let allValid = true;
 
@@ -909,13 +815,6 @@
             } else {
                 if(day1Container) clearError(day1Container);
                 if(day2Container) clearError(day2Container);
-            }
-            
-            if (headshotInput?.files?.length === 0) {
-                showError(headshotInput, 'A professional headshot is required.');
-                allValid = false;
-            } else if(headshotInput) {
-                clearError(headshotInput);
             }
 
             const promoChecked = consentPromoGroup?.querySelector('input[type="radio"]:checked');
@@ -963,25 +862,28 @@
                 // =========================================================================================
                 // --- ROBUST GOOGLE SHEETS INTEGRATION FOR SPEAKERS ---
                 // =========================================================================================
-                // !! CRITICAL INSTRUCTIONS !!
-                // 1. Create a new Google Sheet for speaker applications.
-                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "SpeakerApplications".
-                // 3. Add the following headers in the first row, in this exact order:
-                //    Timestamp, form_source, name, job_title_organization, email, phone, linkedin_website, country, 
-                //    session_day1, session_day2, why_speak, bio, past_experience, consent_promotional, consent_recording
-                // 4. Go to Extensions > Apps Script.
-                // 5. Paste the exact same Apps Script code used for the Student Registration form. The script
-                //    is smart enough to work as long as the Sheet Name ("SpeakerApplications") is correct.
-                // 6. Click Deploy > New deployment.
-                // 7. For "Select type", choose "Web app". For "Who has access", select "Anyone".
-                // 8. Click Deploy. Authorize the script when prompted.
-                // 9. **COPY THE NEW WEB APP URL** and paste it below to replace the placeholder.
+                // !! CRITICAL INSTRUCTIONS TO FIX THE ERROR !!
+                // The error "Sheet 'SpeakerRegistrations' was not found" means the Google Apps Script
+                // cannot find a sheet with that exact name. Please follow these steps carefully:
+                //
+                // 1. In your Google Sheet for speaker applications, find the sheet tab at the bottom.
+                // 2. IMPORTANT: Rename that sheet to exactly "SpeakerRegistrations".
+                //
+                // 3. Ensure the headers in the first row of your "SpeakerRegistrations" sheet are exactly as follows (order and hyphens matter):
+                //    Timestamp, form_source, name, job_title_organization, email, phone, linkedin_website, headshot_link, country, session-day1, session-day2, why_speak, bio, past_experience, consent-promotional, consent-recording
+                //
+                // 4. Go to Extensions > Apps Script in your Google Sheet.
+                // 5. Ensure the script contains this line, with the correct sheet name:
+                //    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("SpeakerRegistrations");
+                //
+                // 6. After checking the name, click Deploy > New deployment.
+                // 7. Choose "Web app", set "Who has access" to "Anyone", and click Deploy.
+                // 8. Copy the NEW Web app URL and update the 'googleSheetWebAppUrl' constant below if it has changed.
                 // =========================================================================================
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbzaHqJGQqN1b3_EXy2TPKf4B2ACcVEwo-OmxribSVw0UkpTvR1kAnsbWOPW39myS9cN/exec';
 
                 // Prepare form data for Google Sheets (excluding the file upload)
                 const sheetFormData = new FormData(form);
-                sheetFormData.delete('headshot'); // Google Sheets cannot handle file uploads this way.
                 
                 try {
                     const response = await fetch(googleSheetWebAppUrl, {
