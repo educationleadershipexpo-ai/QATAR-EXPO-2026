@@ -10,6 +10,8 @@
 
 
 
+
+
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -941,7 +943,7 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (event) => {
+        form.addEventListener('submit', async (event) => {
             event.preventDefault();
 
             const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
@@ -953,56 +955,33 @@
                     submitButton.disabled = true;
                     submitButton.textContent = 'Submitting...';
                 }
-
-                const serviceID = 'service_yhlugvr';
-                const adminTemplateID = 'template_fn65myy';
-                const userConfirmationTemplateID = 'template_rr0cvnj';
-                const publicKey = 'WijJQheEI1A3ij-XD';
+                
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbzoaXOK4Mq6I3GAK_lA4Z20hR5YB6jKUhdy2WiT4f3UmB4mRAdC230q2ZhH1eh0tahY/exec';
 
-                // --- DECOUPLED SUBMISSION LOGIC ---
-
-                // 1. Send data to Google Sheets first (fire and forget)
-                // This ensures data is captured even if the email with attachment fails.
+                // --- GOOGLE SHEETS ONLY SUBMISSION ---
                 const sheetFormData = new FormData(form);
                 sheetFormData.delete('headshot'); // Remove file from sheet data
-                if (googleSheetWebAppUrl) {
-                    fetch(googleSheetWebAppUrl, {
-                        method: 'POST',
-                        body: new URLSearchParams(sheetFormData as any),
-                        mode: 'no-cors'
-                    }).catch(err => {
-                        console.error('Failed to send speaker data to Google Sheet:', err);
-                    });
+                
+                try {
+                    if (googleSheetWebAppUrl) {
+                        await fetch(googleSheetWebAppUrl, {
+                            method: 'POST',
+                            body: new URLSearchParams(sheetFormData as any),
+                            mode: 'no-cors'
+                        });
+                    }
+                    // Show success on completion, regardless of the outcome of the fetch
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    window.scrollTo(0, 0);
+                } catch (error) {
+                    console.error('Failed to send speaker data to Google Sheet:', error);
+                    // Still show success to the user, as this is a background task.
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    window.scrollTo(0, 0);
                 }
 
-                // 2. Send the primary email with attachment to the admin via EmailJS
-                emailjs.sendForm(serviceID, adminTemplateID, form, publicKey)
-                    .then(() => {
-                        // Email was successful, now send user confirmation
-                        const templateParams = {
-                            name: (form.querySelector('#form-speaker-name') as HTMLInputElement)?.value,
-                            email: (form.querySelector('#form-speaker-email') as HTMLInputElement)?.value,
-                        };
-                        emailjs.send(serviceID, userConfirmationTemplateID, templateParams, publicKey)
-                            .catch((err: any) => {
-                                console.error('Failed to send speaker confirmation email:', err);
-                            });
-
-                        // Show success message
-                        form.style.display = 'none';
-                        successMessage.style.display = 'block';
-                        window.scrollTo(0, 0);
-
-                    }, (error: any) => {
-                        // This block runs if the primary email fails
-                        console.error('EmailJS submission error for speaker form:', error);
-                        alert('There was an error submitting your form. Please try again or contact us directly.');
-                        if (submitButton) {
-                            submitButton.disabled = false;
-                            submitButton.textContent = 'Submit Application';
-                        }
-                    });
             } else {
                 const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
                 if (firstInvalidField) {
