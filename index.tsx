@@ -889,11 +889,10 @@
         const consentRecordGroup = document.getElementById('consent-recording-group');
         const fileUploadText = form.querySelector('.file-upload-text');
 
-
         headshotInput?.addEventListener('change', () => {
              if (headshotInput.files && headshotInput.files.length > 0 && fileUploadText) {
                 fileUploadText.textContent = headshotInput.files[0].name;
-                validateField(headshotInput);
+                clearError(headshotInput);
             } else if (fileUploadText) {
                 fileUploadText.textContent = 'Choose a file...';
             }
@@ -902,25 +901,16 @@
         const customValidation = (): boolean => {
             let allValid = true;
 
-            // Validate Day 1 Sessions
             const day1Checked = day1Container?.querySelectorAll('input[type="checkbox"]:checked').length > 0;
-            if (day1Container && !day1Checked) {
-                showError(day1Container, 'Please select at least one session for Day 1.');
-                allValid = false;
-            } else if(day1Container) {
-                clearError(day1Container);
-            }
-
-            // Validate Day 2 Sessions
             const day2Checked = day2Container?.querySelectorAll('input[type="checkbox"]:checked').length > 0;
-            if (day2Container && !day2Checked) {
-                showError(day2Container, 'Please select at least one session for Day 2.');
+            if (day1Container && day2Container && !day1Checked && !day2Checked) {
+                showError(day1Container, 'Please select at least one session from Day 1 or Day 2.');
                 allValid = false;
-            } else if(day2Container) {
-                clearError(day2Container);
+            } else {
+                if(day1Container) clearError(day1Container);
+                if(day2Container) clearError(day2Container);
             }
-
-            // Validate Headshot
+            
             if (headshotInput?.files?.length === 0) {
                 showError(headshotInput, 'A professional headshot is required.');
                 allValid = false;
@@ -928,7 +918,6 @@
                 clearError(headshotInput);
             }
 
-            // Validate Promotional Consent
             const promoChecked = consentPromoGroup?.querySelector('input[type="radio"]:checked');
             if(consentPromoGroup && !promoChecked) {
                 showError(consentPromoGroup, 'Please select an option.');
@@ -937,7 +926,6 @@
                  clearError(consentPromoGroup);
             }
             
-            // Validate Recording Consent
             const recordChecked = consentRecordGroup?.querySelector('input[type="radio"]:checked');
             if(consentRecordGroup && !recordChecked) {
                 showError(consentRecordGroup, 'Please select an option.');
@@ -953,6 +941,11 @@
             const eventType = ['select-one', 'textarea', 'checkbox', 'file', 'radio'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
             input.addEventListener(eventType, () => validateField(input));
         });
+        
+        day1Container?.addEventListener('change', customValidation);
+        day2Container?.addEventListener('change', customValidation);
+        consentPromoGroup?.addEventListener('change', customValidation);
+        consentRecordGroup?.addEventListener('change', customValidation);
 
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -967,30 +960,57 @@
                     submitButton.textContent = 'Submitting...';
                 }
                 
-                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbzoaXOK4Mq6I3GAK_lA4Z20hR5YB6jKUhdy2WiT4f3UmB4mRAdC230q2ZhH1eh0tahY/exec';
+                // =========================================================================================
+                // --- ROBUST GOOGLE SHEETS INTEGRATION FOR SPEAKERS ---
+                // =========================================================================================
+                // !! CRITICAL INSTRUCTIONS !!
+                // 1. Create a new Google Sheet for speaker applications.
+                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "SpeakerApplications".
+                // 3. Add the following headers in the first row, in this exact order:
+                //    Timestamp, form_source, name, job_title_organization, email, phone, linkedin_website, country, 
+                //    session_day1, session_day2, why_speak, bio, past_experience, consent_promotional, consent_recording
+                // 4. Go to Extensions > Apps Script.
+                // 5. Paste the exact same Apps Script code used for the Student Registration form. The script
+                //    is smart enough to work as long as the Sheet Name ("SpeakerApplications") is correct.
+                // 6. Click Deploy > New deployment.
+                // 7. For "Select type", choose "Web app". For "Who has access", select "Anyone".
+                // 8. Click Deploy. Authorize the script when prompted.
+                // 9. **COPY THE NEW WEB APP URL** and paste it below to replace the placeholder.
+                // =========================================================================================
+                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbzaHqJGQqN1b3_EXy2TPKf4B2ACcVEwo-OmxribSVw0UkpTvR1kAnsbWOPW39myS9cN/exec';
 
-                // --- GOOGLE SHEETS ONLY SUBMISSION ---
+                // Prepare form data for Google Sheets (excluding the file upload)
                 const sheetFormData = new FormData(form);
-                sheetFormData.delete('headshot'); // Remove file from sheet data
+                sheetFormData.delete('headshot'); // Google Sheets cannot handle file uploads this way.
                 
                 try {
-                    if (googleSheetWebAppUrl) {
-                        await fetch(googleSheetWebAppUrl, {
-                            method: 'POST',
-                            body: new URLSearchParams(sheetFormData as any),
-                            mode: 'no-cors'
-                        });
+                    const response = await fetch(googleSheetWebAppUrl, {
+                        method: 'POST',
+                        body: new URLSearchParams(sheetFormData as any)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.result === 'success') {
+                            // The script confirmed the data was saved!
+                            form.style.display = 'none';
+                            successMessage.style.display = 'block';
+                            window.scrollTo(0, 0);
+                        } else {
+                            // The script reported an error.
+                            throw new Error(result.error || 'The script returned an unknown error.');
+                        }
+                    } else {
+                        // The network request itself failed.
+                        throw new Error(`Submission failed. Status: ${response.status}`);
                     }
-                    // Show success on completion, regardless of the outcome of the fetch
-                    form.style.display = 'none';
-                    successMessage.style.display = 'block';
-                    window.scrollTo(0, 0);
                 } catch (error) {
-                    console.error('Failed to send speaker data to Google Sheet:', error);
-                    // Still show success to the user, as this is a background task.
-                    form.style.display = 'none';
-                    successMessage.style.display = 'block';
-                    window.scrollTo(0, 0);
+                    console.error('Speaker Submission Error:', error);
+                    alert('Sorry, there was a problem with your application. Please check your network connection and try again. If the problem persists, contact support. Error: ' + (error as Error).message);
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Submit Application';
+                    }
                 }
 
             } else {
