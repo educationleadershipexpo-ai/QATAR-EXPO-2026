@@ -912,7 +912,7 @@ section {
 
 .packages-grid { 
     display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(265px, 1fr)); 
     gap: 2rem; 
     justify-content: center; 
     align-items: stretch; /* Make cards same height */
@@ -1928,7 +1928,6 @@ a.contact-email:hover {
 .content-card .btn {
     margin-top: auto;
     width: 80%;
-    top: 15px;
 }
 
 
