@@ -567,20 +567,15 @@
                 
                 try {
                     if (googleSheetWebAppUrl) {
+                        // Create FormData object directly from the form.
                         const formData = new FormData(form);
-                        const sheetData = new URLSearchParams();
 
-                        // This correctly handles all form fields, including multiple values from checkboxes.
-                        // It creates a query string like "name=John&interests=engineering&interests=business"
-                        // which your Google Apps Script is designed to handle.
-                        for (const pair of formData.entries()) {
-                            sheetData.append(pair[0], pair[1] as string);
-                        }
-
+                        // The browser will automatically set the Content-Type to 'multipart/form-data'
+                        // when the body is a FormData object. Google Apps Script handles this format correctly.
                         await fetch(googleSheetWebAppUrl, {
                             method: 'POST',
-                            body: sheetData,
-                            mode: 'no-cors'
+                            body: formData,
+                            mode: 'no-cors' // 'no-cors' is needed to avoid CORS preflight issues with Apps Script.
                         });
                     }
                     // Show success message to the user regardless of the background sheet submission result.
