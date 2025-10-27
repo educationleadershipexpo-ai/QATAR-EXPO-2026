@@ -1917,7 +1917,6 @@ a.contact-email:hover {
     color: #555;
     font-size: 1rem;
     margin-bottom: 0;
-    flex-grow: 1; /* Aligns content if text length varies */
 }
 
 .content-card .btn {
