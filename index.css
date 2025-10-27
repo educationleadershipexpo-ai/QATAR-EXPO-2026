@@ -1888,6 +1888,7 @@ a.contact-email:hover {
     transition: transform 0.3s, box-shadow 0.3s;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .content-card:hover {
@@ -1911,6 +1912,11 @@ a.contact-email:hover {
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+/* Specific override for visa page cards to prevent title wrapping */
+#visa-entry .content-card h3 {
+    white-space: nowrap;
 }
 
 .content-card p {
