@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +31,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="why-attend.html">Why Attend</a></li>
                             <li><a href="plan-your-trip.html">Plan Your Trip</a></li>
+                            <li><a href="workshops.html">Agenda</a></li>
                         </ul>
                     </li>
                     <li class="has-dropdown">
@@ -37,7 +39,6 @@
                         <ul class="dropdown-menu">
                             <li><a href="student-registration.html">Student Registration</a></li>
                             <li><a href="career-counselling.html">Career Counselling</a></li>
-                            <li><a href="workshops.html">Workshop Schedule</a></li>
                         </ul>
                     </li>
                     <li class="has-dropdown">
@@ -140,7 +141,7 @@
                     <fieldset>
                         <legend>Session Preferences</legend>
                         <div class="form-group interest-group-container" id="session-day1-group">
-                            <label>Which session would you like to speak in? Day 1 – February 10, 2026 *</label>
+                            <label>Which session would you like to speak in? Day 1 – April 19, 2026 *</label>
                             <div class="session-selection-grid">
                                 <div class="session-checkbox-item"><input type="checkbox" id="d1-s1" name="session-day1" value="Keynote: The Future of Education"><label for="d1-s1">Keynote: The Future of Education in the Digital Era</label></div>
                                 <div class="session-checkbox-item"><input type="checkbox" id="d1-s2" name="session-day1" value="Panel: AI & Innovation"><label for="d1-s2">Panel: AI & Innovation in Qatar’s Education Landscape</label></div>
@@ -159,7 +160,7 @@
                         </div>
 
                          <div class="form-group interest-group-container" id="session-day2-group">
-                            <label>Which session would you like to speak in? Day 2 – February 11, 2026 *</label>
+                            <label>Which session would you like to speak in? Day 2 – April 20, 2026 *</label>
                             <div class="session-selection-grid">
                                <div class="session-checkbox-item"><input type="checkbox" id="d2-s1" name="session-day2" value="Keynote: Shaping Schools of Tomorrow"><label for="d2-s1">Keynote: Shaping the Schools of Tomorrow</label></div>
                                <div class="session-checkbox-item"><input type="checkbox" id="d2-s2" name="session-day2" value="Panel: Digital Equity"><label for="d2-s2">Panel: Digital Equity & Access in Education</label></div>
@@ -191,14 +192,9 @@
                             <div class="error-message"></div>
                         </div>
                          <div class="form-group">
-                            <label for="form-speaker-headshot">Professional Headshot Upload *</label>
-                             <div class="file-upload-wrapper">
-                                <input type="file" id="form-speaker-headshot" name="headshot" class="file-upload-input" accept="image/jpeg, image/png" required>
-                                <label for="form-speaker-headshot" class="file-upload-label">
-                                    <i class="fas fa-upload"></i>
-                                    <span class="file-upload-text">Choose a file...</span>
-                                </label>
-                            </div>
+                            <label for="form-speaker-headshot-link">Professional Headshot Link *</label>
+                            <input type="text" id="form-speaker-headshot-link" name="headshot_link" placeholder="Paste a public Google Drive link here..." required>
+                            <small style="font-size: 0.8rem; color: #6c757d; margin-top: 5px; display: block;">Please provide a public, shareable link to your headshot. In Google Drive, click "Share" > "Anyone with the link" > "Viewer".</small>
                             <div class="error-message"></div>
                         </div>
                         <div class="form-group">
