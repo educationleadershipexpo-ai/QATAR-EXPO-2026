@@ -1920,10 +1920,6 @@ a.contact-email:hover {
     flex-grow: 1; /* Aligns content if text length varies */
 }
 
-#visa-entry .content-card p {
-    text-align: justify;
-}
-
 .content-card .btn {
     margin-top: auto;
     width: 80%;
