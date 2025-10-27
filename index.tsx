@@ -1,17 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -577,27 +564,44 @@
 
                 // --- GOOGLE SHEETS INTEGRATION ---
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbwcU6H5gCI05acF53zpz-vn-F34Op1VTW7ZaOUYY2Ysn8R4UzofymgaWfjRYVyngWNa/exec';
-
+                
                 try {
                     if (googleSheetWebAppUrl) {
+                        const formData = new FormData(form);
+                        
+                        // Get all checked interests and join them into a single string.
+                        const interests = Array.from(formData.getAll('interests')).join(', ');
+                        
+                        // Create a new URLSearchParams object for submission to ensure correct format.
+                        const sheetData = new URLSearchParams();
+                        for (const [key, value] of formData.entries()) {
+                            // Append all fields EXCEPT the original 'interests' checkboxes.
+                            if (key !== 'interests' && typeof value === 'string') {
+                                sheetData.append(key, value);
+                            }
+                        }
+                        // Append the consolidated 'interests' string. The Google Sheet should have a header named 'interests'.
+                        sheetData.append('interests', interests);
+
                         await fetch(googleSheetWebAppUrl, {
                             method: 'POST',
-                            body: new URLSearchParams(new FormData(form) as any),
+                            body: sheetData,
                             mode: 'no-cors'
                         });
                     }
-                     // Show success message to the user regardless of the background sheet submission result
+                    // Show success message to the user regardless of the background sheet submission result.
                     form.style.display = 'none';
                     successMessage.style.display = 'block';
                     window.scrollTo(0, 0);
 
                 } catch (error) {
-                     console.error('Failed to send data to Google Sheet:', error);
+                    console.error('Failed to send data to Google Sheet:', error);
                     // Still show success to the user, as this is a background task.
                     form.style.display = 'none';
                     successMessage.style.display = 'block';
                     window.scrollTo(0, 0);
                 }
+
 
             } else {
                 const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
