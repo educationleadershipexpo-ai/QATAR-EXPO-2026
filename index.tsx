@@ -568,20 +568,14 @@
                 try {
                     if (googleSheetWebAppUrl) {
                         const formData = new FormData(form);
-                        
-                        // Get all checked interests and join them into a single string.
-                        const interests = Array.from(formData.getAll('interests')).join(', ');
-                        
-                        // Create a new URLSearchParams object for submission to ensure correct format.
                         const sheetData = new URLSearchParams();
-                        for (const [key, value] of formData.entries()) {
-                            // Append all fields EXCEPT the original 'interests' checkboxes.
-                            if (key !== 'interests' && typeof value === 'string') {
-                                sheetData.append(key, value);
-                            }
+
+                        // This correctly handles all form fields, including multiple values from checkboxes.
+                        // It creates a query string like "name=John&interests=engineering&interests=business"
+                        // which your Google Apps Script is designed to handle.
+                        for (const pair of formData.entries()) {
+                            sheetData.append(pair[0], pair[1] as string);
                         }
-                        // Append the consolidated 'interests' string. The Google Sheet should have a header named 'interests'.
-                        sheetData.append('interests', interests);
 
                         await fetch(googleSheetWebAppUrl, {
                             method: 'POST',
