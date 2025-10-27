@@ -1323,9 +1323,9 @@ section {
     flex-direction: column;
     transition: transform 0.3s, box-shadow 0.3s;
     position: relative;
-    background: linear-gradient(135deg, #d12386, #711fb8);
-    color: var(--white);
+    background: var(--white);
     overflow: hidden;
+    border: 2px solid black;
 }
 .way-card:hover {
     transform: translateY(-8px);
@@ -1345,13 +1345,12 @@ section {
 .way-card-content h3 {
     margin: 0 0 0.5rem; 
     font-size: 1.6rem;
-    color: var(--white);
 }
 .way-card-content p {
     padding: 0;
     margin: 0 0 1.5rem;
     flex-grow: 1;
-    color: rgba(255, 255, 255, 0.8);
+    color: #555;
 }
 .way-card-cta {
     margin-top: auto;
@@ -1393,11 +1392,21 @@ section {
 }
 
 .way-card--sponsor {
+    background: linear-gradient(135deg, #d12386, #711fb8);
+    color: var(--white);
     box-shadow: 0 8px 25px rgba(113, 31, 184, 0.25);
 }
 
 .way-card--sponsor:hover {
     box-shadow: 0 12px 35px rgba(113, 31, 184, 0.35);
+}
+
+.way-card--sponsor .way-card-content h3 {
+    color: var(--white);
+}
+
+.way-card--sponsor .way-card-content p {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* Unified button style for the "3 Ways to Join" section */
@@ -1417,43 +1426,30 @@ section {
 /* --- Who Should Exhibit Section --- */
 .exhibitor-types-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 2rem;
-    justify-content: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
     max-width: 900px;
     margin: 0 auto;
-    align-items: stretch; /* This ensures all cards in a row have the same height */
 }
 .exhibitor-type-card {
     background: var(--white);
     border: 1px solid var(--border-color);
-    padding: 2.5rem 1.5rem;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding: 2rem 1rem;
+    border-radius: 10px;
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.exhibitor-type-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 .exhibitor-type-card i {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 .exhibitor-type-card p {
     margin: 0;
-    font-weight: 700;
-    font-size: 1.1rem;
-    line-height: 1.4;
-    color: var(--text-color);
+    font-size: 1rem;
 }
 
 /* --- Lead Capture Section --- */
@@ -1823,6 +1819,11 @@ textarea.invalid {
     flex-grow: 1; /* Makes p take up space to align buttons */
 }
 
+.content-card .btn-primary {
+    margin-top: 2rem;
+}
+
+
 .contact-card .btn {
     margin-top: auto;
     width: 80%;
@@ -1917,6 +1918,15 @@ a.contact-email:hover {
     font-size: 1rem;
     margin-bottom: 0;
     flex-grow: 1; /* Aligns content if text length varies */
+}
+
+#visa-entry .content-card p {
+    text-align: justify;
+}
+
+.content-card .btn {
+    margin-top: auto;
+    width: 80%;
 }
 
 
@@ -2643,6 +2653,10 @@ a.contact-email:hover {
     .tier-benefits.two-column-list {
         grid-template-columns: 1fr;
     }
+    .exhibitor-types-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 500px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -2656,6 +2670,10 @@ a.contact-email:hover {
     }
     .session-selection-grid {
         grid-template-columns: 1fr;
+    }
+    .exhibitor-types-grid {
+        grid-template-columns: 1fr;
+        max-width: 320px;
     }
 }
 
