@@ -1928,6 +1928,7 @@ a.contact-email:hover {
 .content-card .btn {
     margin-top: auto;
     width: 80%;
+    top: 15px;
 }
 
 
