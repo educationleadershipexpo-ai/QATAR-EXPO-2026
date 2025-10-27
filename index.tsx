@@ -449,17 +449,71 @@
             input.addEventListener(eventType, () => validateField(input));
         });
 
-        form.addEventListener('submit', (e) => handleFormSubmit(e, form, successMessage, inputs, () => {
-             if (form.id === 'contact-form' && (form.querySelector('#form-interest') as HTMLSelectElement)?.value === 'exhibiting') {
-                const link = document.createElement('a');
-                link.href = '#'; // Placeholder for actual file
-                link.download = 'QELE2026-Sponsorship-Deck.pdf';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+
+            // This block handles the PDF download trigger.
+            const customValidationAndActions = () => {
+                if ((form.querySelector('#form-interest') as HTMLSelectElement)?.value === 'exhibiting') {
+                    const link = document.createElement('a');
+                    link.href = '#'; // Placeholder, you should replace this with the actual file path.
+                    link.download = 'QELE2026-Sponsorship-Deck.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+                return true;
+            };
+            
+            const isCustomValid = customValidationAndActions();
+
+            if (isFormValid && isCustomValid) {
+                const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Submitting...';
+                }
+
+                try {
+                    // --- BASIN INTEGRATION ---
+                    // =========================================================================================
+                    // 1. Go to https://usebasin.com, create a form, and get your endpoint URL.
+                    // 2. To send a confirmation email to the user, set up an "Auto-Response" in your 
+                    //    Basin form's "Notifications" settings.
+                    // =========================================================================================
+                    const basinEndpoint = 'https://usebasin.com/f/8b6d8aeec167'; 
+                    
+                    const formData = new FormData(form);
+                    const response = await fetch(basinEndpoint, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        form.style.display = 'none';
+                        successMessage.style.display = 'block';
+                        window.scrollTo(0, 0);
+                    } else {
+                        throw new Error('Basin form submission failed');
+                    }
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    alert('There was an error submitting your form. Please try again or contact us directly.');
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Submit Inquiry & Get Deck';
+                    }
+                }
+            } else {
+                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
             }
-            return true;
-        }));
+        });
     }
 
     function initializeStudentRegistrationForm() {
