@@ -1217,7 +1217,11 @@
                 document.body.removeChild(link);
             }
 
-            target.closest('.save-to-calendar-container')?.classList.remove('open');
+            if (type === 'google' || type === 'outlook') {
+                // For links that open a new tab, it's good UX to close the dropdown.
+                target.closest('.save-to-calendar-container')?.classList.remove('open');
+            }
+            // For iCal, we leave it open in case the user wants to add to another calendar.
         };
         
         containers.forEach(container => {
