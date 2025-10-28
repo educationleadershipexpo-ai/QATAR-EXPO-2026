@@ -402,49 +402,19 @@
 
             const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
 
-            // This block handles the PDF download trigger.
-            const customValidationAndActions = () => {
-                if ((form.querySelector('#form-interest') as HTMLSelectElement)?.value === 'exhibiting') {
-                    const link = document.createElement('a');
-                    link.href = 'assets/QELE2026-Sponsorship-Deck.pdf';
-                    link.download = 'QELE2026-Sponsorship-Deck.pdf';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                }
-                return true;
-            };
-            
-            const isCustomValid = customValidationAndActions();
-
-            if (isFormValid && isCustomValid) {
+            if (isFormValid) {
                 const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
                 if (submitButton) {
                     submitButton.disabled = true;
                     submitButton.textContent = 'Submitting...';
                 }
 
-                // --- GOOGLE SHEETS INTEGRATION ---
-                // =========================================================================================
-                // INSTRUCTIONS:
-                // 1. Create a new Google Sheet.
-                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "ContactInquiries".
-                // 3. Add the following headers in the first row, in this exact order:
-                //    Timestamp, form_source, name, organization, email, phone, interest
-                // 4. Go to Extensions > Apps Script.
-                // 5. Paste the universal script code into the script editor.
-                // 6. Click Deploy > New deployment.
-                // 7. For "Select type", choose "Web app", and set "Who has access" to "Anyone".
-                // 8. Click Deploy, authorize the script, and copy the new Web app URL.
-                // 9. Paste the new URL into the 'googleSheetWebAppUrl' constant below.
-                // =========================================================================================
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbxUS76iFHL00oqCytiDjvpPfY9wONwwttdI00R6nhhoAkyED2ogZviUb3yXXRDAqAs7tg/exec';
                 const basinEndpoint = 'https://usebasin.com/f/8b6d8aeec167';
 
                 try {
                     const formData = new FormData(form);
                     
-                    // --- Primary Action: Google Sheets Integration ---
                     const googleSheetResponse = await fetch(googleSheetWebAppUrl, {
                         method: 'POST',
                         body: new URLSearchParams(formData as any)
@@ -459,17 +429,24 @@
                         throw new Error(result.error || 'The script returned an unknown error. Please check the sheet name and headers.');
                     }
 
-                    // --- Secondary Action: Basin Integration (Fire-and-forget is fine here) ---
                     fetch(basinEndpoint, {
                         method: 'POST',
                         body: formData,
                         headers: { 'Accept': 'application/json' }
                     }).catch(err => {
-                        // Log error but don't block user success message, as primary action succeeded.
                         console.error('Basin form submission failed:', err);
                     });
 
-                    // --- Show success to user ---
+                    // --- Trigger download AFTER successful submission ---
+                    if ((form.querySelector('#form-interest') as HTMLSelectElement)?.value === 'exhibiting') {
+                        const link = document.createElement('a');
+                        link.href = 'assets/QELE2026-Sponsorship-Deck.pdf';
+                        link.download = 'QELE2026-Sponsorship-Deck.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }
+
                     form.style.display = 'none';
                     successMessage.style.display = 'block';
                     window.scrollTo(0, 0);
