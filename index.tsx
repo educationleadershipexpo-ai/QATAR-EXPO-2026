@@ -1,8 +1,5 @@
 
 
-
-
-
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -158,17 +155,6 @@
                 }
                 break;
             
-            case 'form-speaker-headshot-link':
-                const urlRegexForHeadshot = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$/i;
-                if (value === '') {
-                    showError(field, 'A link to your headshot is required.');
-                    isValid = false;
-                } else if (!urlRegexForHeadshot.test(value)) {
-                    showError(field, 'Please enter a valid URL.');
-                    isValid = false;
-                }
-                break;
-
             case 'form-booth-consent':
             case 'form-student-consent':
             case 'form-sponsor-consent':
@@ -801,9 +787,20 @@
         const inputs: HTMLElement[] = Array.from(form.querySelectorAll('input[required], select[required], textarea[required]'));
         const day1Container = document.getElementById('session-day1-group');
         const day2Container = document.getElementById('session-day2-group');
+        const headshotInput = document.getElementById('form-speaker-headshot') as HTMLInputElement;
         const consentPromoGroup = document.getElementById('consent-promotional-group');
         const consentRecordGroup = document.getElementById('consent-recording-group');
+        const fileUploadText = form.querySelector('.file-upload-text');
 
+        headshotInput?.addEventListener('change', () => {
+             if (headshotInput.files && headshotInput.files.length > 0 && fileUploadText) {
+                fileUploadText.textContent = headshotInput.files[0].name;
+                clearError(headshotInput);
+            } else if (fileUploadText) {
+                fileUploadText.textContent = 'Choose a file...';
+            }
+        });
+        
         const customValidation = (): boolean => {
             let allValid = true;
 
@@ -815,6 +812,13 @@
             } else {
                 if(day1Container) clearError(day1Container);
                 if(day2Container) clearError(day2Container);
+            }
+            
+            if (headshotInput?.files?.length === 0) {
+                showError(headshotInput, 'A professional headshot is required.');
+                allValid = false;
+            } else if(headshotInput) {
+                clearError(headshotInput);
             }
 
             const promoChecked = consentPromoGroup?.querySelector('input[type="radio"]:checked');
@@ -870,7 +874,7 @@
                 // 2. IMPORTANT: Rename that sheet to exactly "SpeakerRegistrations".
                 //
                 // 3. Ensure the headers in the first row of your "SpeakerRegistrations" sheet are exactly as follows (order and hyphens matter):
-                //    Timestamp, form_source, name, job_title_organization, email, phone, linkedin_website, headshot_link, country, session-day1, session-day2, why_speak, bio, past_experience, consent-promotional, consent-recording
+                //    Timestamp, form_source, name, job_title_organization, email, phone, linkedin_website, country, session-day1, session-day2, why_speak, bio, past_experience, consent-promotional, consent-recording
                 //
                 // 4. Go to Extensions > Apps Script in your Google Sheet.
                 // 5. Ensure the script contains this line, with the correct sheet name:
@@ -884,6 +888,7 @@
 
                 // Prepare form data for Google Sheets (excluding the file upload)
                 const sheetFormData = new FormData(form);
+                sheetFormData.delete('headshot'); // Google Sheets cannot handle file uploads this way.
                 
                 try {
                     const response = await fetch(googleSheetWebAppUrl, {
@@ -1117,6 +1122,133 @@
         });
     }
 
+    // --- Agenda "Save to Calendar" buttons ---
+    function initializeAgendaCalendarButtons() {
+        const containers = document.querySelectorAll('.save-to-calendar-container');
+        if (!containers.length) return;
+
+        const formatTime = (date: Date, format: 'google' | 'ical' | 'outlook'): string => {
+            const pad = (num: number) => num.toString().padStart(2, '0');
+            if (format === 'google' || format === 'ical') {
+                return date.getUTCFullYear() +
+                       pad(date.getUTCMonth() + 1) +
+                       pad(date.getUTCDate()) + 'T' +
+                       pad(date.getUTCHours()) +
+                       pad(date.getUTCMinutes()) +
+                       pad(date.getUTCSeconds()) + 'Z';
+            }
+            if (format === 'outlook') {
+                return date.toISOString().split('.')[0];
+            }
+            return '';
+        };
+
+        const createIcsContent = (event: any) => {
+            const icsData = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'BEGIN:VEVENT',
+                `URL:${document.location.href}`,
+                `DTSTART:${formatTime(event.start, 'ical')}`,
+                `DTEND:${formatTime(event.end, 'ical')}`,
+                `SUMMARY:${event.title}`,
+                `DESCRIPTION:${event.description}`,
+                `LOCATION:${event.location}`,
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+            return icsData;
+        };
+
+        const handleCalendarClick = (e: Event) => {
+            e.preventDefault();
+            const target = e.currentTarget as HTMLElement;
+            const type = target.dataset.type;
+
+            const card = target.closest('.session-card');
+            const content = card?.querySelector('.session-content');
+            if (!content) return;
+
+            const h4 = content.querySelector('h4');
+            const p = content.querySelector('p');
+            const titleText = h4 ? h4.textContent || '' : '';
+            const description = p ? p.textContent || '' : '';
+
+            const timeMatch = titleText.match(/(\d{2}):(\d{2})–(\d{2}):(\d{2})/);
+            if (!timeMatch) return;
+
+            const [, startHour, startMinute, endHour, endMinute] = timeMatch.map(Number);
+            const eventTitle = titleText.replace(/(\d{2}:\d{2}–\d{2}:\d{2}\s—\s)/, '').trim();
+            const location = 'Sheraton Grand Doha Resort & Convention Hotel, Qatar';
+
+            const dayTab = card.closest('.agenda-content');
+            const dateStr = dayTab?.id === 'day-1' ? '2026-04-19' : '2026-04-20';
+            
+            const dateParts = dateStr.split('-').map(Number);
+            // Qatar is UTC+3, so we subtract 3 hours to get the UTC time for the calendar event.
+            const startDateTime = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2], startHour - 3, startMinute));
+            const endDateTime = new Date(Date.UTC(dateParts[0], dateParts[1] - 1, dateParts[2], endHour - 3, endMinute));
+
+            const eventDetails = {
+                title: eventTitle,
+                description: description,
+                location: location,
+                start: startDateTime,
+                end: endDateTime,
+            };
+
+            let url = '';
+            if (type === 'google') {
+                const startTimeFormatted = formatTime(eventDetails.start, 'google');
+                const endTimeFormatted = formatTime(eventDetails.end, 'google');
+                url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&dates=${startTimeFormatted}/${endTimeFormatted}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
+                window.open(url, '_blank');
+            } else if (type === 'outlook') {
+                 url = `https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject=${encodeURIComponent(eventDetails.title)}&startdt=${formatTime(eventDetails.start, 'outlook')}&enddt=${formatTime(eventDetails.end, 'outlook')}&body=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}`;
+                window.open(url, '_blank');
+            } else if (type === 'ical') {
+                const icsContent = createIcsContent(eventDetails);
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `${eventDetails.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.ics`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            target.closest('.save-to-calendar-container')?.classList.remove('open');
+        };
+        
+        containers.forEach(container => {
+            const btn = container.querySelector('.save-cal-btn');
+            const dropdownLinks = container.querySelectorAll('.cal-link');
+
+            btn?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const currentlyOpen = container.classList.contains('open');
+                document.querySelectorAll('.save-to-calendar-container.open').forEach(openContainer => {
+                    openContainer.classList.remove('open');
+                });
+                if (!currentlyOpen) {
+                    container.classList.add('open');
+                }
+            });
+
+            dropdownLinks.forEach(link => {
+                link.addEventListener('click', handleCalendarClick);
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+             if (!(e.target as HTMLElement).closest('.save-to-calendar-container')) {
+                document.querySelectorAll('.save-to-calendar-container.open').forEach(openContainer => {
+                    openContainer.classList.remove('open');
+                });
+            }
+        });
+    }
+
     // --- Floor Plan Logic ---
     function initializeFloorPlan() {
         if (!document.getElementById('floor-plan-section')) return;
@@ -1254,5 +1386,6 @@
     initializeSponsorPagePartners();
     initializePastPartners();
     initializeAgendaTabs();
+    initializeAgendaCalendarButtons();
     initializeFloorPlan();
     });
