@@ -1869,14 +1869,6 @@ a.contact-email:hover {
 #form-success-message h3 {
     text-align: center;
 }
-#form-success-message img,
-#student-form-success img,
-#booth-form-success img,
-#sponsor-form-success img,
-#speaker-form-success img {
-    width: 100px;
-    margin-bottom: 1rem;
-}
 
 /* --- Content Grid for generic pages (like career counselling) --- */
 .content-grid {
@@ -2150,10 +2142,6 @@ a.contact-email:hover {
 }
 .exit-intent-content h3 {
     margin-top: 0;
-}
-.exit-intent-content .modal-mascot {
-    width: 100px;
-    margin-bottom: 0.5rem;
 }
 
 /* Booth Details Modal Specifics */
@@ -2958,40 +2946,4 @@ a.contact-email:hover {
 
 .about-page .why-qatar-text li {
     font-size: 1.2rem;
-}
-
-/* --- Floating Mascot --- */
-.floating-mascot {
-    position: fixed;
-    bottom: -10px; /* Hide a bit of the bottom */
-    left: 20px;
-    z-index: 998;
-    width: 150px;
-    transform: translateX(-200%); /* Start off-screen left */
-    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.floating-mascot.visible {
-    transform: translateX(0);
-}
-.floating-mascot img {
-    width: 100%;
-    transition: transform 0.3s ease;
-    animation: mascot-peek 4s ease-in-out infinite 1s;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
-}
-.floating-mascot:hover img {
-    transform: translateY(-10px) scale(1.05);
-    animation: none;
-}
-@keyframes mascot-peek {
-    0%, 20%, 100% { transform: translateY(0); }
-    10% { transform: translateY(-15px); }
-}
-
-@media (max-width: 768px) {
-    .floating-mascot {
-        bottom: 65px; /* Above the sticky bar */
-        width: 100px;
-        left: 10px;
-    }
 }
