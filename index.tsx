@@ -334,6 +334,30 @@
         });
     }
 
+    // --- Mobile Sticky Nav Logic ---
+    function initializeMobileStickyNav() {
+        const stickyBar = document.getElementById('mobile-sticky-bar');
+        if (!stickyBar) return;
+
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const mobileNavLinks = stickyBar.querySelectorAll('a.mobile-cta-btn');
+
+        mobileNavLinks.forEach(link => {
+            const anchor = link as HTMLAnchorElement;
+            const linkUrl = new URL(anchor.href);
+            const linkPage = linkUrl.pathname.split('/').pop() || 'index.html';
+            
+            if (linkPage === currentPage) {
+                // If the link points to the current page, prevent a full reload.
+                anchor.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Scroll to top for better UX, mimicking native app tab bar behavior.
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        });
+    }
+
     // --- Countdown Timer Logic ---
     function initializeMainCountdown() {
         const daysEl = document.getElementById('days');
@@ -1244,6 +1268,7 @@
     highlightActiveNav();
     initializeMobileNav();
     initializeDropdowns();
+    initializeMobileStickyNav();
     initializeMainCountdown();
     initializeContactForm(); 
     initializeStudentRegistrationForm();
