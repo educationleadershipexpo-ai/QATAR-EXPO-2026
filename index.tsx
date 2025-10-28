@@ -1,5 +1,6 @@
 
 
+
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -1255,12 +1256,12 @@
             counter.classList.add('animated');
 
             const formatNumber = (num: number, targetNum: number): string => {
-                if (targetNum >= 1000000) {
-                    return (num / 1000000).toFixed(1) + 'M+';
-                } else if (targetNum >= 1000) {
-                    return Math.ceil(num / 1000) + 'K+';
+                const ceiledNum = Math.ceil(num);
+                // Special case for 1 Million to avoid showing "1,000,000+"
+                if (targetNum === 1000000 && ceiledNum >= 1000000) {
+                    return '1 Million+';
                 }
-                return Math.ceil(num).toString();
+                return ceiledNum.toLocaleString() + '+';
             }
 
             const step = (timestamp: number) => {
