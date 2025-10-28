@@ -1739,6 +1739,11 @@ textarea.invalid {
     font-size: 0.85rem;
     margin-bottom: 0;
 }
+.form-group-consent a {
+    color: #711fb8;
+    text-decoration: underline;
+    font-weight: 700;
+}
 
 /* Student Registration Form - Areas of Interest */
 .interest-checkbox-group {
@@ -3062,6 +3067,36 @@ a.contact-email:hover {
     color: #555;
     margin: 0;
 }
+
+/* --- NEW: Sponsors Page --- */
+.sponsor-tier-section {
+    margin-bottom: 4rem;
+}
+.sponsor-tier-section h3 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.sponsor-tier-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--gradient);
+    border-radius: 2px;
+}
+.sponsor-tier-section .logo-grid {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
 
 @media (max-width: 768px) {
     /* Brand Exposure Page Responsive */
