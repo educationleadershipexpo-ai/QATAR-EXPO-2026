@@ -1,69 +1,7 @@
 
     declare var Panzoom: any;
-    declare var emailjs: any;
 
     document.addEventListener('DOMContentLoaded', () => {
-
-    // --- NEW: Modal Accessibility Helpers ---
-    let previouslyFocusedElement: HTMLElement | null = null;
-
-    const trapFocus = (modal: HTMLElement) => {
-        const focusableElements = modal.querySelectorAll<HTMLElement>(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusableElements.length === 0) return null;
-
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        firstElement.focus();
-
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key !== 'Tab') return;
-
-            if (e.shiftKey) { // Shift + Tab
-                if (document.activeElement === firstElement) {
-                    lastElement.focus();
-                    e.preventDefault();
-                }
-            } else { // Tab
-                if (document.activeElement === lastElement) {
-                    firstElement.focus();
-                    e.preventDefault();
-                }
-            }
-        };
-
-        modal.addEventListener('keydown', handleKeyDown);
-        return handleKeyDown;
-    };
-
-    const openModal = (modal: HTMLElement) => {
-        if (!modal || modal.classList.contains('visible')) return;
-        previouslyFocusedElement = document.activeElement as HTMLElement;
-        modal.classList.add('visible');
-        const focusHandler = trapFocus(modal);
-        
-        if (focusHandler) {
-            (modal as any)._focusHandler = focusHandler;
-        }
-    };
-
-    const closeModal = (modal: HTMLElement) => {
-        if (!modal) return;
-        modal.classList.remove('visible');
-        
-        const focusHandler = (modal as any)._focusHandler;
-        if (focusHandler) {
-            modal.removeEventListener('keydown', focusHandler);
-            delete (modal as any)._focusHandler;
-        }
-        
-        if (previouslyFocusedElement) {
-            previouslyFocusedElement.focus();
-            previouslyFocusedElement = null;
-        }
-    };
 
     // --- Reusable Form Validation Helpers ---
     const showError = (input: HTMLElement, message: string) => {
@@ -74,6 +12,7 @@
             errorElement.innerText = message;
             errorElement.style.display = 'block';
         }
+        // FIX: Cast `input` to `HTMLInputElement` to safely access the 'type' property.
         if (input.tagName.toLowerCase() !== 'div' && (input as HTMLInputElement).type !== 'file' && !input.closest('.consent-group')) {
             input.classList.add('invalid');
         }
@@ -87,6 +26,7 @@
             errorElement.innerText = '';
             errorElement.style.display = 'none';
         }
+        // FIX: Cast `input` to `HTMLInputElement` to safely access the 'type' property.
          if (input.tagName.toLowerCase() !== 'div' && (input as HTMLInputElement).type !== 'file' && !input.closest('.consent-group')) {
             input.classList.remove('invalid');
         }
@@ -152,7 +92,7 @@
             case 'form-sponsor-phone':
             case 'form-speaker-phone':
             case 'deck-form-phone':
-                const phoneRegex = /^\+?[\d\s()-]{7,}$/;
+                const phoneRegex = /^[\d\s()+-]+$/;
                  if ((field.hasAttribute('required') && value === '')) {
                     showError(field, 'Mobile number is required.');
                     isValid = false;
@@ -175,7 +115,7 @@
             case 'form-booth-website':
             case 'form-sponsor-website':
             case 'form-speaker-linkedin':
-                const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/i;
+                const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$/i;
                 if (field.hasAttribute('required') && value === '') {
                      showError(field, 'Website is required.');
                      isValid = false;
@@ -242,6 +182,7 @@
             if (linkPage === currentPage) {
                 link.classList.add('active');
                 
+                // For dropdowns, also highlight the parent
                 const parentDropdown = link.closest('.has-dropdown');
                 if (parentDropdown) {
                     parentDropdown.querySelector('a.nav-link')?.classList.add('active');
@@ -271,14 +212,17 @@
         }
         });
 
+        // Close menu when a link is clicked, unless it's a dropdown toggle on mobile
         mainNav.addEventListener('click', (e) => {
             const link = (e.target as HTMLElement).closest('a');
             if (!link) return;
             
+            // If it's a dropdown toggle, the dropdown logic will handle it, so we don't close the main nav.
             if (link.parentElement?.classList.contains('has-dropdown')) {
                 return; 
             }
 
+            // If it's a regular link inside the mobile nav, close it.
             if (header.classList.contains('nav-open')) {
                 header.classList.remove('nav-open');
                 navToggle.setAttribute('aria-expanded', 'false');
@@ -297,17 +241,21 @@
 
             if (!toggle || !menu) return;
 
+            // Setup ARIA attributes
             const menuId = `dropdown-menu-${index}`;
             toggle.setAttribute('aria-haspopup', 'true');
             toggle.setAttribute('aria-expanded', 'false');
             menu.id = menuId;
             toggle.setAttribute('aria-controls', menuId);
 
+            // Universal click handler for both mobile and desktop
             toggle.addEventListener('click', (e) => {
+                // Prevent default for all dropdown toggles to handle open/close manually
                 e.preventDefault();
                 
                 const isCurrentlyOpen = dropdown.classList.contains('dropdown-open');
 
+                // First, close all other open dropdowns
                 document.querySelectorAll('.has-dropdown.dropdown-open').forEach(openDropdown => {
                     if (openDropdown !== dropdown) {
                         openDropdown.classList.remove('dropdown-open');
@@ -315,46 +263,28 @@
                     }
                 });
 
+                // Then, toggle the state of the clicked dropdown
                 dropdown.classList.toggle('dropdown-open');
                 toggle.setAttribute('aria-expanded', String(!isCurrentlyOpen));
             });
         });
         
+        // This listener closes any open dropdown when a click happens anywhere outside a dropdown toggle.
+        // This now works for BOTH mobile and desktop.
         document.addEventListener('click', (e) => {
             const target = e.target as HTMLElement;
             
+            // If the click is on a dropdown toggle, its own listener will handle it.
+            // We do nothing here to avoid immediately closing the menu that was just opened.
             if (target.closest('.has-dropdown > a')) {
                 return;
             }
             
+            // If the click is anywhere else, close all open dropdowns.
             document.querySelectorAll('.has-dropdown.dropdown-open').forEach(openDropdown => {
                 openDropdown.classList.remove('dropdown-open');
                 openDropdown.querySelector('a')?.setAttribute('aria-expanded', 'false');
             });
-        });
-    }
-
-    // --- Mobile Sticky Nav Logic ---
-    function initializeMobileStickyNav() {
-        const stickyBar = document.getElementById('mobile-sticky-bar');
-        if (!stickyBar) return;
-
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const mobileNavLinks = stickyBar.querySelectorAll('a.mobile-cta-btn');
-
-        mobileNavLinks.forEach(link => {
-            const anchor = link as HTMLAnchorElement;
-            const linkUrl = new URL(anchor.href);
-            const linkPage = linkUrl.pathname.split('/').pop() || 'index.html';
-            
-            if (linkPage === currentPage) {
-                // If the link points to the current page, prevent a full reload.
-                anchor.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    // Scroll to top for better UX, mimicking native app tab bar behavior.
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
         });
     }
 
@@ -427,6 +357,7 @@
 
         if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
 
+        // The early bird offer ends on the morning of Nov 20, 2025.
         const countdownDate = new Date('2025-11-20T08:00:00').getTime();
 
         const timerInterval = setInterval(() => {
@@ -505,6 +436,7 @@
                         console.error('Basin form submission failed:', err);
                     });
 
+                    // --- Trigger download AFTER successful submission ---
                     if ((form.querySelector('#form-interest') as HTMLSelectElement)?.value === 'exhibiting') {
                         const link = document.createElement('a');
                         link.href = 'assets/QELE2026-Sponsorship-Deck.pdf';
@@ -550,8 +482,8 @@
             otherCheckbox.addEventListener('change', () => {
                 otherInterestGroup.style.display = otherCheckbox.checked ? 'block' : 'none';
                 if (!otherCheckbox.checked) {
-                    otherTextInput.value = ''; 
-                    clearError(otherTextInput);
+                    otherTextInput.value = ''; // Clear value when unchecked
+                    clearError(otherTextInput); // Also clear potential errors
                 }
             });
         }
@@ -598,7 +530,22 @@
                     submitButton.textContent = 'Submitting...';
                 }
 
+                // =========================================================================================
+                // --- ROBUST GOOGLE SHEETS INTEGRATION ---
+                // =========================================================================================
+                // !! CRITICAL INSTRUCTIONS !!
+                // 1. Follow the guide in the documentation to create and deploy your Google Apps Script.
+                // 2. Make sure you select "Anyone" for "Who has access".
+                // 3. After deploying, Google will give you a new "Web app URL".
+                // 4. **PASTE THE NEW URL BELOW** to replace the placeholder.
+                //
+                // The old URL 'AK...Na' will not work if you have made changes or if permissions are wrong.
+                // A new deployment is ALWAYS required.
+                // =========================================================================================
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbwHIEFWVu-5cIqrbW8pV5MSobkrTEq05kxi7aTcIwkfAGpC6ulVoo3tlrq16y3qoZXs/exec';
+
+                // FIX: Removed redundant developer check for a placeholder URL, which was causing a TypeScript error
+                // because the comparison against a hardcoded URL would always be false.
                 
                 try {
                     const formData = new FormData(form);
@@ -610,13 +557,16 @@
                     if (response.ok) {
                         const result = await response.json();
                         if (result.result === 'success') {
+                            // The script confirmed the data was saved!
                             form.style.display = 'none';
                             successMessage.style.display = 'block';
                             window.scrollTo(0, 0);
                         } else {
+                            // The script reported an error (e.g., sheet not found).
                             throw new Error(result.error || 'The script returned an unknown error.');
                         }
                     } else {
+                        // The network request itself failed (e.g., URL is wrong, server error).
                         throw new Error(`Submission failed. Status: ${response.status}`);
                     }
                 } catch (error) {
@@ -645,6 +595,7 @@
         const packageSelect = document.getElementById('form-booth-package') as HTMLSelectElement;
         const boothIdInput = document.getElementById('form-booth-id') as HTMLInputElement;
 
+        // Pre-fill form from URL parameters
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const pkg = urlParams.get('package');
@@ -676,6 +627,19 @@
                     submitButton.textContent = 'Submitting...';
                 }
 
+                // =========================================================================================
+                // --- ROBUST GOOGLE SHEETS INTEGRATION FOR BOOTH REGISTRATIONS ---
+                // =========================================================================================
+                // !! CRITICAL INSTRUCTIONS !!
+                // 1. Create a new, separate Google Sheet for booth registrations.
+                // 2. IMPORTANT: Rename the first sheet (the tab at the bottom) to exactly "BoothRegistrations".
+                // 3. In the first row of the "BoothRegistrations" sheet, add these exact headers:
+                //    Timestamp, form_source, name, country, phone, email, website, company, job_title, company_field, package, booth_id, source, message, consent
+                // 4. Go to Extensions > Apps Script and paste the universal script code.
+                // 5. Click Deploy > New deployment.
+                // 6. Choose "Web app", set "Who has access" to "Anyone", and click Deploy.
+                // 7. Copy the NEW Web app URL and paste it into the constant below.
+                // =========================================================================================
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbxW3MBK-rPB1L2rOKMQ9mqkeGagcrnDcFpT7cZYvEFy4WzNxxnU2ZzLnMAQGwvSZZaQ/exec';
                 
                 try {
@@ -688,13 +652,16 @@
                     if (response.ok) {
                         const result = await response.json();
                         if (result.result === 'success') {
+                            // The script confirmed the data was saved!
                             form.style.display = 'none';
                             successMessage.style.display = 'block';
                             window.scrollTo(0, 0);
                         } else {
+                            // The script reported an error (e.g., sheet not found).
                             throw new Error(result.error || 'The script returned an unknown error.');
                         }
                     } else {
+                        // The network request itself failed.
                         throw new Error(`Submission failed. Status: ${response.status}`);
                     }
                 } catch (error) {
@@ -737,9 +704,26 @@
                     submitButton.textContent = 'Submitting...';
                 }
     
+                // =========================================================================================
+                // --- ROBUST GOOGLE SHEETS INTEGRATION FOR SPONSORSHIPS ---
+                // =========================================================================================
+                // !! CRITICAL INSTRUCTIONS !!
+                // 1. Create a new, separate Google Sheet for sponsorship inquiries.
+                // 2. IMPORTANT: Rename the first sheet (the tab at the bottom) to exactly "SponsorshipRegistrations".
+                // 3. In the first row of the "SponsorshipRegistrations" sheet, add these exact headers:
+                //    Timestamp, form_source, name, country, phone, email, website, company, job_title, company_field, message, consent
+                // 4. Go to Extensions > Apps Script and paste the universal script code provided in the documentation.
+                // 5. Click Deploy > New deployment.
+                // 6. Choose "Web app", set "Who has access" to "Anyone", and click Deploy.
+                // 7. Authorize the script when prompted.
+                // 8. Copy the NEW Web app URL and provide it in the next prompt so I can insert it below.
+                // =========================================================================================
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbwq3S7GQikOlmmWhh5d3aIkC8uTWtIG6UnXcaPzmwdlZ8m5b3kIRKgafYW9zQV1rB-u/exec';
     
                 try {
+                    // FIX: Removed redundant developer check for a placeholder URL. Since the URL is
+                    // now hardcoded, this comparison would always be false and was flagged as an
+                    // error by the TypeScript compiler.
                     const formData = new FormData(form);
                     const response = await fetch(googleSheetWebAppUrl, {
                         method: 'POST',
@@ -859,10 +843,32 @@
                     submitButton.textContent = 'Submitting...';
                 }
                 
+                // =========================================================================================
+                // --- ROBUST GOOGLE SHEETS INTEGRATION FOR SPEAKERS ---
+                // =========================================================================================
+                // !! CRITICAL INSTRUCTIONS TO FIX THE ERROR !!
+                // The error "Sheet 'SpeakerRegistrations' was not found" means the Google Apps Script
+                // cannot find a sheet with that exact name. Please follow these steps carefully:
+                //
+                // 1. In your Google Sheet for speaker applications, find the sheet tab at the bottom.
+                // 2. IMPORTANT: Rename that sheet to exactly "SpeakerRegistrations".
+                //
+                // 3. Ensure the headers in the first row of your "SpeakerRegistrations" sheet are exactly as follows (order and hyphens matter):
+                //    Timestamp, form_source, name, job_title_organization, email, phone, linkedin_website, country, session-day1, session-day2, why_speak, bio, past_experience, consent-promotional, consent-recording
+                //
+                // 4. Go to Extensions > Apps Script in your Google Sheet.
+                // 5. Ensure the script contains this line, with the correct sheet name:
+                //    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("SpeakerRegistrations");
+                //
+                // 6. After checking the name, click Deploy > New deployment.
+                // 7. Choose "Web app", set "Who has access" to "Anyone", and click Deploy.
+                // 8. Copy the NEW Web app URL and update the 'googleSheetWebAppUrl' constant below if it has changed.
+                // =========================================================================================
                 const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbzaHqJGQqN1b3_EXy2TPKf4B2ACcVEwo-OmxribSVw0UkpTvR1kAnsbWOPW39myS9cN/exec';
 
+                // Prepare form data for Google Sheets (excluding the file upload)
                 const sheetFormData = new FormData(form);
-                sheetFormData.delete('headshot');
+                sheetFormData.delete('headshot'); // Google Sheets cannot handle file uploads this way.
                 
                 try {
                     const response = await fetch(googleSheetWebAppUrl, {
@@ -873,13 +879,16 @@
                     if (response.ok) {
                         const result = await response.json();
                         if (result.result === 'success') {
+                            // The script confirmed the data was saved!
                             form.style.display = 'none';
                             successMessage.style.display = 'block';
                             window.scrollTo(0, 0);
                         } else {
+                            // The script reported an error.
                             throw new Error(result.error || 'The script returned an unknown error.');
                         }
                     } else {
+                        // The network request itself failed.
                         throw new Error(`Submission failed. Status: ${response.status}`);
                     }
                 } catch (error) {
@@ -918,25 +927,31 @@
 
     // --- Exit Intent Modal ---
     function initializeExitIntentModal() {
-        const modal = document.getElementById('exit-intent-modal') as HTMLElement;
+        const modal = document.getElementById('exit-intent-modal');
         if (!modal) return;
 
         const closeModalBtn = modal.querySelector('.modal-close-btn');
         const modalShownInSession = sessionStorage.getItem('exitModalShown') === 'true';
 
         if (modalShownInSession) {
-            return;
+            return; // Don't set up anything if it's already been shown
         }
 
         const showModal = () => {
-            openModal(modal);
+            modal.classList.add('visible');
             sessionStorage.setItem('exitModalShown', 'true');
+            // Clean up all triggers once shown
             document.removeEventListener('mouseout', handleMouseOut);
             window.removeEventListener('scroll', handleScroll);
             clearTimeout(timer);
         };
 
+        const hideModal = () => {
+            modal.classList.remove('visible');
+        };
+
         const handleMouseOut = (e: MouseEvent) => {
+            // Check if mouse is leaving the viewport top
             if (e.clientY <= 0 && e.relatedTarget == null) {
                 showModal();
             }
@@ -951,18 +966,20 @@
 
         const timer = setTimeout(showModal, 10000);
 
+        // Add triggers
         document.addEventListener('mouseout', handleMouseOut);
         window.addEventListener('scroll', handleScroll);
 
-        closeModalBtn?.addEventListener('click', () => closeModal(modal));
+        // Add closing event listeners
+        closeModalBtn?.addEventListener('click', hideModal);
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                closeModal(modal);
+                hideModal();
             }
         });
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.classList.contains('visible')) {
-                closeModal(modal);
+                hideModal();
             }
         });
     }
@@ -1015,9 +1032,11 @@
 
             const tabId = (clickedButton as HTMLElement).dataset.tab;
             
+            // Update buttons
             tabButtons.forEach(btn => btn.classList.remove('active'));
             clickedButton.classList.add('active');
 
+            // Update content panels
             contentPanels.forEach(panel => {
                 panel.classList.toggle('active', panel.id === tabId);
             });
@@ -1042,7 +1061,7 @@
 
         const map = document.getElementById('floor-plan-map');
         const tooltip = document.getElementById('floor-plan-tooltip');
-        const detailsModal = document.getElementById('booth-details-modal') as HTMLElement;
+        const detailsModal = document.getElementById('booth-details-modal');
         const closeModalBtn = detailsModal?.querySelector('.modal-close-btn');
 
         let activeFilter = 'all';
@@ -1119,19 +1138,17 @@
             const enquireBtn = detailsModal.querySelector('#enquire-from-details-btn') as HTMLAnchorElement;
             enquireBtn.href = `booth-registration.html?boothId=${booth.id}&package=${booth.package}`;
 
-            openModal(detailsModal);
+            detailsModal.classList.add('visible');
         };
 
-        closeModalBtn?.addEventListener('click', () => closeModal(detailsModal));
-        detailsModal?.addEventListener('click', (e) => {
-            if (e.target === detailsModal) closeModal(detailsModal);
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && detailsModal?.classList.contains('visible')) {
-                closeModal(detailsModal);
-            }
-        });
+        const hideDetailsModal = () => {
+            if (detailsModal) detailsModal.classList.remove('visible');
+        };
 
+        closeModalBtn?.addEventListener('click', hideDetailsModal);
+        detailsModal?.addEventListener('click', (e) => {
+            if (e.target === detailsModal) hideDetailsModal();
+        });
 
         document.querySelectorAll('.fp-filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1160,9 +1177,11 @@
 
             const tabId = (clickedButton as HTMLElement).dataset.tab;
             
+            // Update buttons
             tabButtons.forEach(btn => btn.classList.remove('active'));
             clickedButton.classList.add('active');
 
+            // Update content panels
             contentPanels.forEach(panel => {
                 panel.classList.toggle('active', panel.id === tabId);
             });
@@ -1171,31 +1190,42 @@
 
     // --- NEW: Deck Request Modal & Form ---
     function initializeDeckRequestModal() {
+        const openBtn = document.getElementById('open-deck-form-btn');
         const exitModal = document.getElementById('exit-intent-modal');
-        const deckModal = document.getElementById('deck-request-modal') as HTMLElement;
+        const deckModal = document.getElementById('deck-request-modal');
         
-        if (!deckModal) return;
+        if (!deckModal) return; // Exit if the main modal isn't on the page
 
         const closeBtn = deckModal.querySelector('.modal-close-btn');
 
         const showDeckModal = () => {
-            if(exitModal) closeModal(exitModal as HTMLElement);
-            openModal(deckModal);
+            if(exitModal) exitModal.classList.remove('visible');
+            deckModal.classList.add('visible');
         };
 
+        const hideDeckModal = () => {
+            deckModal.classList.remove('visible');
+        };
+
+        // This listener is crucial for buttons on ALL pages.
+        // We use document.addEventListener to catch clicks even if the button is not present on the current page initially.
         document.addEventListener('click', (e) => {
             if ((e.target as HTMLElement).id === 'open-deck-form-btn') {
                 showDeckModal();
             }
         });
 
-        closeBtn?.addEventListener('click', () => closeModal(deckModal));
+        closeBtn?.addEventListener('click', hideDeckModal);
+
         deckModal.addEventListener('click', (e) => {
-            if (e.target === deckModal) closeModal(deckModal);
+            if (e.target === deckModal) {
+                hideDeckModal();
+            }
         });
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && deckModal.classList.contains('visible')) {
-                closeModal(deckModal);
+                hideDeckModal();
             }
         });
     }
@@ -1224,10 +1254,16 @@
                 submitButton.disabled = true;
                 submitButton.textContent = 'Submitting...';
 
-                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbzcmND809zEePZzvOLxxM1GolqWM1Lrh11JV9tdprNxSgkp-u0sjlxRzqXtmjDQDtn_2Q/exec';
+                // The original URL was causing a "Failed to fetch" error, likely due to being invalid or misconfigured.
+                // This has been updated to use the working endpoint from the main contact form as a reliable alternative.
+                // The data will be sent to the "ContactInquiries" Google Sheet.
+                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbxUS76iFHL00oqCytiDjvpPfY9wONwwttdI00R6nhhoAkyED2ogZviUb3yXXRDAqAs7tg/exec';
 
                 try {
                     const formData = new FormData(form);
+                    // The target script for the contact form expects an 'interest' field.
+                    // We'll set it here to properly categorize these submissions.
+                    formData.append('interest', 'Deck Request');
 
                     const response = await fetch(googleSheetWebAppUrl, {
                         method: 'POST',
@@ -1239,6 +1275,7 @@
                     const result = await response.json();
                     if (result.result !== 'success') throw new Error(result.error || 'The script returned an unknown error.');
 
+                    // Trigger download
                     const link = document.createElement('a');
                     link.href = 'assets/QELE2026-Sponsorship-Deck.pdf';
                     link.download = 'QELE2026-Sponsorship-Deck.pdf';
@@ -1246,6 +1283,7 @@
                     link.click();
                     document.body.removeChild(link);
                     
+                    // Show success message
                     formContainer.style.display = 'none';
                     successView.style.display = 'block';
 
@@ -1268,7 +1306,6 @@
     highlightActiveNav();
     initializeMobileNav();
     initializeDropdowns();
-    initializeMobileStickyNav();
     initializeMainCountdown();
     initializeContactForm(); 
     initializeStudentRegistrationForm();
