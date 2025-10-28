@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -236,6 +237,63 @@
             </div>
         </div>
     </footer>
+
+    <!-- Exit Intent Modal -->
+    <div id="exit-intent-modal" class="modal-overlay">
+        <div class="modal-content exit-intent-content" role="dialog" aria-modal="true" aria-labelledby="exit-modal-title">
+            <button class="modal-close-btn" aria-label="Close">&times;</button>
+            <h3 id="exit-modal-title">Download The Deck Before You Leave!</h3>
+            <p>Get our official Exhibitor & Sponsorship Deck, including the floor plan and ROI details, sent straight to your inbox.</p>
+            <button id="open-deck-form-btn" class="btn btn-primary">Get The Deck</button>
+        </div>
+    </div>
+
+    <!-- Deck Request Modal -->
+    <div id="deck-request-modal" class="modal-overlay">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="deck-modal-title">
+            <button class="modal-close-btn" aria-label="Close">&times;</button>
+            <div id="deck-form-container">
+                <h3 id="deck-modal-title">Get The Official Deck</h3>
+                <p>Please provide your details to receive the Exhibitor & Sponsorship Deck instantly.</p>
+                <form id="deck-request-form" novalidate style="margin-top: 1.5rem;">
+                    <input type="hidden" name="form_source" value="Deck Request Popup">
+                    <div class="form-group">
+                        <label for="deck-form-name">Full Name *</label>
+                        <input type="text" id="deck-form-name" name="name" required>
+                        <div class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="deck-form-email">Work Email *</label>
+                        <input type="email" id="deck-form-email" name="email" required>
+                        <div class="error-message"></div>
+                    </div>
+                     <div class="form-group">
+                        <label for="deck-form-phone">Mobile Number *</label>
+                        <input type="tel" id="deck-form-phone" name="phone" required>
+                        <div class="error-message"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="deck-form-designation">Designation *</label>
+                            <input type="text" id="deck-form-designation" name="designation" required>
+                            <div class="error-message"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="deck-form-organization">Organization *</label>
+                            <input type="text" id="deck-form-organization" name="organization" required>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Download Now</button>
+                </form>
+            </div>
+            <div id="deck-form-success" style="display: none; text-align: center;">
+                <i class="fas fa-check-circle" style="font-size: 3rem; color: #4db6ac; margin-bottom: 1rem;" aria-hidden="true"></i>
+                <h3>Thank You!</h3>
+                <p>Your download should start automatically. If it doesn't, please check your pop-up blocker or try again.</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Mobile Sticky Bar -->
     <div id="mobile-sticky-bar">
