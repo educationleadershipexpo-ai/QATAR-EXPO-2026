@@ -1,4 +1,5 @@
 
+
 :root {
     --gradient: linear-gradient(to right, #d12386, #711fb8);
     --primary-font: 'Poppins', sans-serif;
@@ -2208,58 +2209,9 @@ a.contact-email:hover {
 }
 
 /* --- Brand Exposure Page Styles --- */
-
-/* Impact Dashboard */
-.impact-dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-    margin-top: 3rem;
-    max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
+#audience-reach .stat-card {
+    background-color: var(--surface-color);
 }
-.impact-card {
-    background: var(--white);
-    padding: 2.5rem 1.5rem;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    border: 1px solid var(--border-color);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.impact-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.09);
-}
-.impact-card-icon {
-    font-size: 2.5rem;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 1rem;
-}
-.impact-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    font-family: var(--heading-font);
-    color: var(--text-color);
-    display: block;
-    line-height: 1;
-}
-.impact-card h4 {
-    font-size: 1rem;
-    margin: 0;
-    text-align: center;
-    font-family: var(--primary-font);
-    font-weight: 400;
-    color: #555;
-}
-
 
 /* NEW: Target Audience Persona Section */
 #target-audience {
@@ -2987,6 +2939,8 @@ a.contact-email:hover {
 }
 
 /* --- Brand Exposure Page Redesign --- */
+/* Impact Dashboard - REMOVED */
+
 /* Audience Persona Cards with Avatars */
 #target-audience .audience-card {
     padding: 0;
