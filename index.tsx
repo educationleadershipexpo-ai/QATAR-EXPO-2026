@@ -581,7 +581,9 @@
                         if (result.result === 'success') {
                             // The script confirmed the data was saved!
                             form.style.display = 'none';
-                            successMessage.style.display = 'block';
+                            successMessage.style.display = 'flex';
+                            successMessage.style.flexDirection = 'column';
+                            successMessage.style.alignItems = 'center';
                             window.scrollTo(0, 0);
                         } else {
                             // The script reported an error (e.g., sheet not found).
@@ -676,7 +678,9 @@
                         if (result.result === 'success') {
                             // The script confirmed the data was saved!
                             form.style.display = 'none';
-                            successMessage.style.display = 'block';
+                            successMessage.style.display = 'flex';
+                             successMessage.style.flexDirection = 'column';
+                            successMessage.style.alignItems = 'center';
                             window.scrollTo(0, 0);
                         } else {
                             // The script reported an error (e.g., sheet not found).
@@ -756,7 +760,9 @@
                         const result = await response.json();
                         if (result.result === 'success') {
                             form.style.display = 'none';
-                            successMessage.style.display = 'block';
+                            successMessage.style.display = 'flex';
+                            successMessage.style.flexDirection = 'column';
+                            successMessage.style.alignItems = 'center';
                             window.scrollTo(0, 0);
                         } else {
                             throw new Error(result.error || 'The script returned an unknown error.');
@@ -903,7 +909,9 @@
                         if (result.result === 'success') {
                             // The script confirmed the data was saved!
                             form.style.display = 'none';
-                            successMessage.style.display = 'block';
+                            successMessage.style.display = 'flex';
+                            successMessage.style.flexDirection = 'column';
+                            successMessage.style.alignItems = 'center';
                             window.scrollTo(0, 0);
                         } else {
                             // The script reported an error.
@@ -1244,6 +1252,22 @@
         updateCounts();
     }
 
+    // --- Floating Mascot ---
+    function initializeFloatingMascot() {
+        const mascot = document.getElementById('floating-mascot');
+        if (!mascot) return;
+
+        const handleScroll = () => {
+            if (window.scrollY > 500) {
+                mascot.classList.add('visible');
+            } else {
+                mascot.classList.remove('visible');
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+
 
     highlightActiveNav();
     initializeMobileNav();
@@ -1262,4 +1286,5 @@
     initializePastPartners();
     initializeAgendaTabs();
     initializeFloorPlan();
+    initializeFloatingMascot();
     });
