@@ -1,7 +1,5 @@
 
 
-
-
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -1244,6 +1242,87 @@
         updateCounts();
     }
 
+    // --- Brand Exposure Page: 360 Marketing Ecosystem Tabs ---
+    function initializeExposureTabs() {
+        const tabsContainer = document.querySelector('.exposure-tabs-container');
+        if (!tabsContainer) return;
+
+        const tabButtons = tabsContainer.querySelectorAll('.exposure-tab-btn');
+        const contentPanels = tabsContainer.querySelectorAll('.exposure-content');
+
+        tabsContainer.addEventListener('click', (e) => {
+            const clickedButton = (e.target as HTMLElement).closest('.exposure-tab-btn');
+            if (!clickedButton) return;
+
+            const tabId = (clickedButton as HTMLElement).dataset.tab;
+            
+            // Update buttons
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            clickedButton.classList.add('active');
+
+            // Update content panels
+            contentPanels.forEach(panel => {
+                panel.classList.toggle('active', panel.id === tabId);
+            });
+        });
+    }
+
+    // --- Brand Exposure Page: Impact Dashboard Number Animation ---
+    function initializeImpactDashboard() {
+        const dashboard = document.getElementById('audience-reach');
+        if (!dashboard) return;
+
+        const counters = dashboard.querySelectorAll('.impact-number');
+        const animationDuration = 2000; // ms
+
+        const animateCounter = (counter: HTMLElement) => {
+            const target = +(counter.getAttribute('data-target') || 0);
+            let startTime: number | null = null;
+
+            // To prevent re-animating if already done
+            if (counter.classList.contains('animated')) return;
+            counter.classList.add('animated');
+
+            const formatNumber = (num: number, targetNum: number): string => {
+                if (targetNum >= 1000000) {
+                    return (num / 1000000).toFixed(1) + 'M+';
+                } else if (targetNum >= 1000) {
+                    return Math.ceil(num / 1000) + 'K+';
+                }
+                return Math.ceil(num).toString();
+            }
+
+            const step = (timestamp: number) => {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / animationDuration, 1);
+                const currentValue = Math.floor(progress * target);
+                
+                counter.innerText = formatNumber(currentValue, target);
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    counter.innerText = formatNumber(target, target);
+                }
+            };
+
+            window.requestAnimationFrame(step);
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    counters.forEach(counter => {
+                        animateCounter(counter as HTMLElement);
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(dashboard);
+    }
+
 
     highlightActiveNav();
     initializeMobileNav();
@@ -1262,4 +1341,6 @@
     initializePastPartners();
     initializeAgendaTabs();
     initializeFloorPlan();
+    initializeExposureTabs();
+    initializeImpactDashboard();
     });
