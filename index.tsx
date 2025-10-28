@@ -1240,6 +1240,85 @@
         });
     }
 
+    // --- NEW: Speakers Page Initializer ---
+    function initializeSpeakersPage() {
+        const grid = document.getElementById('speakers-page-grid');
+        if (!grid) return;
+
+        const speakers = [
+            // Re-add homepage speakers first
+            { name: 'Elani McDonald', title: 'Secondary Principal', org: 'Qatar Academy Sidra', tag: 'Leadership in Education', img: 'https://res.cloudinary.com/dj3vhocuf/image/upload/v1761476344/Untitled_design_-_2025-10-26T162827.845_xws5xw.png', linkedin: 'https://www.linkedin.com/in/elani-mcdonald-59b22a29/' },
+            { name: 'Amer Bazerbachi', title: 'Partner', org: 'KPMG', tag: 'Business & Finance', img: 'https://res.cloudinary.com/dj3vhocuf/image/upload/v1761477009/Untitled_design_-_2025-10-26T163955.545_ufmkhs.png', linkedin: 'https://www.linkedin.com/in/amer-bazerbachi/' },
+            { name: 'Lucy Miller', title: 'CEO', org: 'Education Excellence Institute', tag: 'Leadership in Education', img: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=300', linkedin: '#' },
+            { name: 'Dr. Michael Chen', title: 'Research Director', org: 'Cambridge Assessment', tag: 'Assessment & Analytics', img: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300', linkedin: '#' },
+            { name: 'Dr. Mirela-Dana Palimariu', title: 'Founding Principal', org: 'Young Achievers International School', tag: 'Leadership in Education', img: 'https://res.cloudinary.com/dj3vhocuf/image/upload/v1761476343/Untitled_design_-_2025-10-26T162847.853_geyb8t.png', linkedin: 'https://www.linkedin.com/in/dr-mirela-dana-palimariu-phd-86132b4a/' },
+            { name: 'James Wilson', title: 'Global Education Consultant', org: 'UNESCO', tag: 'International Education', img: 'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=300', linkedin: '#' },
+            { name: 'Dr. Noor Al-Kuwari', title: 'Vice Principal', org: 'Green International School', tag: 'Student Development', img: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=300', linkedin: '#' },
+            { name: 'Prof. Robert Martinez', title: 'Education Technology Pioneer', org: 'EdTech Global', tag: 'AI in Education', img: 'https://res.cloudinary.com/dj3vhocuf/image/upload/v1761482787/Untitled_design_-_2025-10-26T181620.790_shapre.png', linkedin: '#' },
+            { name: 'Prof. David Williams', title: 'Founder', org: 'Learning of Growth', tag: 'Edutech', img: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=300', linkedin: '#' }
+            // Add more speakers here as they are confirmed
+        ];
+
+        speakers.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'speaker-card';
+            card.innerHTML = `
+                <a href="${s.linkedin}" class="speaker-linkedin" aria-label="${s.name}'s LinkedIn profile" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <img src="${s.img}" alt="Headshot of ${s.name}" class="speaker-photo">
+                <div class="speaker-info">
+                    <h4>${s.name}</h4>
+                    <p class="speaker-title">${s.title}</p>
+                    <p class="speaker-org">${s.org}</p>
+                </div>
+                <span class="speaker-tag">${s.tag}</span>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    // --- NEW: Sponsors Page Initializer ---
+    function initializeSponsorsPage() {
+        const platinumGrid = document.getElementById('platinum-sponsors-grid');
+        const goldGrid = document.getElementById('gold-sponsors-grid');
+        const partnersGrid = document.getElementById('supporting-partners-grid');
+
+        if (!platinumGrid || !goldGrid || !partnersGrid) return;
+        
+        const platinumSponsors = [
+             { src: 'https://cdn.asp.events/CLIENT_Mark_All_D856883D_926F_07B7_E9D09EE4984A0639/sites/inclusive-education-mena/media/Logos/Ed-logo.png', alt: 'Ministry of Education Logo', customClass: 'moe-logo' },
+        ];
+
+        const goldSponsors = [
+            // Add gold sponsors here
+        ];
+
+        const supportingPartners = [
+            { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/v1761216928/Blue_Bold_Office_Idea_Logo_50_x_50_px_10_l68irx.png', alt: 'Sheraton Grand Doha Logo' },
+            { src: 'https://i0.wp.com/blog.10times.com/wp-content/uploads/2019/09/cropped-10times-logo-hd.png?fit=3077%2C937&ssl=1', alt: '10times Logo' },
+            { src: 'https://www.eventbrite.com/blog/wp-content/uploads/2025/02/Eventbrite_Hero-Lock-up_Brite-Orange.png', alt: 'Eventbrite Logo', customClass: 'eventbrite-logo' }
+        ];
+
+        const createLogoItem = (partner: any) => {
+            const logoItem = document.createElement('div');
+            logoItem.className = 'logo-item';
+            
+            const img = document.createElement('img');
+            img.src = partner.src;
+            img.alt = partner.alt;
+             if (partner.customClass) {
+                img.classList.add(partner.customClass);
+            }
+            
+            logoItem.appendChild(img);
+            return logoItem;
+        };
+        
+        platinumSponsors.forEach(p => platinumGrid.appendChild(createLogoItem(p)));
+        goldSponsors.forEach(p => goldGrid.appendChild(createLogoItem(p)));
+        supportingPartners.forEach(p => partnersGrid.appendChild(createLogoItem(p)));
+    }
+
+
     // --- Page Load Initializers ---
     highlightActiveNav();
     initializeMobileNav();
@@ -1259,4 +1338,6 @@
     initializeAgendaTabs();
     initializeFloorPlan();
     initializeExposureTabs();
+    initializeSpeakersPage();
+    initializeSponsorsPage();
 });
