@@ -1,6 +1,4 @@
 
-
-
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -53,6 +51,7 @@
             case 'form-student-name':
             case 'form-sponsor-name':
             case 'form-speaker-name':
+            case 'deck-form-name':
                 if (value === '') {
                     showError(field, 'Name is required.');
                     isValid = false;
@@ -64,8 +63,9 @@
             case 'form-student-school':
             case 'form-sponsor-company':
             case 'form-speaker-job-org':
+            case 'deck-form-organization':
                 if (value === '') {
-                    const fieldName = (field.id === 'form-booth-company' || field.id === 'form-sponsor-company') ? 'Company' : (field.id === 'form-student-school') ? 'School/Institution' : 'Organization';
+                    const fieldName = (field.id.includes('booth') || field.id.includes('sponsor')) ? 'Company' : (field.id.includes('student')) ? 'School/Institution' : 'Organization';
                     showError(field, `${fieldName} is required.`);
                     isValid = false;
                 }
@@ -76,6 +76,7 @@
             case 'form-student-email':
             case 'form-sponsor-email':
             case 'form-speaker-email':
+            case 'deck-form-email':
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (value === '') {
                     showError(field, 'Email is required.');
@@ -91,6 +92,7 @@
             case 'form-booth-phone':
             case 'form-sponsor-phone':
             case 'form-speaker-phone':
+            case 'deck-form-phone':
                 const phoneRegex = /^[\d\s()+-]+$/;
                  if ((field.hasAttribute('required') && value === '')) {
                     showError(field, 'Mobile number is required.');
@@ -103,8 +105,9 @@
 
             case 'form-booth-title':
             case 'form-sponsor-title':
+            case 'deck-form-designation':
                  if (value === '') {
-                    const fieldName = (field.id === 'form-sponsor-title') ? 'Position' : 'Job Title';
+                    const fieldName = (field.id === 'form-sponsor-title') ? 'Position' : (field.id === 'deck-form-designation') ? 'Designation' : 'Job Title';
                     showError(field, `${fieldName} is required.`);
                     isValid = false;
                 }
@@ -403,7 +406,7 @@
             const customValidationAndActions = () => {
                 if ((form.querySelector('#form-interest') as HTMLSelectElement)?.value === 'exhibiting') {
                     const link = document.createElement('a');
-                    link.href = '#'; // Placeholder, you should replace this with the actual file path.
+                    link.href = 'assets/QELE2026-Sponsorship-Deck.pdf';
                     link.download = 'QELE2026-Sponsorship-Deck.pdf';
                     document.body.appendChild(link);
                     link.click();
@@ -1005,7 +1008,7 @@
         });
     }
     
-    // --- Dynamic Partner Logos for Homepage ---
+    // --- Home Page Partner Logos ---
     function initializeHomePartners() {
         const logoGrid = document.getElementById('home-partners-grid');
         if (!logoGrid) return;
@@ -1034,36 +1037,6 @@
                 img.classList.add(partner.customClass);
             }
             
-            logoItem.appendChild(img);
-            logoGrid.appendChild(logoItem);
-        });
-    }
-
-    // --- Dynamic Partner Logos for Past Partners Page ---
-    function initializePastPartners() {
-        const logoGrid = document.getElementById('past-partners-grid');
-        if (!logoGrid) return;
-
-        // Using sponsor logos as a placeholder for past partners as a sample.
-        const partners = [
-            { src: 'https://logo.clearbit.com/microsoft.com', alt: 'Microsoft Logo' },
-            { src: 'https://logo.clearbit.com/google.com', alt: 'Google for Education Logo' },
-            { src: 'https://logo.clearbit.com/coursera.org', alt: 'Coursera Logo' },
-            { src: 'https://logo.clearbit.com/qf.org.qa', alt: 'Qatar Foundation Logo' },
-            { src: 'https://logo.clearbit.com/qu.edu.qa', alt: 'Qatar University Logo' },
-            { src: 'https://logo.clearbit.com/britishcouncil.org', alt: 'British Council Logo' },
-            { src: 'https://logo.clearbit.com/vodafone.com', alt: 'Vodafone Logo' },
-            { src: 'https://logo.clearbit.com/qnb.com', alt: 'QNB Logo' },
-        ];
-        
-        logoGrid.innerHTML = '';
-
-        partners.forEach(partner => {
-            const logoItem = document.createElement('div');
-            logoItem.className = 'logo-item';
-            const img = document.createElement('img');
-            img.src = partner.src;
-            img.alt = partner.alt;
             logoItem.appendChild(img);
             logoGrid.appendChild(logoItem);
         });
@@ -1239,22 +1212,143 @@
         });
     }
 
+    // --- NEW: Deck Request Modal & Form ---
+    function initializeDeckRequestModal() {
+        const openBtn = document.getElementById('open-deck-form-btn');
+        const exitModal = document.getElementById('exit-intent-modal');
+        const deckModal = document.getElementById('deck-request-modal');
+        
+        if (!deckModal) return; // Exit if the main modal isn't on the page
 
+        const closeBtn = deckModal.querySelector('.modal-close-btn');
+
+        const showDeckModal = () => {
+            if(exitModal) exitModal.classList.remove('visible');
+            deckModal.classList.add('visible');
+        };
+
+        const hideDeckModal = () => {
+            deckModal.classList.remove('visible');
+        };
+
+        // This listener is crucial for buttons on ALL pages.
+        // We use document.addEventListener to catch clicks even if the button is not present on the current page initially.
+        document.addEventListener('click', (e) => {
+            if ((e.target as HTMLElement).id === 'open-deck-form-btn') {
+                showDeckModal();
+            }
+        });
+
+        closeBtn?.addEventListener('click', hideDeckModal);
+
+        deckModal.addEventListener('click', (e) => {
+            if (e.target === deckModal) {
+                hideDeckModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && deckModal.classList.contains('visible')) {
+                hideDeckModal();
+            }
+        });
+    }
+
+    function initializeDeckRequestForm() {
+        const form = document.getElementById('deck-request-form') as HTMLFormElement;
+        const successView = document.getElementById('deck-form-success');
+        const formContainer = document.getElementById('deck-form-container');
+
+        if (!form || !successView || !formContainer) return;
+
+        const requiredFields: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
+
+        requiredFields.forEach(field => {
+            field.addEventListener('input', () => validateField(field));
+            field.addEventListener('change', () => validateField(field));
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const isFormValid = requiredFields.map(field => validateField(field)).every(Boolean);
+
+            if (isFormValid) {
+                const submitButton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+
+                // =========================================================================================
+                // --- GOOGLE SHEETS INTEGRATION FOR DECK REQUESTS ---
+                // =========================================================================================
+                // !! CRITICAL INSTRUCTIONS !!
+                // 1. Create a new Google Sheet.
+                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "DeckRequests".
+                // 3. In the first row of "DeckRequests", add these exact headers:
+                //    Timestamp, form_source, name, email, phone, designation, organization
+                // 4. Go to Extensions > Apps Script and paste the universal script code.
+                // 5. Click Deploy > New deployment.
+                // 6. Choose "Web app", set "Who has access" to "Anyone", and click Deploy.
+                // 7. Copy the NEW Web app URL and paste it into the constant below.
+                // =========================================================================================
+                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbz_7g_PqfA-XJv3v7z4e8fW6hY_2jT1xK9sV8c7Z5b4a3B2a1A/exec';
+
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(googleSheetWebAppUrl, {
+                        method: 'POST',
+                        body: new URLSearchParams(formData as any)
+                    });
+
+                    if (!response.ok) throw new Error(`Network response was not ok. Status: ${response.status}`);
+                    
+                    const result = await response.json();
+                    if (result.result !== 'success') throw new Error(result.error || 'The script returned an unknown error.');
+
+                    // Trigger download
+                    const link = document.createElement('a');
+                    link.href = 'assets/QELE2026-Sponsorship-Deck.pdf';
+                    link.download = 'QELE2026-Sponsorship-Deck.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // Show success message
+                    formContainer.style.display = 'none';
+                    successView.style.display = 'block';
+
+                } catch (error) {
+                    console.error('Deck Request Submission Error:', error);
+                    alert('Sorry, there was a problem submitting your request. Please try again. Error: ' + (error as Error).message);
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Download Now';
+                }
+            } else {
+                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                if (firstInvalidField) {
+                    (firstInvalidField.closest('.form-group') as HTMLElement)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    }
+
+    // --- Page Load Initializers ---
     highlightActiveNav();
     initializeMobileNav();
     initializeDropdowns();
     initializeMainCountdown();
-    initializeContactForm(); // Initialize contact form
+    initializeContactForm(); 
     initializeStudentRegistrationForm();
     initializeBoothRegistrationForm();
     initializeSponsorshipRegistrationForm();
     initializeSpeakerRegistrationForm();
     initializeFaqAccordion();
     initializeExitIntentModal();
+    initializeDeckRequestModal();
+    initializeDeckRequestForm();
     initializeEarlyBirdCountdown();
     initializeHomePartners();
-    initializePastPartners();
     initializeAgendaTabs();
     initializeFloorPlan();
     initializeExposureTabs();
-    });
+});
