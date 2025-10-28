@@ -579,10 +579,10 @@ section {
 }
 
 /* Partners Section */
-#home-partners, #past-partners-showcase {
+#home-partners {
     padding: 60px 0;
 }
-#home-partners h2, #past-partners-showcase h2 {
+#home-partners h2 {
     margin-bottom: 2rem;
 }
 .logo-grid {
@@ -1265,18 +1265,6 @@ section {
 #sponsorship-intro .subtitle {
     text-align: left;
     margin-left: 0;
-}
-
-/* Past Partners Showcase */
-#past-partners-showcase h2 {
-    text-align: left;
-}
-#past-partners-showcase .subtitle {
-    text-align: left;
-    margin-left: 0;
-}
-#past-partners-showcase .logo-grid {
-    max-width: 100%;
 }
 
 /* Sponsor FAQ */
