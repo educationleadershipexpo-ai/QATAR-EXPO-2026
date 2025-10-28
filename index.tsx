@@ -1,6 +1,5 @@
 
 
-
     declare var Panzoom: any;
     declare var emailjs: any;
 
@@ -1239,62 +1238,6 @@
         });
     }
 
-    // --- Brand Exposure Page: Impact Dashboard Number Animation ---
-    function initializeImpactDashboard() {
-        const dashboard = document.getElementById('audience-reach');
-        if (!dashboard) return;
-
-        const counters = dashboard.querySelectorAll('.impact-number');
-        const animationDuration = 2000; // ms
-
-        const animateCounter = (counter: HTMLElement) => {
-            const target = +(counter.getAttribute('data-target') || 0);
-            let startTime: number | null = null;
-
-            // To prevent re-animating if already done
-            if (counter.classList.contains('animated')) return;
-            counter.classList.add('animated');
-
-            const formatNumber = (num: number, targetNum: number): string => {
-                const ceiledNum = Math.ceil(num);
-                // Special case for 1 Million to avoid showing "1,000,000+"
-                if (targetNum === 1000000 && ceiledNum >= 1000000) {
-                    return '1 Million+';
-                }
-                return ceiledNum.toLocaleString() + '+';
-            }
-
-            const step = (timestamp: number) => {
-                if (!startTime) startTime = timestamp;
-                const progress = Math.min((timestamp - startTime) / animationDuration, 1);
-                const currentValue = Math.floor(progress * target);
-                
-                counter.innerText = formatNumber(currentValue, target);
-
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                } else {
-                    counter.innerText = formatNumber(target, target);
-                }
-            };
-
-            window.requestAnimationFrame(step);
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    counters.forEach(counter => {
-                        animateCounter(counter as HTMLElement);
-                    });
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        observer.observe(dashboard);
-    }
-
 
     highlightActiveNav();
     initializeMobileNav();
@@ -1313,5 +1256,4 @@
     initializeAgendaTabs();
     initializeFloorPlan();
     initializeExposureTabs();
-    initializeImpactDashboard();
     });
