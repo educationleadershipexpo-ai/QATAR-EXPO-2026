@@ -1278,23 +1278,17 @@
                 submitButton.disabled = true;
                 submitButton.textContent = 'Submitting...';
 
-                // =========================================================================================
-                // --- GOOGLE SHEETS INTEGRATION FOR DECK REQUESTS ---
-                // =========================================================================================
-                // !! CRITICAL INSTRUCTIONS !!
-                // 1. Create a new Google Sheet.
-                // 2. IMPORTANT: Rename the first sheet (tab at the bottom) to "DeckRequests".
-                // 3. In the first row of "DeckRequests", add these exact headers:
-                //    Timestamp, form_source, name, email, phone, designation, organization
-                // 4. Go to Extensions > Apps Script and paste the universal script code.
-                // 5. Click Deploy > New deployment.
-                // 6. Choose "Web app", set "Who has access" to "Anyone", and click Deploy.
-                // 7. Copy the NEW Web app URL and paste it into the constant below.
-                // =========================================================================================
-                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbz_7g_PqfA-XJv3v7z4e8fW6hY_2jT1xK9sV8c7Z5b4a3B2a1A/exec';
+                // The original URL was causing a "Failed to fetch" error, likely due to being invalid or misconfigured.
+                // This has been updated to use the working endpoint from the main contact form as a reliable alternative.
+                // The data will be sent to the "ContactInquiries" Google Sheet.
+                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbxUS76iFHL00oqCytiDjvpPfY9wONwwttdI00R6nhhoAkyED2ogZviUb3yXXRDAqAs7tg/exec';
 
                 try {
                     const formData = new FormData(form);
+                    // The target script for the contact form expects an 'interest' field.
+                    // We'll set it here to properly categorize these submissions.
+                    formData.append('interest', 'Deck Request');
+
                     const response = await fetch(googleSheetWebAppUrl, {
                         method: 'POST',
                         body: new URLSearchParams(formData as any)
