@@ -1505,6 +1505,18 @@ section {
 
 
 /* --- Who Should Exhibit Section --- */
+#who-should-exhibit .container {
+    position: relative;
+}
+.exhibit-mascot {
+    position: absolute;
+    width: 150px;
+    height: auto;
+    top: 60px;
+    right: 15%;
+    z-index: 5;
+    pointer-events: none;
+}
 .exhibitor-types-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -2593,6 +2605,10 @@ a.contact-email:hover {
         right: 20px;
         bottom: -30px;
     }
+    .exhibit-mascot {
+        top: 50px;
+        right: 5%;
+    }
 }
 
 @media (max-width: 992px) {
@@ -2686,6 +2702,9 @@ a.contact-email:hover {
     }
 
     .hero-mascot {
+        display: none;
+    }
+    .exhibit-mascot {
         display: none;
     }
 }
