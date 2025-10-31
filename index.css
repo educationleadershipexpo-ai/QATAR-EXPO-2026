@@ -455,6 +455,7 @@ section {
     height: auto;
     z-index: 4;
     pointer-events: none;
+     right: 6%;
 }
 
 .hero-text {
