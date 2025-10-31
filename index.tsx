@@ -1,4 +1,5 @@
 
+
     declare var Panzoom: any;
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -1188,6 +1189,58 @@
         });
     }
 
+    // --- NEW: Impact Stats Number Animation on Scroll ---
+    function initializeImpactStats() {
+        const impactSection = document.getElementById('who-is-attending');
+        if (!impactSection) return;
+
+        const animateCountUp = (el: HTMLElement) => {
+            const target = parseInt(el.dataset.target || '0', 10);
+            if (isNaN(target)) return;
+            
+            // To prevent re-animating if it's already done
+            if (el.dataset.animated === 'true') return;
+            el.dataset.animated = 'true';
+            
+            el.textContent = '0+'; // Start from 0 for animation effect
+
+            const duration = 2000; // 2 seconds
+            const frameDuration = 1000 / 60; // 60fps
+            const totalFrames = Math.round(duration / frameDuration);
+            let frame = 0;
+
+            const counter = setInterval(() => {
+                frame++;
+                const progress = frame / totalFrames;
+                // Use an ease-out function for a smoother end
+                const easedProgress = 1 - Math.pow(1 - progress, 3);
+                const currentCount = Math.round(target * easedProgress);
+
+                el.textContent = currentCount.toLocaleString() + '+';
+
+                if (frame === totalFrames) {
+                    clearInterval(counter);
+                    el.textContent = target.toLocaleString() + '+'; // Ensure final value is accurate
+                }
+            }, frameDuration);
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    impactSection.classList.add('is-visible');
+                    const numbers = impactSection.querySelectorAll('.impact-number');
+                    numbers.forEach(num => animateCountUp(num as HTMLElement));
+                    observer.unobserve(impactSection); // Animate only once
+                }
+            });
+        }, {
+            threshold: 0.4 // Trigger when 40% of the element is visible
+        });
+
+        observer.observe(impactSection);
+    }
+
     // --- NEW: Deck Request Modal & Form ---
     function initializeDeckRequestModal() {
         const openBtn = document.getElementById('open-deck-form-btn');
@@ -1321,4 +1374,5 @@
     initializeAgendaTabs();
     initializeFloorPlan();
     initializeExposureTabs();
+    initializeImpactStats();
 });
