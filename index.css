@@ -1,4 +1,5 @@
 
+
 :root {
     --gradient: linear-gradient(to right, #d12386, #711fb8);
     --primary-font: 'Poppins', sans-serif;
@@ -3241,10 +3242,24 @@ position: absolute;
 }
 .market-mascot {
     position: absolute;
-    width: 120px;
+    width: 150px;
     height: auto;
-    top: -70px;
+    top: 45px;
     right: 40px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Why Attend Page Mascot --- */
+#why-attend-benefits .container {
+    position: relative;
+}
+.why-attend-mascot {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: 90px;
+    left: 80px;
     z-index: 5;
     pointer-events: none;
 }
@@ -3266,6 +3281,9 @@ position: absolute;
         display: none;
     }
     .market-mascot {
+        display: none;
+    }
+    .why-attend-mascot {
         display: none;
     }
 }
