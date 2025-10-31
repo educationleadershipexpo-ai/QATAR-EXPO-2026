@@ -708,18 +708,18 @@ section {
 .benefit-card p { font-size: 0.95rem; margin-bottom: 0; }
 
 /* Who Is Attending Section */
-#who-is-attending {
-    background: #101c35;
-    color: var(--white);
+#who-is-attending { 
+    background: var(--gradient); 
+    color: var(--white); 
 }
-#who-is-attending h2 {
-    color: var(--white);
+#who-is-attending h2 { 
+    color: var(--white); 
 }
 #who-is-attending .subtitle {
     color: rgba(255, 255, 255, 0.9);
 }
 
-/* --- Impact Stats Section --- */
+/* --- NEW Impact Stats Section --- */
 .impact-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -728,17 +728,44 @@ section {
 }
 
 .impact-card {
-    background: transparent;
+    position: relative;
     border-radius: 16px;
+    overflow: hidden;
     text-align: center;
     color: var(--white);
-    transition: background-color 0.3s ease;
-    padding: 2rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    transition: transform 0.3s ease;
+}
+
+.impact-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(16, 28, 53, 0.95) 20%, rgba(16, 28, 53, 0.4) 50%, transparent 100%);
+    z-index: 1;
 }
 
 .impact-card:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-8px);
+}
+
+.impact-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.impact-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 0.5rem;
+    z-index: 2;
 }
 
 .impact-number {
@@ -755,7 +782,6 @@ section {
     opacity: 0.9;
     margin: 0;
 }
-
 
 /* Decision Makers Section */
 .decision-makers-layout {
