@@ -1002,9 +1002,9 @@ section {
 }
 .testimonials-mascot {
     position: absolute;
-    width: 180px;
+    width: 250px;
     height: auto;
-    top: 60px;
+    top: -48px;
     left: 20px;
     z-index: 5;
     pointer-events: none;
