@@ -466,11 +466,11 @@ section {
 
 .hero-mascot {
     position: absolute;
-    bottom: -40px; /* Overlap with banner */
-    right: 8%;
-    width: 220px;
+    bottom: -15px;
+    right: 1%;
+    width: 300px;
     height: auto;
-    z-index: 4; 
+    z-index: 4;
 }
 
 
