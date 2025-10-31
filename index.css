@@ -1522,10 +1522,10 @@ section {
 }
 .exhibit-mascot {
     position: absolute;
-    width: 180px;
+    width: 150px;
     height: auto;
-    top: 15px;
-    right: 9%;
+    top: 60px;
+    right: 15%;
     z-index: 5;
     pointer-events: none;
 }
@@ -3235,6 +3235,21 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- About Page Mascot --- */
+#about-expo .container {
+    position: relative;
+}
+.market-mascot {
+    position: absolute;
+    width: 150px;
+    height: auto;
+    top: 45px;
+    right: 40px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+
 @media (max-width: 1200px) {
     .benefits-mascot {
         left: 0px;
@@ -3248,6 +3263,9 @@ position: absolute;
         display: none;
     }
     .testimonials-mascot {
+        display: none;
+    }
+    .market-mascot {
         display: none;
     }
 }
