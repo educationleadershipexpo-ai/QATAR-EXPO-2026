@@ -1512,7 +1512,7 @@ section {
     position: absolute;
     width: 180px;
     height: auto;
-    top: 16px;
+    top: 14px;
     right: 10%;
     z-index: 5;
     pointer-events: none;
