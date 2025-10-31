@@ -3191,12 +3191,12 @@ a.contact-email:hover {
 }
 
 .benefits-mascot {
-    position: absolute;
-    width: 250px;
+position: absolute;
+    width: 210px;
     height: auto;
     right: 6%;
     left: 20px;
-    top: 30px;
+    top: -55px;
     z-index: 5;
     pointer-events: none;
 }
