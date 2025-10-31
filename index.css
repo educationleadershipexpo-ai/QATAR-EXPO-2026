@@ -1510,10 +1510,10 @@ section {
 }
 .exhibit-mascot {
     position: absolute;
-    width: 150px;
+    width: 160px;
     height: auto;
-    top: 60px;
-    right: 15%;
+    top: 30px;
+    right: 11%;
     z-index: 5;
     pointer-events: none;
 }
