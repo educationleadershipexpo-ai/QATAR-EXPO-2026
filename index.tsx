@@ -1302,6 +1302,52 @@
         });
     }
 
+    // --- NEW: Counting Animation for Impact Stats ---
+    function initializeCountingAnimation() {
+        const impactSection = document.getElementById('who-is-attending');
+        if (!impactSection) return;
+
+        const counters = Array.from(impactSection.querySelectorAll('.impact-number')) as HTMLElement[];
+
+        const animateCounter = (counter: HTMLElement) => {
+            const target = parseInt(counter.dataset.target || '0', 10);
+            if (isNaN(target)) return;
+            
+            const duration = 2000; // Animation duration in ms
+            let startTime: number | null = null;
+
+            const step = (timestamp: number) => {
+                if (!startTime) startTime = timestamp;
+                const progress = timestamp - startTime;
+                const percentage = Math.min(progress / duration, 1);
+                const currentVal = Math.floor(target * percentage);
+
+                counter.textContent = currentVal.toLocaleString() + '+';
+
+                if (percentage < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    counter.textContent = target.toLocaleString() + '+';
+                }
+            };
+
+            window.requestAnimationFrame(step);
+        };
+        
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    counters.forEach(animateCounter);
+                    observer.unobserve(entry.target); // Animate only once
+                }
+            });
+        }, {
+            threshold: 0.4 // Start when 40% of the section is visible
+        });
+
+        observer.observe(impactSection);
+    }
+
     // --- Page Load Initializers ---
     highlightActiveNav();
     initializeMobileNav();
@@ -1321,4 +1367,5 @@
     initializeAgendaTabs();
     initializeFloorPlan();
     initializeExposureTabs();
+    initializeCountingAnimation();
 });
