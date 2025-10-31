@@ -467,8 +467,8 @@ section {
 .hero-mascot {
     position: absolute;
     bottom: -15px;
-    right: 1%;
-    width: 300px;
+    right: 8%;
+    width: 250px;
     height: auto;
     z-index: 4;
 }
