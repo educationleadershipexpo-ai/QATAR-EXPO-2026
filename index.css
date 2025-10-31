@@ -449,6 +449,16 @@ section {
     z-index: 3;
 }
 
+.hero-mascot {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    width: 280px;
+    height: auto;
+    z-index: 3;
+    pointer-events: none;
+}
+
 .hero-text {
     max-width: 800px;
     margin: 0 auto;
@@ -695,7 +705,7 @@ section {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-fill-color: transparent;
+    color: transparent;
 }
 .benefit-card h3 {
     font-size: 1.2rem;
@@ -719,17 +729,22 @@ section {
     color: rgba(255, 255, 255, 0.9);
 }
 
+/* Increase container width to make cards larger */
+#who-is-attending .container {
+    max-width: 1400px;
+}
+
 /* --- NEW Impact Stats Section (Redesigned) --- */
 .impact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(6, 1fr);
     gap: 1.5rem;
     margin-top: 3rem;
 }
 
 .impact-card {
     position: relative;
-    height: 280px;
+    aspect-ratio: 202 / 227;
     border-radius: 16px;
     overflow: hidden;
     display: flex;
@@ -772,7 +787,23 @@ section {
     font-weight: 700;
     font-family: var(--heading-font);
     line-height: 1.1;
+    /* Animation styles */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
+
+#who-is-attending.is-visible .impact-number {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Stagger the animation */
+#who-is-attending.is-visible .impact-card:nth-child(2) .impact-number { transition-delay: 0.1s; }
+#who-is-attending.is-visible .impact-card:nth-child(3) .impact-number { transition-delay: 0.2s; }
+#who-is-attending.is-visible .impact-card:nth-child(4) .impact-number { transition-delay: 0.3s; }
+#who-is-attending.is-visible .impact-card:nth-child(5) .impact-number { transition-delay: 0.4s; }
+#who-is-attending.is-visible .impact-card:nth-child(6) .impact-number { transition-delay: 0.5s; }
+
 
 .impact-label {
     font-size: 1rem;
@@ -2556,6 +2587,11 @@ a.contact-email:hover {
     .impact-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+    .hero-mascot {
+        width: 220px;
+        right: 20px;
+        bottom: 20px;
+    }
 }
 
 @media (max-width: 992px) {
@@ -2647,6 +2683,10 @@ a.contact-email:hover {
     .exposure-item:nth-child(even) .exposure-image {
         order: -1; /* Reset order for stacking */
     }
+
+    .hero-mascot {
+        display: none;
+    }
 }
 
 @media (max-width: 768px) {
@@ -2733,9 +2773,6 @@ a.contact-email:hover {
         max-width: 320px;
     }
     /* Responsive adjustments for impact cards on smaller grids */
-    .impact-card {
-        height: 220px;
-    }
     .impact-number {
         font-size: 2.2rem;
     }
