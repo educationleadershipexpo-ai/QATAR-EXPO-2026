@@ -415,7 +415,6 @@ section {
 /* --- Hero Section --- */
 #hero {
     position: relative;
-    overflow: hidden;
     color: var(--white);
     padding: 100px 0;
     background-size: cover;
@@ -451,7 +450,7 @@ section {
 
 .hero-mascot {
     position: absolute;
-    bottom: 50px;
+    bottom: -40px;
     right: 50px;
     width: 280px;
     height: auto;
@@ -2590,7 +2589,7 @@ a.contact-email:hover {
     .hero-mascot {
         width: 220px;
         right: 20px;
-        bottom: 20px;
+        bottom: -30px;
     }
 }
 
