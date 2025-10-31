@@ -708,20 +708,64 @@ section {
 .benefit-card p { font-size: 0.95rem; margin-bottom: 0; }
 
 /* Who Is Attending Section */
-#who-is-attending { background: var(--gradient); color: var(--white); }
-#who-is-attending h2 { color: var(--white); }
-.attendee-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
-.attendee-card {
-    background: rgba(255,255,255,0.1);
-    padding: 1.5rem;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+#who-is-attending { 
+    background: var(--gradient); 
+    color: var(--white); 
 }
-.attendee-card i { font-size: 1.5rem; opacity: 0.8; }
+#who-is-attending h2 { 
+    color: var(--white); 
+}
+#who-is-attending .subtitle {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* --- NEW Impact Stats Section --- */
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.impact-card {
+    background: #192641; /* Dark blue from image */
+    border-radius: 16px;
+    overflow: hidden;
+    text-align: center;
+    color: var(--white);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    transition: transform 0.3s ease;
+}
+
+.impact-card:hover {
+    transform: translateY(-8px);
+}
+
+.impact-card img {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    display: block;
+}
+
+.impact-card-content {
+    padding: 1.25rem 0.5rem;
+}
+
+.impact-number {
+    font-size: 2.2rem;
+    font-weight: 700;
+    font-family: var(--heading-font);
+    line-height: 1;
+    margin: 0 0 0.5rem 0;
+}
+
+.impact-label {
+    font-size: 0.9rem;
+    font-weight: 400;
+    opacity: 0.9;
+    margin: 0;
+}
 
 /* Decision Makers Section */
 .decision-makers-layout {
@@ -1650,18 +1694,11 @@ section {
 .fp-filter-btn:hover {
     background-color: #e2e6ea;
 }
-.fp-filter-btn:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(113, 31, 184, 0.4);
-}
 .fp-filter-btn.active {
     background: var(--gradient);
     color: var(--white);
     border-color: transparent;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.fp-filter-btn.active:focus-visible {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1), 0 0 0 3px rgba(255, 255, 255, 0.6);
 }
 
 
@@ -1954,11 +1991,6 @@ a.contact-email:hover {
     justify-content: space-between;
     align-items: center;
     font-family: var(--heading-font);
-}
-.faq-question:focus-visible {
-    outline: none;
-    background-color: #f2e7fc;
-    box-shadow: inset 0 0 0 2px #711fb8;
 }
 .faq-question i {
     transition: transform 0.3s ease;
@@ -2678,6 +2710,16 @@ a.contact-email:hover {
     .exhibitor-types-grid {
         grid-template-columns: 1fr;
         max-width: 320px;
+    }
+    /* Responsive adjustments for impact cards on smaller grids */
+    .impact-card-content {
+        padding: 1rem 0.5rem;
+    }
+    .impact-number {
+        font-size: 1.8rem;
+    }
+    .impact-label {
+        font-size: 0.8rem;
     }
 }
 
