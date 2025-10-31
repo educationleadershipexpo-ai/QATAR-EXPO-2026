@@ -3193,6 +3193,7 @@ a.contact-email:hover {
     position: absolute;
     width: 250px;
     height: auto;
+    right: 6%;
     left: 20px;
     top: 30px;
     z-index: 5;
