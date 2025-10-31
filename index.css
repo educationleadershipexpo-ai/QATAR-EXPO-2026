@@ -3258,8 +3258,8 @@ position: absolute;
     position: absolute;
     width: 200px;
     height: auto;
-    top: 90px;
-    left: 80px;
+    top: -10px;
+    left: 0px;
     z-index: 5;
     pointer-events: none;
 }
