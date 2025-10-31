@@ -940,6 +940,9 @@ section {
 #testimonials {
     background-color: var(--surface-color);
 }
+#testimonials .container {
+    position: relative;
+}
 .testimonials-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -996,6 +999,15 @@ section {
     flex-direction: column;
     justify-content: center;
     min-height: 60px;
+}
+.testimonials-mascot {
+    position: absolute;
+    width: 180px;
+    height: auto;
+    top: 60px;
+    left: 20px;
+    z-index: 5;
+    pointer-events: none;
 }
 
 
@@ -1510,10 +1522,10 @@ section {
 }
 .exhibit-mascot {
     position: absolute;
-    width: 180px;
+    width: 150px;
     height: auto;
-    top: 14px;
-    right: 9%;
+    top: 60px;
+    right: 15%;
     z-index: 5;
     pointer-events: none;
 }
@@ -2707,6 +2719,9 @@ a.contact-email:hover {
     .exhibit-mascot {
         display: none;
     }
+    .testimonials-mascot {
+        display: none;
+    }
 }
 
 @media (max-width: 768px) {
@@ -3230,6 +3245,9 @@ position: absolute;
 
 @media (max-width: 992px) {
     .benefits-mascot {
+        display: none;
+    }
+    .testimonials-mascot {
         display: none;
     }
 }
