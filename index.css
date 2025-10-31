@@ -455,6 +455,7 @@ section {
     width: 240px;
     height: auto;
     z-index: 3;
+    right: 6%;
     pointer-events: none;
 }
 
