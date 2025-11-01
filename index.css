@@ -3388,7 +3388,7 @@ position: absolute;
     position: absolute;
     width: 180px;
     height: auto;
-    top: -150px;
+    top: -160px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 5;
