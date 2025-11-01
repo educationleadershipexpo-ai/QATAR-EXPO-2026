@@ -2666,6 +2666,7 @@ a.contact-email:hover {
     #main-nav li {
         width: 100%;
         border-bottom: 1px solid var(--border-color);
+        overflow: visible;
     }
     .nav-link {
         padding: 1rem 1.5rem;
@@ -2685,6 +2686,7 @@ a.contact-email:hover {
         padding: 0;
         margin: 0;
         display: none;
+        overflow: visible;
     }
     .has-dropdown.dropdown-open > .dropdown-menu {
         display: block;
