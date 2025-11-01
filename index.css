@@ -3273,7 +3273,7 @@ position: absolute;
     width: 220px;
     height: auto;
     bottom: -105px;
-    right: -150px;
+    right: -200px;
     z-index: 5;
     pointer-events: none;
 }
