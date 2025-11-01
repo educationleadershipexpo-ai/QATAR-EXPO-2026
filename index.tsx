@@ -201,6 +201,38 @@
 
         if (!header || !navToggle || !mainNav) return;
 
+        // --- NEW: Inject mobile nav header and footer if they don't exist ---
+        if (!mainNav.querySelector('.mobile-nav-logo')) {
+            const mobileNavHeader = document.createElement('a');
+            mobileNavHeader.href = "index.html";
+            mobileNavHeader.classList.add('mobile-nav-logo');
+            const logoImg = document.createElement('img');
+            logoImg.src = "https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png";
+            logoImg.alt = "QELE 2026 Logo";
+            mobileNavHeader.appendChild(logoImg);
+            mainNav.prepend(mobileNavHeader);
+        }
+
+        if (!mainNav.querySelector('.mobile-nav-ctas')) {
+            const mobileNavCtas = document.createElement('div');
+            mobileNavCtas.classList.add('mobile-nav-ctas');
+            
+            const boothBtn = document.createElement('a');
+            boothBtn.href = "booth-registration.html";
+            boothBtn.className = "btn btn-primary";
+            boothBtn.textContent = "Book a Booth";
+
+            const sponsorBtn = document.createElement('a');
+            sponsorBtn.href = "sponsorship-registration.html";
+            sponsorBtn.className = "btn btn-secondary";
+            sponsorBtn.textContent = "Sponsor Now";
+
+            mobileNavCtas.appendChild(boothBtn);
+            mobileNavCtas.appendChild(sponsorBtn);
+            mainNav.appendChild(mobileNavCtas);
+        }
+        // --- END NEW ---
+
         navToggle.addEventListener('click', () => {
         header.classList.toggle('nav-open');
         const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
@@ -213,14 +245,17 @@
         }
         });
 
-        // Close menu when a link is clicked, unless it's a dropdown toggle on mobile
+        // Close menu when a link is clicked
         mainNav.addEventListener('click', (e) => {
             const link = (e.target as HTMLElement).closest('a');
             if (!link) return;
             
             // If it's a dropdown toggle, the dropdown logic will handle it, so we don't close the main nav.
-            if (link.parentElement?.classList.contains('has-dropdown')) {
-                return; 
+            if (link.parentElement?.classList.contains('has-dropdown') && window.innerWidth <= 992) {
+                // Check if it's the main link of the dropdown, not a sub-link
+                if(link.classList.contains('nav-link')) {
+                    return; 
+                }
             }
 
             // If it's a regular link inside the mobile nav, close it.
