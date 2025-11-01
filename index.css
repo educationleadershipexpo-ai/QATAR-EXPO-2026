@@ -2645,10 +2645,10 @@ a.contact-email:hover {
         transform: translateX(100%);
         transition: transform 0.3s ease-in-out;
         z-index: 999;
+        display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        padding-top: 0; /* Updated for new mobile menu */
-        display: flex;
+        padding-top: 0;
     }
     .main-header.nav-open #main-nav {
         transform: translateX(0);
@@ -2660,8 +2660,8 @@ a.contact-email:hover {
         gap: 0;
         width: 100%;
         overflow-y: auto;
-        flex: 1; /* Use shorthand and ensure it grows and shrinks */
-        min-height: 0; /* Fixes flexbox overflow bug */
+        flex: 1; /* This is the key: allow this element to grow and shrink */
+        min-height: 0; /* This is the fix: prevents content from overflowing the flex container */
     }
     #main-nav li {
         width: 100%;
@@ -3561,9 +3561,9 @@ a.contact-email:hover {
 }
 
 @media (max-width: 992px) {
+    /* MERGED AND CORRECTED MOBILE NAV STYLES */
     #main-nav {
-        display: flex;
-        padding-top: 0;
+        display: flex; /* This was repeated, but it's essential */
     }
 
     .mobile-nav-logo {
@@ -3575,15 +3575,13 @@ a.contact-email:hover {
         height: 50px;
         width: auto;
     }
-    #main-nav > ul {
-        flex-grow: 1;
-    }
+    
     .mobile-nav-ctas {
         display: flex;
         flex-direction: column;
         gap: 1rem;
         padding: 1.5rem;
-        margin-top: auto;
+        margin-top: auto; /* Pushes to the bottom */
         border-top: 1px solid var(--border-color);
     }
     .mobile-nav-ctas .btn {
