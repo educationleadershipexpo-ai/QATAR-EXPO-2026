@@ -3408,7 +3408,7 @@ a.contact-email:hover {
 }
 
 /* --- Brand Exposure Page Mascot --- */
-.countries-card-with-mascot {
+.impressions-card-with-mascot {
     position: relative;
     overflow: visible;
 }
@@ -3417,8 +3417,8 @@ a.contact-email:hover {
     position: absolute;
     width: 200px;
     height: auto;
-    top: -220px;
-    left: 80%;
+    top: -180px;
+    left: 50%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
