@@ -3329,6 +3329,17 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- Booth Registration Page Mascot --- */
+.booth-reg-mascot {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: 120px;
+    right: 5%;
+    z-index: 5;
+    pointer-events: none;
+}
+
 /* --- Why Exhibit Page Mascot --- */
 .benefit-card.partnership-card-with-mascot {
     position: relative;
@@ -3398,6 +3409,9 @@ position: absolute;
         display: none;
     }
     .student-reg-mascot {
+        display: none;
+    }
+    .booth-reg-mascot {
         display: none;
     }
     .exhibit-footer-mascot {
