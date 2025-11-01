@@ -3387,34 +3387,3 @@ position: absolute;
         display: none;
     }
 }
-/* --- Booth Features Page Single Line Cards --- */
-.booth-features-page .packages-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 2rem;
-    padding-bottom: 1.5rem;
-    align-items: stretch;
-    justify-content: flex-start;
-    -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x mandatory;
-}
-
-.booth-features-page .packages-grid .package-card {
-    flex: 0 0 340px;
-    scroll-snap-align: start;
-}
-
-.booth-features-page .packages-grid::-webkit-scrollbar {
-    height: 8px;
-}
-
-.booth-features-page .packages-grid::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.booth-features-page .packages-grid::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-}
