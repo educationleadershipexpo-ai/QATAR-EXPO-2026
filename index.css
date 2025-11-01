@@ -3278,6 +3278,22 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- Plan Your Trip Page Mascot --- */
+.content-card.hayya-card {
+    position: relative;
+    overflow: visible; /* Allow mascot to overflow */
+}
+
+.visa-mascot {
+    position: absolute;
+    width: 150px;
+    height: auto;
+    top: -80px;
+    right: -30px;
+    z-index: 5;
+    pointer-events: none;
+}
+
 @media (max-width: 1200px) {
     .benefits-mascot {
         left: 0px;
@@ -3300,6 +3316,9 @@ position: absolute;
         display: none;
     }
     .footer-mascot {
+        display: none;
+    }
+    .visa-mascot {
         display: none;
     }
 }
