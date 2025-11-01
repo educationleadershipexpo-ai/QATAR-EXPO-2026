@@ -3276,7 +3276,6 @@ position: absolute;
     right: -150px;
     z-index: 5;
     pointer-events: none;
-    transform: scaleX(-1);
 }
 
 @media (max-width: 1200px) {
