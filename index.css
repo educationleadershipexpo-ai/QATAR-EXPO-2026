@@ -3395,6 +3395,23 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- Brand Exposure Page Mascot --- */
+.countries-card-with-mascot {
+    position: relative;
+    overflow: visible;
+}
+
+.brand-exposure-mascot {
+    position: absolute;
+    width: 180px;
+    height: auto;
+    top: -140px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
 @media (max-width: 1200px) {
     .benefits-mascot {
         left: 0px;
@@ -3438,6 +3455,9 @@ position: absolute;
         display: none;
     }
     .tier-mascot {
+        display: none;
+    }
+    .brand-exposure-mascot {
         display: none;
     }
 }
