@@ -3378,6 +3378,23 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- Sponsorship Tiers Page Mascot --- */
+.tier-card.startup-card-with-mascot {
+    position: relative;
+    overflow: visible;
+}
+
+.tier-mascot {
+    position: absolute;
+    width: 180px;
+    height: auto;
+    top: -150px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
 @media (max-width: 1200px) {
     .benefits-mascot {
         left: 0px;
@@ -3418,6 +3435,9 @@ position: absolute;
         display: none;
     }
     .booth-features-mascot {
+        display: none;
+    }
+    .tier-mascot {
         display: none;
     }
 }
