@@ -3303,11 +3303,26 @@ position: absolute;
 
 .agenda-mascot {
     position: absolute;
-    width: 180px;
+    width: 150px;
     height: auto;
-    top: -160px;
-    left: 70%;
+    top: -90px;
+    left: 50%;
     transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Student Registration Page Mascot --- */
+#student-registration-form-section .container {
+    position: relative;
+}
+
+.student-reg-mascot {
+    position: absolute;
+    width: 250px;
+    height: auto;
+    bottom: -80px;
+    right: -150px;
     z-index: 5;
     pointer-events: none;
 }
@@ -3340,6 +3355,9 @@ position: absolute;
         display: none;
     }
     .agenda-mascot {
+        display: none;
+    }
+    .student-reg-mascot {
         display: none;
     }
 }
