@@ -3331,10 +3331,10 @@ position: absolute;
 }
 .card-top-mascot {
     position: absolute;
-    width: 180px;
+    width: 210px;
     height: auto;
-    top: -100px;
-    left: 50%;
+    top: -190px;
+    left: 60%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
