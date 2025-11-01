@@ -3295,6 +3295,23 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- Agenda Page Mascot --- */
+.admission-zone-card {
+    position: relative;
+    overflow: visible;
+}
+
+.agenda-mascot {
+    position: absolute;
+    width: 150px;
+    height: auto;
+    top: -90px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
 @media (max-width: 1200px) {
     .benefits-mascot {
         left: 0px;
@@ -3320,6 +3337,9 @@ position: absolute;
         display: none;
     }
     .visa-mascot {
+        display: none;
+    }
+    .agenda-mascot {
         display: none;
     }
 }
