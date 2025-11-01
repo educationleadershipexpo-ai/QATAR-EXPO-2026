@@ -3264,6 +3264,20 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- Why Attend Page Footer Mascot --- */
+#decision-makers .container {
+    position: relative;
+}
+.footer-mascot {
+    position: absolute;
+    width: 220px;
+    height: auto;
+    bottom: -80px;
+    right: 40px;
+    z-index: 5;
+    pointer-events: none;
+    transform: scaleX(-1);
+}
 
 @media (max-width: 1200px) {
     .benefits-mascot {
@@ -3284,6 +3298,9 @@ position: absolute;
         display: none;
     }
     .why-attend-mascot {
+        display: none;
+    }
+    .footer-mascot {
         display: none;
     }
 }
