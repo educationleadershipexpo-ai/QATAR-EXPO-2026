@@ -1128,6 +1128,8 @@ section {
     box-shadow: var(--shadow);
     text-align: center;
     border: 1px solid var(--border-color);
+    position: relative;
+    overflow: visible;
 }
 .urgency-cta-section h3 {
     font-size: 2rem;
@@ -3353,6 +3355,18 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- Booth Features Page Mascot --- */
+.booth-features-mascot {
+    position: absolute;
+    width: 220px;
+    height: auto;
+    top: -130px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
 @media (max-width: 1200px) {
     .benefits-mascot {
         left: 0px;
@@ -3387,6 +3401,9 @@ position: absolute;
         display: none;
     }
     .exhibit-footer-mascot {
+        display: none;
+    }
+    .booth-features-mascot {
         display: none;
     }
 }
