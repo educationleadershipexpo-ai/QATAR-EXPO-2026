@@ -1016,11 +1016,11 @@ section {
 .gradient-headline { background: var(--gradient); color: var(--white); padding: 0.5rem 2rem; border-radius: 50px; display: inline-block; font-size: 1.8rem; margin: 0 auto 1.5rem;}
 #booth-packages { background-color: var(--surface-color); }
 
-.packages-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
-    gap: 2rem; 
-    justify-content: center; 
+.packages-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    justify-content: center;
     align-items: stretch; /* Make cards same height */
 }
 
@@ -2691,6 +2691,9 @@ a.contact-email:hover {
     .why-qatar-content, .decision-makers-layout, .lead-capture-grid, .footer-grid {
         grid-template-columns: 1fr;
     }
+    .packages-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
     .lead-capture-image {
         order: -1;
     }
@@ -2731,7 +2734,7 @@ a.contact-email:hover {
     .timer-unit { min-width: 70px; padding: 0.8rem; }
     #countdown-timer { gap: 0.5rem; }
 
-    .benefits-grid { grid-template-columns: 1fr; }
+    .benefits-grid, .packages-grid { grid-template-columns: 1fr; }
     .benefit-card h3 { min-height: auto; }
     
     .marketing-timeline::before { left: 15px; }
