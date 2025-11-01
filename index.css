@@ -1003,10 +1003,10 @@ section {
 }
 .testimonials-mascot {
     position: absolute;
-    width: 220px;
+    width: 200px;
     height: auto;
-    top: -25px;
-    left: -12px;
+    top: -2px;
+    left: -50px;
     z-index: 5;
     pointer-events: none;
 }
@@ -1121,13 +1121,15 @@ section {
 }
 
 .urgency-cta-section {
-    margin-top: 4rem;
+    margin-top: 16rem;
     padding: 2.5rem;
     background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover;
     border-radius: 15px;
     box-shadow: var(--shadow);
     text-align: center;
     border: 1px solid var(--border-color);
+    position: relative;
+    overflow: visible;
 }
 .urgency-cta-section h3 {
     font-size: 2rem;
@@ -3127,11 +3129,12 @@ a.contact-email:hover {
     border-radius: 15px;
     box-shadow: var(--shadow);
     margin-top: 3rem;
-    overflow: hidden;
 }
 .exposure-tabs {
     display: flex;
     background-color: var(--surface-color);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
 }
 .exposure-tab-btn {
     flex: 1;
@@ -3229,12 +3232,12 @@ a.contact-email:hover {
 }
 
 .benefits-mascot {
-position: absolute;
-    width: 210px;
+    position: absolute;
+    width: 180px;
     height: auto;
     right: 6%;
     left: 20px;
-    top: -55px;
+    top: -22px;
     z-index: 5;
     pointer-events: none;
 }
@@ -3327,6 +3330,28 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- Booth Registration Page Mascot --- */
+.booth-reg-mascot {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: 120px;
+    right: 5%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Sponsorship Registration Page Mascot --- */
+.sponsorship-reg-mascot {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: 120px;
+    right: 5%;
+    z-index: 5;
+    pointer-events: none;
+}
+
 /* --- Why Exhibit Page Mascot --- */
 .benefit-card.partnership-card-with-mascot {
     position: relative;
@@ -3349,6 +3374,100 @@ position: absolute;
     height: auto;
     bottom: -95px;
     left: -110px;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Booth Features Page Mascot --- */
+.booth-features-mascot {
+    position: absolute;
+    width: 220px;
+    height: auto;
+    top: -205px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Sponsorship Tiers Page Mascot --- */
+.tier-card.startup-card-with-mascot {
+    position: relative;
+    overflow: visible;
+}
+
+.tier-mascot {
+    position: absolute;
+    width: 180px;
+    height: auto;
+    top: -160px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Brand Exposure Page Mascot --- */
+.countries-card-with-mascot {
+    position: relative;
+    overflow: visible;
+}
+
+.brand-exposure-mascot {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: -220px;
+    left: 80%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.pre-event-panel-with-mascot {
+    position: relative;
+}
+
+.pre-event-mascot {
+    position: absolute;
+    width: 180px;
+    height: auto;
+    top: -270px;
+    left: 70px;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Contact Page Mascot --- */
+.quick-chat-card-with-mascot {
+    position: relative;
+    overflow: visible;
+}
+
+.contact-quick-chat-mascot {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: -180px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.faq-item-with-mascot {
+    position: relative;
+    overflow: visible;
+}
+
+.contact-faq-mascot {
+   position: absolute;
+    width: 180px;
+    height: auto;
+    top: -168px;
+    left: 10%;
+    transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
 }
@@ -3386,7 +3505,31 @@ position: absolute;
     .student-reg-mascot {
         display: none;
     }
+    .booth-reg-mascot {
+        display: none;
+    }
+    .sponsorship-reg-mascot {
+        display: none;
+    }
     .exhibit-footer-mascot {
+        display: none;
+    }
+    .booth-features-mascot {
+        display: none;
+    }
+    .tier-mascot {
+        display: none;
+    }
+    .brand-exposure-mascot {
+        display: none;
+    }
+    .pre-event-mascot {
+        display: none;
+    }
+    .contact-quick-chat-mascot {
+        display: none;
+    }
+    .contact-faq-mascot {
         display: none;
     }
 }
