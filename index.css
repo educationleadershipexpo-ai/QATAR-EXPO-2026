@@ -3419,10 +3419,10 @@ position: absolute;
 
 .pre-event-mascot {
     position: absolute;
-    width: 150px;
+    width: 180px;
     height: auto;
-    top: -110px;
-    left: 50%;
+    top: -270px;
+    left: 70px;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
