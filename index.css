@@ -3331,7 +3331,8 @@ position: absolute;
 }
 
 /* --- Booth Registration Page Mascot --- */
-.booth-reg-mascot {
+.booth-reg-mascot,
+.sponsor-reg-mascot {
     position: absolute;
     width: 200px;
     height: auto;
@@ -3404,10 +3405,10 @@ position: absolute;
 
 .brand-exposure-mascot {
     position: absolute;
-    width: 200px;
+    width: 180px;
     height: auto;
-    top: -220px;
-    left: 80%;
+    top: -140px;
+    left: 50%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
@@ -3419,10 +3420,10 @@ position: absolute;
 
 .pre-event-mascot {
     position: absolute;
-    width: 180px;
+    width: 150px;
     height: auto;
-    top: -270px;
-    left: 70px;
+    top: -110px;
+    left: 50%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
@@ -3461,7 +3462,7 @@ position: absolute;
     .student-reg-mascot {
         display: none;
     }
-    .booth-reg-mascot {
+    .booth-reg-mascot, .sponsor-reg-mascot {
         display: none;
     }
     .exhibit-footer-mascot {
