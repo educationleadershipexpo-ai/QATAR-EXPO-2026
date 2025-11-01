@@ -3407,6 +3407,22 @@ a.contact-email:hover {
     pointer-events: none;
 }
 
+.impressions-card-with-mascot {
+    position: relative;
+    overflow: visible;
+}
+
+.sponsorship-intro-mascot {
+    position: absolute;
+    width: 180px;
+    height: auto;
+    top: -160px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
 /* --- Brand Exposure Page Mascot --- */
 .countries-card-with-mascot {
     position: relative;
