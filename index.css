@@ -1121,7 +1121,7 @@ section {
 }
 
 .urgency-cta-section {
-    margin-top: 16rem;
+    margin-top: 4rem;
     padding: 2.5rem;
     background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover;
     border-radius: 15px;
@@ -3329,6 +3329,18 @@ position: absolute;
     pointer-events: none;
 }
 
+/* --- Booth Registration Page Mascot --- */
+.booth-reg-mascot {
+    position: absolute;
+    width: 200px;
+    height: auto;
+    top: 120px;
+    bottom: 150px;
+    right: 5%;
+    z-index: 5;
+    pointer-events: none;
+}
+
 /* --- Why Exhibit Page Mascot --- */
 .benefit-card.partnership-card-with-mascot {
     position: relative;
@@ -3360,7 +3372,7 @@ position: absolute;
     position: absolute;
     width: 220px;
     height: auto;
-    top: -205px;
+    top: -130px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 5;
@@ -3398,6 +3410,9 @@ position: absolute;
         display: none;
     }
     .student-reg-mascot {
+        display: none;
+    }
+    .booth-reg-mascot {
         display: none;
     }
     .exhibit-footer-mascot {
