@@ -3340,6 +3340,16 @@ position: absolute;
     pointer-events: none;
 }
 
+.exhibit-footer-mascot {
+    position: absolute;
+    width: 220px;
+    height: auto;
+    bottom: -80px;
+    left: 20px;
+    z-index: 5;
+    pointer-events: none;
+}
+
 @media (max-width: 1200px) {
     .benefits-mascot {
         left: 0px;
@@ -3371,6 +3381,9 @@ position: absolute;
         display: none;
     }
     .student-reg-mascot {
+        display: none;
+    }
+    .exhibit-footer-mascot {
         display: none;
     }
 }
