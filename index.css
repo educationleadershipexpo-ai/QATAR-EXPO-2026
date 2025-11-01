@@ -3456,6 +3456,22 @@ position: absolute;
     pointer-events: none;
 }
 
+.faq-item-with-mascot {
+    position: relative;
+    overflow: visible;
+}
+
+.contact-faq-mascot {
+    position: absolute;
+    width: 180px;
+    height: auto;
+    top: -160px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
 @media (max-width: 1200px) {
     .benefits-mascot {
         left: 0px;
@@ -3511,6 +3527,9 @@ position: absolute;
         display: none;
     }
     .contact-quick-chat-mascot {
+        display: none;
+    }
+    .contact-faq-mascot {
         display: none;
     }
 }
