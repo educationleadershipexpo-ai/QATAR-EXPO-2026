@@ -3232,12 +3232,12 @@ a.contact-email:hover {
 }
 
 .benefits-mascot {
-position: absolute;
-    width: 210px;
+    position: absolute;
+    width: 180px;
     height: auto;
     right: 6%;
     left: 20px;
-    top: -55px;
+    top: -22px;
     z-index: 5;
     pointer-events: none;
 }
