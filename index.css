@@ -2660,6 +2660,8 @@ a.contact-email:hover {
         gap: 0;
         width: 100%;
         overflow-y: auto;
+        flex: 1; /* Use shorthand and ensure it grows and shrinks */
+        min-height: 0; /* Fixes flexbox overflow bug */
     }
     #main-nav li {
         width: 100%;
