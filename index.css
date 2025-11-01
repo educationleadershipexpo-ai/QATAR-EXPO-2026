@@ -3344,8 +3344,8 @@ position: absolute;
     position: absolute;
     width: 220px;
     height: auto;
-    bottom: -80px;
-    left: 20px;
+    bottom: -95px;
+    left: -110px;
     z-index: 5;
     pointer-events: none;
 }
