@@ -3242,9 +3242,9 @@ position: absolute;
 }
 .market-mascot {
     position: absolute;
-    width: 150px;
+    width: 130px;
     height: auto;
-    top: 45px;
+    top: -75px;
     right: 40px;
     z-index: 5;
     pointer-events: none;
