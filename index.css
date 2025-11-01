@@ -3403,10 +3403,10 @@ position: absolute;
 
 .brand-exposure-mascot {
     position: absolute;
-    width: 180px;
+    width: 200px;
     height: auto;
-    top: -140px;
-    left: 50%;
+    top: -250px;
+    left: 80%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
