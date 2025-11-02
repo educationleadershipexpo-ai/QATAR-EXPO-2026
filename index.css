@@ -3450,10 +3450,10 @@ a.contact-email:hover {
 
 .brand-exposure-mascot {
     position: absolute;
-    width: 200px;
+    width: 250px;
     height: auto;
-    top: -220px;
-    left: 80%;
+    top: -200px;
+    left: 50%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
