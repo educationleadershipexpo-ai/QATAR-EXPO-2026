@@ -3423,7 +3423,7 @@ a.contact-email:hover {
     position: absolute;
     width: 250px;
     height: auto;
-    top: -160px;
+    top: -200px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 5;
