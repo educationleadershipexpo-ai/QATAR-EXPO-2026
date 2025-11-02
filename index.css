@@ -3269,9 +3269,9 @@ a.contact-email:hover {
 }
 .why-attend-mascot {
     position: absolute;
-    width: 200px;
+    width: 260px;
     height: auto;
-    top: -10px;
+    top: -35px;
     left: 0px;
     z-index: 5;
     pointer-events: none;
