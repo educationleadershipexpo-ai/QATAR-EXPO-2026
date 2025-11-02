@@ -1005,7 +1005,7 @@ section {
     position: absolute;
     width: 200px;
     height: auto;
-    top: -2px;
+    top: -45px;
     z-index: 5;
     pointer-events: none;
 }
