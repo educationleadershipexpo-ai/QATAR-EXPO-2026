@@ -3486,13 +3486,14 @@ a.contact-email:hover {
 
 .contact-faq-mascot {
    position: absolute;
-    width: 180px;
+    width: 200px;
     height: auto;
-    top: -168px;
-    left: 10%;
+    top: -175px;
+    left: -1%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
+    transform: scaleX(-1);
 }
 
 @media (max-width: 1200px) {
