@@ -196,7 +196,7 @@ section {
 }
 
 .dropdown-menu li {
-    margin: 0;
+    margin-left: 50%;
 }
 
 .dropdown-menu a {
