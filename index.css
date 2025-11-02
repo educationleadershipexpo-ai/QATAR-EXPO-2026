@@ -3254,9 +3254,9 @@ a.contact-email:hover {
 }
 .market-mascot {
     position: absolute;
-    width: 130px;
+    width: 120px;
     height: auto;
-    top: -75px;
+    top: -105px;
     right: 40px;
     z-index: 5;
     pointer-events: none;
