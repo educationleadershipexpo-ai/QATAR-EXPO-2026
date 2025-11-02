@@ -1527,7 +1527,7 @@ section {
     position: absolute;
     width: 180px;
     height: auto;
-    top: 15px;
+    top: -50px;
     right: 9%;
     z-index: 5;
     pointer-events: none;
