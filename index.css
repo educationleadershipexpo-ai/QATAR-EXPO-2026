@@ -2693,7 +2693,6 @@ a.contact-email:hover {
     }
     .dropdown-menu a {
         padding-left: 2.5rem;
-        margin-left: 22px;
         background-color: var(--surface-color);
     }
 
@@ -3617,4 +3616,159 @@ a.contact-email:hover {
         background: #5a1991;
         border-color: #5a1991;
     }
+}
+
+/* --- Hackathon Page Styles --- */
+#hackathon-details .container {
+    max-width: 900px;
+}
+
+#hackathon-details p:last-child {
+    margin-bottom: 0;
+}
+
+.hackathon-section {
+    background: var(--surface-color);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin-bottom: 2.5rem;
+}
+
+.hackathon-section:last-child {
+    margin-bottom: 0;
+}
+
+.hackathon-section h2 {
+    text-align: left;
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.hackathon-section h2 i {
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hackathon-theme-quote {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin: 1.5rem 0 2rem;
+    padding: 1rem;
+    background-color: var(--white);
+    border-left: 5px solid #d12386;
+    border-radius: 5px;
+}
+
+.hackathon-example-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.hackathon-example-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.hackathon-awards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .hackathon-awards-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.hackathon-awards-grid h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.hackathon-awards-grid ul,
+.hackathon-why-list {
+    list-style: none;
+    padding: 0;
+}
+
+.hackathon-awards-grid li,
+.hackathon-why-list li {
+    padding-left: 2rem;
+    position: relative;
+    margin-bottom: 0.75rem;
+}
+.hackathon-awards-grid li::before,
+.hackathon-why-list li::before {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    color: #d12386;
+}
+
+.hackathon-schedule-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+@media (min-width: 768px) {
+    .hackathon-schedule-grid {
+         grid-template-columns: 1fr 1fr;
+    }
+}
+
+.hackathon-schedule-day {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+}
+.hackathon-schedule-day h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    text-align: left;
+    color: #711fb8;
+}
+.hackathon-schedule-day ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.hackathon-schedule-day li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+.hackathon-schedule-day li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.hackathon-cta p {
+    text-align: center;
+}
+.hackathon-cta a {
+    color: #d12386;
+    font-weight: 700;
+    text-decoration: none;
+}
+.hackathon-cta a:hover {
+    text-decoration: underline;
 }
