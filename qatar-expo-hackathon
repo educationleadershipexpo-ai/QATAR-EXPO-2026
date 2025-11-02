@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Coding Challenge - QELE 2026</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <header class="main-header" id="main-header">
+        <div class="container">
+            <a href="index.html" class="logo"><img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png" alt="QELE 2026 Logo"></a>
+            <button class="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+            <nav id="main-nav">
+                 <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="about.html" class="nav-link">About Expo</a></li>
+                    <li class="has-dropdown">
+                        <a href="#" class="nav-link">Visit <i class="fas fa-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="why-attend.html">Why Attend</a></li>
+                            <li><a href="plan-your-trip.html">Plan Your Trip</a></li>
+                            <li><a href="workshops.html">Agenda</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-dropdown">
+                        <a href="#" class="nav-link">For Students <i class="fas fa-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="student-registration.html">Student Registration</a></li>
+                            <li><a href="career-counselling.html">Career Counselling</a></li>
+                            <li><a href="qatar-expo-hackathon.html">QELE Hackathon 2026</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-dropdown">
+                        <a href="why-exhibit.html" class="nav-link">For Exhibitors <i class="fas fa-angle-down"></i></a>
+                         <ul class="dropdown-menu">
+                            <li><a href="why-exhibit.html">Why Exhibit</a></li>
+                            <li><a href="booth-features.html">Booth Features</a></li>
+                             <li><a href="booth-registration.html">Book Your Booth</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-dropdown">
+                        <a href="sponsorship-tiers.html" class="nav-link">For Sponsors <i class="fas fa-angle-down"></i></a>
+                         <ul class="dropdown-menu">
+                            <li><a href="sponsorship-tiers.html">Sponsorship Tiers</a></li>
+                            <li><a href="brand-exposure.html">Brand Exposure</a></li>
+                            <li><a href="sponsorship-registration.html">Become a Sponsor</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-ctas">
+                <a href="booth-registration.html" class="btn btn-primary btn-sm">Book a Booth</a>
+                <a href="sponsorship-registration.html" class="btn btn-primary btn-sm">Sponsor Now</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>🎓 Hi Loop x Qatar Education Leadership Expo 2026</h1>
+                <p>Vibe Coding Challenge: The Future of Higher Education – Student Life Reimagined</p>
+            </div>
+        </section>
+
+        <section id="hackathon-details">
+            <div class="container">
+
+                <div class="hackathon-section">
+                    <p class="subtitle" style="margin-top:0; font-size: 1.1rem;">In collaboration with Hi Loop, the Qatar Education Leadership Expo 2026 proudly presents the Vibe Coding Challenge — a 24-hour innovation hackathon designed to inspire the next generation of creative problem solvers.</p>
+                    <p>This challenge invites students across Qatar to reimagine the university experience of tomorrow using the power of AI, design thinking, and digital tools — <strong>no coding experience required.</strong></p>
+                </div>
+
+                <div class="hackathon-section">
+                    <h2><i class="fas fa-lightbulb"></i> Challenge Theme</h2>
+                    <p class="hackathon-theme-quote">“The Future of Higher Education – Student Life Reimagined”</p>
+                    <p>How can we make university life more connected, inclusive, and student-centered through technology? Participants will design digital solutions (apps, websites, or AI-driven tools) that enhance global student life.</p>
+                    <h4>Example Concepts:</h4>
+                    <div class="hackathon-example-grid">
+                        <div class="hackathon-example-card">An AI-powered course advisor that matches students with ideal subjects and mentors.</div>
+                        <div class="hackathon-example-card">A cultural buddy app to help Qatari students adapt to new countries.</div>
+                        <div class="hackathon-example-card">A financial wellness assistant that helps manage budgeting, part-time work, and scholarships.</div>
+                    </div>
+                </div>
+
+                <div class="hackathon-section">
+                    <h2><i class="fas fa-trophy"></i> Awards & Recognition</h2>
+                    <div class="hackathon-awards-grid">
+                        <div>
+                            <h4>Teams will be judged on:</h4>
+                            <ul>
+                                <li>Creativity & Innovation</li>
+                                <li>Empathy & Real-world Impact</li>
+                                <li>Global Relevance</li>
+                                <li>Pitch Presentation</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4>Winners receive:</h4>
+                            <ul>
+                                <li>Scholarships or tuition discounts sponsored by partner universities.</li>
+                                <li>Certificates of Excellence and Expo recognition.</li>
+                                <li>Exposure to investors, mentors, and global education leaders.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hackathon-section">
+                    <h2><i class="fas fa-calendar-alt"></i> Event Schedule</h2>
+                    <div class="hackathon-schedule-grid">
+                        <div class="hackathon-schedule-day">
+                            <h4>Day 1 – Build & Inspire</h4>
+                            <ul>
+                                <li>Kickoff workshop introducing AI and design tools</li>
+                                <li>Mentorship sessions with education and technology experts</li>
+                                <li>24-hour innovation sprint</li>
+                            </ul>
+                        </div>
+                         <div class="hackathon-schedule-day">
+                            <h4>Day 2 – Pitch & Celebrate</h4>
+                            <ul>
+                                <li>Final presentations and judging</li>
+                                <li>Awards ceremony and media showcase</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="hackathon-section">
+                    <h2><i class="fas fa-sitemap"></i> Organized By</h2>
+                    <p><strong>Hi Loop</strong> – An international platform creating “human intelligence loops” where students solve real-world challenges through vibe coding.</p>
+                    <p><strong>Qatar Education Leadership Expo</strong> – The nation’s premier education innovation event empowering future-ready learners and institutions.</p>
+                </div>
+                
+                <div class="hackathon-section">
+                    <h2><i class="fas fa-globe-americas"></i> Why It Matters</h2>
+                     <ul class="hackathon-why-list">
+                        <li><strong>For Students:</strong> A chance to innovate, network, and win global opportunities.</li>
+                        <li><strong>For Universities:</strong> A direct bridge to Qatar’s brightest student talent.</li>
+                        <li><strong>For Qatar:</strong> Showcasing the creativity and digital readiness of the next generation.</li>
+                    </ul>
+                </div>
+
+                <div class="hackathon-section hackathon-cta">
+                    <h2><i class="fas fa-rocket"></i> Join the Challenge</h2>
+                    <p>Stay tuned for registration details and official partner announcements.</p>
+                    <p>For partnership or sponsorship inquiries, contact:</p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:info@studentdiwan.com">info@studentdiwan.com</a></p>
+                    <div class="section-cta" style="margin-top: 2rem;">
+                        <a href="contact.html" class="btn btn-primary">Inquire About Partnership</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="logo"><img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761223357/logo-white_1_pqcaph.png" alt="QELE 2026 Logo"></a>
+                    <p>The premier event connecting educational leaders, institutions, and innovators in the MENA region.</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Explore</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Expo</a></li>
+                        <li><a href="why-exhibit.html">For Exhibitors</a></li>
+                        <li><a href="sponsorship-tiers.html">For Sponsors</a></li>
+                        <li><a href="student-registration.html">Student Registration</a></li>
+                    </ul>
+                </div>
+                 <div class="footer-col">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Connect With Us</h3>
+                    <ul class="footer-contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Sheraton Grand Doha, Qatar</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:partnerships@eduexpoqatar.com">partnerships@eduexpoqatar.com</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+97474449111">+974 7444 9111</a>
+                        </li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="https://twitter.com/qatarexpo2026" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://linkedin.com/company/qatarexpo2026" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://instagram.com/qatarexpo2026" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 QELE. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script type="module" src="index.tsx"></script>
+</body>
+</html>
