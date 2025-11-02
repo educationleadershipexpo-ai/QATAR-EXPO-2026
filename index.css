@@ -2693,6 +2693,7 @@ a.contact-email:hover {
     }
     .dropdown-menu a {
         padding-left: 2.5rem;
+        margin-left: 22px;
         background-color: var(--surface-color);
     }
 
