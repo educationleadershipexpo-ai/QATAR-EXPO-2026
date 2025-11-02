@@ -3328,9 +3328,9 @@ a.contact-email:hover {
 /* --- Student Registration Page Mascot --- */
 .student-reg-mascot {
     position: absolute;
-    width: 200px;
+    width: 230px;
     height: auto;
-    top: 120px;
+    top: 110px;
     bottom: 150px;
     right: 5%;
     z-index: 5;
