@@ -3377,9 +3377,9 @@ a.contact-email:hover {
 
 .exhibit-footer-mascot {
     position: absolute;
-    width: 220px;
+    width: 230px;
     height: auto;
-    bottom: -95px;
+    bottom: -105px;
     left: -110px;
     z-index: 5;
     pointer-events: none;
