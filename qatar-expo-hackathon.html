@@ -10,6 +10,49 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        #organizers-and-why .organizer-block {
+            margin-bottom: 2.5rem;
+        }
+        #organizers-and-why .organizer-block img {
+            display: block;
+            margin-bottom: 1rem;
+        }
+        #organizers-and-why .organizer-block .hi-loop-logo {
+            max-height: 50px;
+        }
+        #organizers-and-why .organizer-block .qele-logo {
+            max-width: 220px;
+            height: auto;
+        }
+        #organizers-and-why .organizer-block p {
+            margin: 0;
+            line-height: 1.6;
+        }
+        #organizers-and-why .why-matters-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 1.5rem;
+        }
+        #organizers-and-why .why-matters-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        #organizers-and-why .why-matters-list .fa-check-circle {
+            color: #d12386;
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: unset;
+            font-size: 1.5rem;
+            margin-top: 2px;
+        }
+        #organizers-and-why .why-matters-list p {
+            margin: 0;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
 
@@ -161,21 +204,30 @@
                 <div class="decision-makers-layout">
                     <div>
                         <h2><i class="fas fa-sitemap" style="color: #d12386;"></i> Organized By</h2>
-                        <div class="stat-group">
-                            <span><i class="fas fa-infinity"></i></span>
-                            <p><strong>Hi Loop:</strong><br>An international platform creating “human intelligence loops” where students solve real-world challenges through vibe coding.</p>
+                        <div class="organizer-block">
+                            <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762105728/NB.hiloop.official.logo_1_wwcxzh.png" alt="Hi Loop Logo" class="hi-loop-logo">
+                            <p><strong>Hi Loop:</strong> An international platform creating “human intelligence loops” where students solve real-world challenges through vibe coding.</p>
                         </div>
-                         <div class="stat-group">
-                             <span><img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png" alt="QELE Logo" style="height: 40px; width: auto;"></span>
-                            <p><strong>Qatar Education Leadership Expo:</strong><br>The nation’s premier education innovation event empowering future-ready learners and institutions.</p>
+                        <div class="organizer-block">
+                            <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png" alt="Qatar Education Leadership Expo Logo" class="qele-logo">
+                            <p><strong>Qatar Education Leadership Expo:</strong> The nation’s premier education innovation event empowering future-ready learners and institutions.</p>
                         </div>
                     </div>
                      <div>
                         <h2><i class="fas fa-question-circle" style="color: #d12386;"></i> Why It Matters</h2>
-                        <ul class="lead-capture-features" style="margin: 1rem 0;">
-                            <li><i class="fas fa-check-circle"></i><strong>For Students:</strong> A chance to innovate, network, and win global opportunities.</li>
-                            <li><i class="fas fa-check-circle"></i><strong>For Universities:</strong> A direct bridge to Qatar’s brightest student talent.</li>
-                            <li><i class="fas fa-check-circle"></i><strong>For Qatar:</strong> Showcasing the creativity and digital readiness of the next generation.</li>
+                        <ul class="why-matters-list">
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <p><strong>For Students:</strong> A chance to innovate, network, and win global opportunities.</p>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <p><strong>For Universities:</strong> A direct bridge to Qatar’s brightest student talent.</p>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <p><strong>For Qatar:</strong> Showcasing the creativity and digital readiness of the next generation.</p>
+                            </li>
                         </ul>
                          <div class="section-cta" style="text-align: left; margin-top: 2rem;">
                              <a href="student-registration.html" class="btn btn-primary">Register Now & Join the Challenge</a>
