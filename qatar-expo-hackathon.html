@@ -20,6 +20,7 @@
         }
         #organizers-and-why .organizer-block .hi-loop-logo {
             max-height: 50px;
+            width: auto;
         }
         #organizers-and-why .organizer-block .qele-logo {
             max-width: 220px;
@@ -28,6 +29,21 @@
         #organizers-and-why .organizer-block p {
             margin: 0;
             line-height: 1.6;
+            max-width: 400px;
+        }
+        #organizers-and-why h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-color);
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+        #organizers-and-why h2 > i {
+            color: #d12386;
+            font-size: 1.8rem;
         }
         #organizers-and-why .why-matters-list {
             list-style: none;
@@ -37,16 +53,19 @@
         #organizers-and-why .why-matters-list li {
             display: flex;
             align-items: flex-start;
-            gap: 0.75rem;
+            gap: 1rem;
             margin-bottom: 1.5rem;
         }
-        #organizers-and-why .why-matters-list .fa-check-circle {
+        #organizers-and-why .why-matters-list .fa-stack {
+            font-size: 1rem;
+            margin-top: 5px;
+            flex-shrink: 0;
+            width: 2em;
+            height: 2em;
+            line-height: 2em;
+        }
+        #organizers-and-why .why-matters-list .fa-stack .fa-circle {
             color: #d12386;
-            background: none;
-            -webkit-background-clip: unset;
-            -webkit-text-fill-color: unset;
-            font-size: 1.5rem;
-            margin-top: 2px;
         }
         #organizers-and-why .why-matters-list p {
             margin: 0;
@@ -203,29 +222,38 @@
              <div class="container">
                 <div class="decision-makers-layout">
                     <div>
-                        <h2><i class="fas fa-sitemap" style="color: #d12386;"></i> Organized By</h2>
+                        <h2><i class="fas fa-diagram-project"></i> Organized By</h2>
                         <div class="organizer-block">
                             <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762148595/Untitled_design_-_2025-11-03T111231.113_eejcdu.png" alt="Hi Loop Logo" class="hi-loop-logo">
                             <p><strong>Hi Loop:</strong> An international platform creating “human intelligence loops” where students solve real-world challenges through vibe coding.</p>
                         </div>
-                        <h2 style="margin-top: 2rem;"><i class="fas fa-handshake" style="color: #d12386;"></i> In Partnership With</h2>
+                        <h2 style="margin-top: 2rem;"><i class="fas fa-handshake"></i> In Partnership With</h2>
                         <div class="organizer-block">
                             <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png" alt="Qatar Education Leadership Expo Logo" class="qele-logo">
                         </div>
                     </div>
                      <div>
-                        <h2><i class="fas fa-question-circle" style="color: #d12386;"></i> Why It Matters</h2>
+                        <h2><i class="fas fa-question-circle"></i> Why It Matters</h2>
                         <ul class="why-matters-list">
                             <li>
-                                <i class="fas fa-check-circle"></i>
+                                <span class="fa-stack">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-check fa-stack-1x fa-inverse"></i>
+                                </span>
                                 <p><strong>For Students:</strong> A chance to innovate, network, and win global opportunities.</p>
                             </li>
                             <li>
-                                <i class="fas fa-check-circle"></i>
+                                <span class="fa-stack">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-check fa-stack-1x fa-inverse"></i>
+                                </span>
                                 <p><strong>For Universities:</strong> A direct bridge to Qatar’s brightest student talent.</p>
                             </li>
                             <li>
-                                <i class="fas fa-check-circle"></i>
+                                <span class="fa-stack">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="fas fa-check fa-stack-1x fa-inverse"></i>
+                                </span>
                                 <p><strong>For Qatar:</strong> Showcasing the creativity and digital readiness of the next generation.</p>
                             </li>
                         </ul>
