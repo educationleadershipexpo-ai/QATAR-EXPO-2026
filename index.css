@@ -3635,13 +3635,4 @@ a.contact-email:hover {
         width: 100%;
         text-align: center;
     }
-    .mobile-nav-ctas .btn-secondary {
-        background: #711fb8;
-        color: var(--white);
-        border-color: #711fb8;
-    }
-    .mobile-nav-ctas .btn-secondary:hover {
-        background: #5a1991;
-        border-color: #5a1991;
-    }
 }
