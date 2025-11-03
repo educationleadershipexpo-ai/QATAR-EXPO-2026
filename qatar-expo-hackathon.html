@@ -11,6 +11,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
+        .page-header.hackathon-hero {
+            background-image: url('https://res.cloudinary.com/dj3vhocuf/image/upload/v1762150783/Qatar-expo_t914uh.png');
+            background-size: cover;
+            background-position: center;
+            padding: 0;
+            min-height: 250px;
+            color: transparent; /* Fallback for hiding text */
+        }
+        .page-header.hackathon-hero h1,
+        .page-header.hackathon-hero p {
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+        @media (max-width: 992px) {
+            .page-header.hackathon-hero {
+                min-height: 200px;
+            }
+        }
+        @media (max-width: 576px) {
+            .page-header.hackathon-hero {
+                min-height: 120px;
+                background-size: contain;
+                background-color: #6320b6; /* Color picked from the right edge of the banner */
+            }
+        }
+
         #organizers-and-why .organizer-block {
             margin-bottom: 2.5rem;
         }
@@ -130,7 +162,7 @@
     </header>
 
     <main>
-        <section class="page-header">
+        <section class="page-header hackathon-hero">
             <div class="container">
                 <h1>Hi Loop x Qatar Education Leadership Expo 2026</h1>
                 <p>Vibe Coding Challenge: The Future of Higher Education – Student Life Reimagined</p>
