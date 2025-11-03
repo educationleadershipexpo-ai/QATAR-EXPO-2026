@@ -20,30 +20,15 @@
             display: grid;
             grid-template-columns: 1fr;
             gap: 3rem;
-            align-items: stretch; /* Make cards equal height */
+            align-items: flex-start; /* Align items to the top */
             max-width: 1100px;
             margin: 0 auto;
         }
 
         .partner-card {
-            background-color: var(--white);
-            padding: 2.5rem 2rem;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex; /* Use flexbox for content alignment */
-            flex-direction: column; /* Stack content vertically */
-        }
-        
-        .partner-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .partner-card.highlight {
-             border: 2px solid #711fb8;
+            display: flex;
+            flex-direction: column;
         }
 
         .partner-card h4 {
@@ -72,7 +57,6 @@
             color: #555;
             margin-top: 0;
             line-height: 1.7;
-            flex-grow: 1; /* Allow paragraph to grow and fill space */
             text-align: left; /* Align text for better readability */
         }
 
@@ -218,7 +202,7 @@
                         <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762105728/NB.hiloop.official.logo_1_wwcxzh.png" alt="Hi Loop Logo" class="hiloop-logo">
                         <p><strong>Hi Loop:</strong> A global community fostering learning-by-doing through coding clubs, workshops, and hackathons for young innovators to develop new skills and build impactful projects.</p>
                     </div>
-                    <div class="partner-card highlight">
+                    <div class="partner-card">
                         <h4>An Initiative By</h4>
                         <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762148595/Untitled_design_-_2025-11-03T111231.113_eejcdu.png" alt="Lovable Logo">
                         <p><strong>lovable:</strong> An international platform creating “human intelligence loops” where students solve real-world challenges through vibe coding.</p>
