@@ -244,7 +244,7 @@
 
             const sponsorBtn = document.createElement('a');
             sponsorBtn.href = "sponsorship-registration.html";
-            sponsorBtn.className = "btn btn-secondary";
+            sponsorBtn.className = "btn btn-primary";
             sponsorBtn.textContent = "Sponsor Now";
 
             mobileNavCtas.appendChild(boothBtn);
