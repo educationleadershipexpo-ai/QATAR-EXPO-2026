@@ -1507,7 +1507,7 @@ section {
 
 /* Unified button style for the "3 Ways to Join" section */
 #three-ways-to-join .way-card .btn {
-    background-color: #101c35;
+    background: #101c35;
     color: white;
     border-color: #fff;
     transition: background-color 0.3s, color 0.3s;
