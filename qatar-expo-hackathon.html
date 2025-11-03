@@ -13,59 +13,46 @@
     <style>
         #hackathon-partners {
             padding: 80px 0;
+            background-color: var(--surface-color);
         }
-        .partners-layout {
+        .partners-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: flex-start;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            align-items: start;
+            text-align: center;
         }
-        .partner-column .partner-heading {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 2rem;
-            text-align: left;
-            font-family: var(--heading-font);
-        }
-        .partner-column .partner-heading .heading-icon {
-            height: 30px;
-        }
-        .partner-column .logo-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+        .partner-group h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 1.5rem;
         }
-        .partner-column .lovable-logo img {
-            height: 40px;
+        .partner-group img {
+            max-height: 70px;
+            width: auto;
+            max-width: 250px;
+            object-fit: contain;
+            margin: 0 auto;
         }
-        .partner-column .lovable-logo h3 {
-            font-size: 2rem;
-            font-weight: 800;
-            margin: 0;
-            font-family: var(--heading-font);
-        }
-         .partner-column .qele-partner-logo {
-            max-width: 300px;
-            height: auto;
-        }
-        .partner-column p {
-            font-size: 1rem;
+        .partner-group p {
+            font-size: 0.95rem;
             color: #555;
-            max-width: 450px;
+            margin-top: 1.5rem;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
             line-height: 1.7;
         }
-        .partner-column p strong {
+        .partner-group p strong {
             color: var(--text-color);
         }
 
-        @media (max-width: 992px) {
-            .partners-layout {
-                grid-template-columns: 1fr;
-                gap: 3rem;
+        @media (min-width: 992px) {
+            .partners-container {
+                grid-template-columns: 1fr 1.5fr 1fr;
             }
         }
     </style>
@@ -217,20 +204,19 @@
 
         <section id="hackathon-partners">
              <div class="container">
-                <div class="partners-layout">
-                    <div class="partner-column">
-                        <h3 class="partner-heading"><img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762151000/hackathon-organized-by-icon.png" alt="" class="heading-icon"> Organized By</h3>
-                        <div class="logo-item lovable-logo">
-                            <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762151001/hackathon-lovable-logo.png" alt="Lovable Logo">
-                            <h3>Lovable</h3>
-                        </div>
+                <div class="partners-container">
+                    <div class="partner-group hosted-by">
+                        <h4>Hosted By</h4>
+                        <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762105728/NB.hiloop.official.logo_1_wwcxzh.png" alt="Hi Loop Logo" style="max-height: 50px;">
+                    </div>
+                    <div class="partner-group lovable">
+                        <h4>An Initiative By</h4>
+                        <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762148595/Untitled_design_-_2025-11-03T111231.113_eejcdu.png" alt="Lovable Logo" style="max-height: 80px;">
                         <p><strong>Lovable:</strong> An international platform creating “human intelligence loops” where students solve real-world challenges through vibe coding.</p>
                     </div>
-                    <div class="partner-column">
-                        <h3 class="partner-heading"><img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762151002/hackathon-partnership-icon.png" alt="" class="heading-icon"> In Partnership With</h3>
-                        <div class="logo-item">
-                            <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762151003/hackathon-qele-partner-logo.png" alt="Qatar Education Leadership Expo 2026 Logo" class="qele-partner-logo">
-                        </div>
+                    <div class="partner-group in-partnership">
+                        <h4>In Partnership With</h4>
+                        <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png" alt="Qatar Education Leadership Expo 2026 Logo">
                     </div>
                 </div>
             </div>
