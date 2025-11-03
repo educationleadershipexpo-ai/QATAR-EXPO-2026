@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,18 +12,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
-        #hackathon-partners {
+        .hackathon-partners {
             padding: 80px 0;
-            background-color: var(--surface-color);
+            background-color: #f8f9fa;
         }
-        .partners-container {
+
+        .partners-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            grid-template-columns: 1fr;
+            gap: 3rem;
             align-items: start;
-            text-align: center;
+            max-width: 1100px;
+            margin: 0 auto;
         }
-        .partner-group h4 {
+
+        .partner-card {
+            background-color: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .partner-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .partner-card.highlight {
+             border: 2px solid #711fb8;
+             transform: scale(1.05);
+        }
+
+        .partner-card h4 {
             font-size: 1rem;
             font-weight: 700;
             color: #777;
@@ -30,29 +54,33 @@
             letter-spacing: 1px;
             margin-bottom: 1.5rem;
         }
-        .partner-group img {
-            max-height: 70px;
+
+        .partner-card img {
+            max-height: 80px;
             width: auto;
             max-width: 250px;
             object-fit: contain;
-            margin: 0 auto;
+            margin: 0 auto 1.5rem;
         }
-        .partner-group p {
+        
+        .partner-card img.hiloop-logo {
+            max-height: 120px; /* Increased size for hi loop logo */
+        }
+        
+        .partner-card p {
             font-size: 0.95rem;
             color: #555;
-            margin-top: 1.5rem;
-            max-width: 350px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 0;
             line-height: 1.7;
-        }
-        .partner-group p strong {
-            color: var(--text-color);
         }
 
         @media (min-width: 992px) {
-            .partners-container {
-                grid-template-columns: 1fr 1.5fr 1fr;
+            .partners-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2rem;
+            }
+            .partner-card.highlight {
+                transform: scale(1.05) translateY(-10px);
             }
         }
     </style>
@@ -122,8 +150,8 @@
         </section>
 
         <section id="hackathon-intro">
-            <div class="container" style="max-width: 900px; text-align: center;">
-                <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762163971/Untitled_design_-_2025-11-03T152918.441_c0m9ka.png" alt="Hackathon Mascot" class="hackathon-mascot">
+            <div class="container" style="max-width: 900px; text-align: center; position: relative;">
+                <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762163971/Untitled_design_-_2025-11-03T152918.441_c0m9ka.png" alt="QELE Hackathon Mascot" class="hackathon-intro-mascot">
                 <i class="fas fa-code" style="font-size: 3rem; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem;"></i>
                 <h2>Join a 24-Hour Innovation Hackathon</h2>
                 <p class="subtitle" style="font-size: 1.1rem;">In collaboration with lovable, the Qatar Education Leadership Expo 2026 proudly presents the Vibe Coding Challenge — a 24-hour innovation hackathon designed to inspire the next generation of creative problem solvers. This challenge invites students across Qatar to reimagine the university experience of tomorrow using the power of AI, design thinking, and digital tools — <strong>no coding experience required.</strong></p>
@@ -180,21 +208,23 @@
                 </div>
             </div>
         </section>
-
-        <section id="hackathon-partners">
-             <div class="container">
-                <div class="partners-container">
-                    <div class="partner-group hosted-by">
+        
+        <section class="hackathon-partners">
+            <div class="container">
+                 <h2>Our Partners</h2>
+                 <p class="subtitle">This event is made possible by the collaborative efforts of leaders in education and technology.</p>
+                <div class="partners-grid">
+                    <div class="partner-card">
                         <h4>Hosted By</h4>
-                        <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762105728/NB.hiloop.official.logo_1_wwcxzh.png" alt="Hi Loop Logo" style="max-height: 80px;">
+                        <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762105728/NB.hiloop.official.logo_1_wwcxzh.png" alt="Hi Loop Logo" class="hiloop-logo">
                         <p><strong>Hi Loop:</strong> A global community fostering learning-by-doing through coding clubs, workshops, and hackathons for young innovators to develop new skills and build impactful projects.</p>
                     </div>
-                    <div class="partner-group lovable">
+                    <div class="partner-card highlight">
                         <h4>An Initiative By</h4>
-                        <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762148595/Untitled_design_-_2025-11-03T111231.113_eejcdu.png" alt="Lovable Logo" style="max-height: 80px;">
-                        <p><strong>Lovable:</strong> An international platform creating “human intelligence loops” where students solve real-world challenges through vibe coding.</p>
+                        <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762148595/Untitled_design_-_2025-11-03T111231.113_eejcdu.png" alt="Lovable Logo">
+                        <p><strong>lovable:</strong> An international platform creating “human intelligence loops” where students solve real-world challenges through vibe coding.</p>
                     </div>
-                    <div class="partner-group in-partnership">
+                    <div class="partner-card">
                         <h4>In Partnership With</h4>
                         <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png" alt="Qatar Education Leadership Expo 2026 Logo">
                         <p><strong>QELE 2026:</strong> The premier event connecting educational leaders, institutions, and innovators in the MENA region to shape the future of education.</p>
