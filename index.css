@@ -3401,9 +3401,9 @@ a.contact-email:hover {
 /* --- Booth Features Page Mascot --- */
 .booth-features-mascot {
     position: absolute;
-    width: 220px;
+    width: 280px;
     height: auto;
-    top: -205px;
+    top: -230px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 5;
