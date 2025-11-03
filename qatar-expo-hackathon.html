@@ -11,6 +11,104 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
+        .page-header.hackathon-hero {
+            background-image: url('https://res.cloudinary.com/dj3vhocuf/image/upload/v1762150783/Qatar-expo_t914uh.png');
+            background-size: cover;
+            background-position: center;
+            padding: 2rem 1rem;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hackathon-hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .hackathon-logo {
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .hackathon-logo.hi-loop {
+            max-height: 80px;
+        }
+
+        .hackathon-logo.qele {
+            max-height: 90px;
+            /* Invert to white to make it visible on the dark background */
+            filter: brightness(0) invert(1) drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        .hackathon-infinity {
+            width: 100px;
+            height: 50px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .hackathon-infinity path {
+            stroke: #cccccc;
+            stroke-width: 8;
+            stroke-linecap: round;
+        }
+
+        .hackathon-year {
+            font-family: var(--heading-font);
+            font-size: 4rem;
+            font-weight: 800;
+            color: #ff00a0;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 992px) {
+            .page-header.hackathon-hero {
+                min-height: 250px;
+            }
+            .hackathon-hero-content {
+                gap: 2rem;
+            }
+            .hackathon-logo.hi-loop {
+                max-height: 70px;
+            }
+            .hackathon-logo.qele {
+                max-height: 80px;
+            }
+            .hackathon-infinity {
+                width: 80px;
+            }
+            .hackathon-year {
+                font-size: 3.5rem;
+            }
+        }
+        @media (max-width: 576px) {
+            .page-header.hackathon-hero {
+                min-height: 200px;
+                 background-size: cover;
+                background-color: #6320b6;
+            }
+            .hackathon-hero-content {
+                gap: 1.5rem;
+            }
+            .hackathon-logo.hi-loop {
+                max-height: 50px;
+            }
+            .hackathon-logo.qele {
+                max-height: 60px;
+            }
+            .hackathon-infinity {
+                width: 60px;
+            }
+            .hackathon-year {
+                font-size: 2.5rem;
+            }
+        }
+
         #organizers-and-why .organizer-block {
             margin-bottom: 2.5rem;
         }
@@ -73,11 +171,11 @@
         }
     </style>
 </head>
-<body>
+<body class="hackathon-page">
 
     <header class="main-header" id="main-header">
         <div class="container">
-            <a href="index.html" class="logo"><img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png" alt="QELE 2026 Logo"></a>
+            <a href="index.html" class="logo"><img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761223357/logo-white_1_pqcaph.png" alt="QELE 2026 Logo"></a>
             <button class="nav-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="hamburger-box">
                     <span class="hamburger-inner"></span>
@@ -123,17 +221,21 @@
                 </ul>
             </nav>
             <div class="header-ctas">
-                <a href="booth-registration.html" class="btn btn-primary btn-sm">Book a Booth</a>
-                <a href="sponsorship-registration.html" class="btn btn-primary btn-sm">Sponsor Now</a>
+                <a href="booth-registration.html" class="btn btn-outline-light btn-sm">Book a Booth</a>
+                <a href="sponsorship-registration.html" class="btn btn-outline-light btn-sm">Sponsor Now</a>
             </div>
         </div>
     </header>
 
     <main>
-        <section class="page-header">
+        <section class="page-header hackathon-hero">
             <div class="container">
-                <h1>Hi Loop x Qatar Education Leadership Expo 2026</h1>
-                <p>Vibe Coding Challenge: The Future of Higher Education – Student Life Reimagined</p>
+                <div class="hackathon-hero-content">
+                    <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1762148595/Untitled_design_-_2025-11-03T111231.113_eejcdu.png" alt="Hi Loop Logo" class="hackathon-logo hi-loop">
+                    <svg class="hackathon-infinity" viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg"><path d="M 25 25 C 25 10, 40 10, 50 25 C 60 40, 75 40, 75 25 C 75 10, 60 10, 50 25 C 40 40, 25 40, 25 25 Z" fill="none"/></svg>
+                    <img src="https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png" alt="Qatar Education Leadership Expo Logo" class="hackathon-logo qele">
+                    <span class="hackathon-year">2026</span>
+                </div>
             </div>
         </section>
 
