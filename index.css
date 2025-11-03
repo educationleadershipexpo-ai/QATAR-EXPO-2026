@@ -738,8 +738,8 @@ section {
 /* --- NEW Impact Stats Section (Redesigned) --- */
 .impact-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
     margin-top: 3rem;
 }
 
@@ -751,7 +751,7 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 1.5rem;
+    padding: 1.2rem;
     color: var(--white);
     background-size: cover;
     background-position: center;
@@ -784,7 +784,7 @@ section {
 }
 
 .impact-number {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     font-weight: 700;
     font-family: var(--heading-font);
     line-height: 1.1;
@@ -807,7 +807,7 @@ section {
 
 
 .impact-label {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 400;
     opacity: 0.9;
     margin-top: 0.25rem;
