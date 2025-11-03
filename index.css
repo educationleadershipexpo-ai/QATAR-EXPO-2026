@@ -1199,7 +1199,6 @@ section {
 }
 .prime-booth-counter p {
     margin: 0;
-    margin-left: 170px;
 }
 .prime-booth-counter span {
     background: var(--gradient);
@@ -3402,11 +3401,22 @@ a.contact-email:hover {
 /* --- Booth Features Page Mascot --- */
 .booth-features-mascot {
     position: absolute;
-    width: 280px;
+    width: 220px;
     height: auto;
-    top: -230px;
+    top: -205px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* --- Hackathon Page Mascot --- */
+.hackathon-intro-mascot {
+    position: absolute;
+    width: 250px;
+    height: auto;
+    top: -150px;
+    right: 0;
     z-index: 5;
     pointer-events: none;
 }
@@ -3510,22 +3520,6 @@ a.contact-email:hover {
     transform: scaleX(-1);
 }
 
-/* --- Hackathon Page Mascot --- */
-#hackathon-intro {
-    position: relative;
-    padding-top: 180px; /* Add extra space for the mascot */
-}
-.hackathon-mascot {
-    position: absolute;
-    width: 280px;
-    height: auto;
-    top: -20px; /* Position it nicely in the new space */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 5;
-    pointer-events: none;
-}
-
 @media (max-width: 1200px) {
     .benefits-mascot {
         left: 0px;
@@ -3536,6 +3530,9 @@ a.contact-email:hover {
 
 @media (max-width: 992px) {
     .benefits-mascot {
+        display: none;
+    }
+    .hackathon-intro-mascot {
         display: none;
     }
     .testimonials-mascot {
@@ -3588,12 +3585,6 @@ a.contact-email:hover {
     }
     .speaker-reg-mascot {
         display: none;
-    }
-    .hackathon-mascot {
-        display: none;
-    }
-    #hackathon-intro {
-        padding-top: 60px; /* Reset padding to default for mobile */
     }
 }
 
