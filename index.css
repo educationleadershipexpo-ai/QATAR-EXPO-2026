@@ -3413,10 +3413,10 @@ a.contact-email:hover {
 /* --- Hackathon Page Mascot --- */
 .hackathon-intro-mascot {
     position: absolute;
-    width: 210px;
+    width: 250px;
     height: auto;
     top: -150px;
-    right: -250px;
+    right: 0;
     z-index: 5;
     pointer-events: none;
 }
