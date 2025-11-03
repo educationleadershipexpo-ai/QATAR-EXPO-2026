@@ -44,7 +44,6 @@
 
         .partner-card.highlight {
              border: 2px solid #711fb8;
-             /* Removed transform to keep size consistent */
         }
 
         .partner-card h4 {
@@ -74,15 +73,13 @@
             margin-top: 0;
             line-height: 1.7;
             flex-grow: 1; /* Allow paragraph to grow and fill space */
+            text-align: left; /* Align text for better readability */
         }
 
         @media (min-width: 992px) {
             .partners-grid {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 2rem;
-            }
-            .partner-card.highlight {
-                /* Removed transform to keep size consistent and aligned */
             }
         }
     </style>
