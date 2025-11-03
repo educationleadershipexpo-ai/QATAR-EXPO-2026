@@ -52,6 +52,7 @@
             case 'form-sponsor-name':
             case 'form-speaker-name':
             case 'deck-form-name':
+            case 'form-school-contact-name':
                 if (value === '') {
                     showError(field, 'Name is required.');
                     isValid = false;
@@ -64,8 +65,9 @@
             case 'form-sponsor-company':
             case 'form-speaker-job-org':
             case 'deck-form-organization':
+            case 'form-school-name':
                 if (value === '') {
-                    const fieldName = (field.id.includes('booth') || field.id.includes('sponsor')) ? 'Company' : (field.id.includes('student')) ? 'School/Institution' : 'Organization';
+                    const fieldName = (field.id.includes('booth') || field.id.includes('sponsor')) ? 'Company' : (field.id.includes('student') || field.id.includes('school')) ? 'School/Institution' : 'Organization';
                     showError(field, `${fieldName} is required.`);
                     isValid = false;
                 }
@@ -77,6 +79,7 @@
             case 'form-sponsor-email':
             case 'form-speaker-email':
             case 'deck-form-email':
+            case 'form-school-email':
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (value === '') {
                     showError(field, 'Email is required.');
@@ -93,6 +96,7 @@
             case 'form-sponsor-phone':
             case 'form-speaker-phone':
             case 'deck-form-phone':
+            case 'form-school-phone':
                 const phoneRegex = /^[\d\s()+-]+$/;
                  if ((field.hasAttribute('required') && value === '')) {
                     showError(field, 'Mobile number is required.');
@@ -146,8 +150,23 @@
             case 'form-sponsor-country':
             case 'form-sponsor-company-field':
             case 'form-speaker-country':
+            case 'form-school-country':
+            case 'form-school-visit-date':
                 if (select.value === '') {
                     showError(field, 'Please make a selection.');
+                    isValid = false;
+                }
+                break;
+            
+            case 'form-school-student-count':
+                if (value === '' || parseInt(value) < 1) {
+                    showError(field, 'Please enter a valid number of students.');
+                    isValid = false;
+                }
+                break;
+            case 'form-school-grade-level':
+                if (value === '') {
+                    showError(field, 'Please specify the grade level(s).');
                     isValid = false;
                 }
                 break;
@@ -162,8 +181,9 @@
             case 'form-booth-consent':
             case 'form-student-consent':
             case 'form-sponsor-consent':
+            case 'form-school-consent':
                 if (!checkbox.checked) {
-                    showError(checkbox, 'You must consent to continue.');
+                    showError(checkbox, 'You must provide consent to register.');
                     isValid = false;
                 }
                 break;
@@ -945,6 +965,77 @@
         });
     }
 
+    function initializeSchoolGroupRegistrationForm() {
+        const form = document.getElementById('school-group-registration-form') as HTMLFormElement;
+        const successMessage = document.getElementById('school-group-form-success');
+        if (!form || !successMessage) return;
+
+        const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
+        inputs.forEach(input => {
+            const eventType = ['select-one', 'checkbox', 'number'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
+            input.addEventListener(eventType, () => validateField(input));
+        });
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const isFormValid = inputs.map(input => validateField(input)).every(Boolean);
+
+            if (isFormValid) {
+                const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Submitting...';
+                }
+
+                // =========================================================================================
+                // --- ROBUST GOOGLE SHEETS INTEGRATION FOR SCHOOL GROUPS ---
+                // =========================================================================================
+                // !! CRITICAL INSTRUCTIONS !!
+                // 1. Create a new, separate Google Sheet for school group registrations.
+                // 2. Rename the first sheet to "SchoolGroupRegistrations".
+                // 3. In the first row, add these exact headers:
+                //    Timestamp, form_source, school_name, contact_name, country, email, phone, student_count, grade_level, visit_date, message, consent
+                // 4. Go to Extensions > Apps Script and paste the universal script code.
+                // 5. Deploy a new web app, set access to "Anyone", and paste the new URL below.
+                // =========================================================================================
+                const googleSheetWebAppUrl = 'https://script.google.com/macros/s/AKfycbw7gUfTjZ9Q9c9jJvR7n8X3y2A1b0C4d5E6f7G8h9i0j/exec';
+                
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(googleSheetWebAppUrl, {
+                        method: 'POST',
+                        body: new URLSearchParams(formData as any)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result.result === 'success') {
+                            form.style.display = 'none';
+                            successMessage.style.display = 'block';
+                            window.scrollTo(0, 0);
+                        } else {
+                            throw new Error(result.error || 'The script returned an unknown error.');
+                        }
+                    } else {
+                        throw new Error(`Submission failed. Status: ${response.status}`);
+                    }
+                } catch (error) {
+                    console.error('School Group Registration Error:', error);
+                    alert('Sorry, there was a problem with your registration. Please check your network and try again. Error: ' + (error as Error).message);
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Submit Group Registration';
+                    }
+                }
+            } else {
+                const firstInvalidField = form.querySelector('.invalid, .error-message[style*="block"]');
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    }
 
     // --- FAQ Accordion ---
     function initializeFaqAccordion() {
@@ -1402,6 +1493,7 @@
     initializeBoothRegistrationForm();
     initializeSponsorshipRegistrationForm();
     initializeSpeakerRegistrationForm();
+    initializeSchoolGroupRegistrationForm();
     initializeFaqAccordion();
     initializeExitIntentModal();
     initializeDeckRequestModal();
