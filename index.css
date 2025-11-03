@@ -740,7 +740,7 @@ section {
 /* --- NEW Impact Stats Section (Redesigned) --- */
 .impact-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin-top: 3rem;
 }
@@ -1798,6 +1798,7 @@ input[type="text"],
 input[type="email"],
 input[type="tel"],
 input[type="date"],
+input[type="number"],
 textarea,
 select {
     width: 100%;
@@ -1813,6 +1814,7 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="tel"]:focus,
 input[type="date"]:focus,
+input[type="number"]:focus,
 textarea:focus,
 select:focus {
     outline: none;
@@ -3360,6 +3362,17 @@ a.contact-email:hover {
     pointer-events: none;
 }
 
+/* --- School Group Registration Page Mascot --- */
+.school-group-reg-mascot {
+    position: absolute;
+    width: 230px;
+    height: auto;
+    top: 110px;
+    right: 5%;
+    z-index: 5;
+    pointer-events: none;
+}
+
 /* --- Speaker Registration Page Mascot --- */
 .speaker-reg-mascot {
     position: absolute;
@@ -3560,6 +3573,9 @@ a.contact-email:hover {
         display: none;
     }
     .sponsorship-reg-mascot {
+        display: none;
+    }
+    .school-group-reg-mascot {
         display: none;
     }
     .exhibit-footer-mascot {
