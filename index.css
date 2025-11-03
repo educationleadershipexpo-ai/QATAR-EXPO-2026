@@ -196,7 +196,6 @@ section {
 }
 
 .dropdown-menu li {
-    margin-left: 50%;
 }
 
 .dropdown-menu a {
@@ -204,7 +203,6 @@ section {
     padding: 0.75rem 1.5rem;
     color: var(--text-color);
     text-decoration: none;
-    margin-left:-100px;
     font-weight: 700;
     font-size: 0.95rem;
     transition: background-color 0.2s, color 0.2s;
@@ -2695,7 +2693,6 @@ a.contact-email:hover {
     }
     .dropdown-menu a {
         padding-left: 2.5rem;
-        margin-left: 22px;
         background-color: var(--surface-color);
     }
 
