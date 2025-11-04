@@ -1123,10 +1123,10 @@
         if (!logoGrid) return;
 
         const partners = [
-            { src: 'https://cdn.asp.events/CLIENT_Mark_All_D856883D_926F_07B7_E9D09EE4984A0639/sites/inclusive-education-mena/media/Logos/Ed-logo.png', alt: 'Ministry of Education Logo', customClass: 'moe-logo' },
+            { src: 'https://res.cloudinary.com/dj3vhocuf/image/fetch/f_auto,q_auto,h_140/https://cdn.asp.events/CLIENT_Mark_All_D856883D_926F_07B7_E9D09EE4984A0639/sites/inclusive-education-mena/media/Logos/Ed-logo.png', alt: 'Ministry of Education Logo', customClass: 'moe-logo' },
             { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/f_auto,q_auto,w_300/v1761216928/Blue_Bold_Office_Idea_Logo_50_x_50_px_10_l68irx.png', alt: 'Sheraton Grand Doha Logo' },
             { src: 'https://i0.wp.com/blog.10times.com/wp-content/uploads/2019/09/cropped-10times-logo-hd.png?w=300&ssl=1', alt: '10times Logo' },
-            { src: 'https://www.eventbrite.com/blog/wp-content/uploads/2025/02/Eventbrite_Hero-Lock-up_Brite-Orange.png', alt: 'Eventbrite Logo', customClass: 'eventbrite-logo' },
+            { src: 'https://res.cloudinary.com/dj3vhocuf/image/fetch/f_auto,q_auto,h_140/https://www.eventbrite.com/blog/wp-content/uploads/2025/02/Eventbrite_Hero-Lock-up_Brite-Orange.png', alt: 'Eventbrite Logo', customClass: 'eventbrite-logo' },
             { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/f_auto,q_auto,w_300/v1762105728/NB.hiloop.official.logo_1_wwcxzh.png', alt: 'Hi Loop Logo' },
             { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/f_auto,q_auto,w_300/v1762148595/Untitled_design_-_2025-11-03T111231.113_eejcdu.png', alt: 'Lovable Logo' }
         ];
