@@ -164,6 +164,12 @@
                     isValid = false;
                 }
                 break;
+            case 'form-school-staff-count':
+                if (value !== '' && (parseInt(value) < 0 || !/^\d+$/.test(value))) {
+                    showError(field, 'Please enter a valid number (0 or more).');
+                    isValid = false;
+                }
+                break;
             case 'form-school-grade-level':
                 if (value === '') {
                     showError(field, 'Please specify the grade level(s).');
@@ -227,7 +233,7 @@
             mobileNavHeader.href = "index.html";
             mobileNavHeader.classList.add('mobile-nav-logo');
             const logoImg = document.createElement('img');
-            logoImg.src = "https://res.cloudinary.com/dj3vhocuf/image/upload/v1761210698/logo500x250_i8opbv.png";
+            logoImg.src = "https://res.cloudinary.com/dj3vhocuf/image/upload/f_auto,q_auto,w_200/v1761210698/logo500x250_i8opbv.png";
             logoImg.alt = "QELE 2026 Logo";
             mobileNavHeader.appendChild(logoImg);
             mainNav.prepend(mobileNavHeader);
@@ -970,7 +976,7 @@
         const successMessage = document.getElementById('school-group-form-success');
         if (!form || !successMessage) return;
 
-        const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required]'));
+        const inputs: HTMLElement[] = Array.from(form.querySelectorAll('[required], #form-school-staff-count'));
         inputs.forEach(input => {
             const eventType = ['select-one', 'checkbox', 'number'].includes((input as HTMLInputElement).type) ? 'change' : 'input';
             input.addEventListener(eventType, () => validateField(input));
@@ -995,7 +1001,7 @@
                 // 1. Create a new, separate Google Sheet for school group registrations.
                 // 2. Rename the first sheet to "SchoolGroupRegistrations".
                 // 3. In the first row, add these exact headers:
-                //    Timestamp, form_source, school_name, contact_name, country, email, phone, student_count, grade_level, visit_date, message, consent
+                //    Timestamp, form_source, school_name, contact_name, country, email, phone, student_count, grade_level, staff_count, visit_date, message, consent
                 // 4. Go to Extensions > Apps Script and paste the universal script code.
                 // 5. Deploy a new web app, set access to "Anyone", and paste the new URL below.
                 // =========================================================================================
@@ -1118,11 +1124,11 @@
 
         const partners = [
             { src: 'https://cdn.asp.events/CLIENT_Mark_All_D856883D_926F_07B7_E9D09EE4984A0639/sites/inclusive-education-mena/media/Logos/Ed-logo.png', alt: 'Ministry of Education Logo', customClass: 'moe-logo' },
-            { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/v1761216928/Blue_Bold_Office_Idea_Logo_50_x_50_px_10_l68irx.png', alt: 'Sheraton Grand Doha Logo' },
-            { src: 'https://i0.wp.com/blog.10times.com/wp-content/uploads/2019/09/cropped-10times-logo-hd.png?fit=3077%2C937&ssl=1', alt: '10times Logo' },
+            { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/f_auto,q_auto,w_300/v1761216928/Blue_Bold_Office_Idea_Logo_50_x_50_px_10_l68irx.png', alt: 'Sheraton Grand Doha Logo' },
+            { src: 'https://i0.wp.com/blog.10times.com/wp-content/uploads/2019/09/cropped-10times-logo-hd.png?w=300&ssl=1', alt: '10times Logo' },
             { src: 'https://www.eventbrite.com/blog/wp-content/uploads/2025/02/Eventbrite_Hero-Lock-up_Brite-Orange.png', alt: 'Eventbrite Logo', customClass: 'eventbrite-logo' },
-            { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/v1762105728/NB.hiloop.official.logo_1_wwcxzh.png', alt: 'Hi Loop Logo' },
-            { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/v1762148595/Untitled_design_-_2025-11-03T111231.113_eejcdu.png', alt: 'Lovable Logo' }
+            { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/f_auto,q_auto,w_300/v1762105728/NB.hiloop.official.logo_1_wwcxzh.png', alt: 'Hi Loop Logo' },
+            { src: 'https://res.cloudinary.com/dj3vhocuf/image/upload/f_auto,q_auto,w_300/v1762148595/Untitled_design_-_2025-11-03T111231.113_eejcdu.png', alt: 'Lovable Logo' }
         ];
         
         logoGrid.innerHTML = '';
@@ -1483,7 +1489,7 @@
         });
     }
 
-    // --- Page Load Initializers ---
+    // --- Page Load Initializers --
     highlightActiveNav();
     initializeMobileNav();
     initializeDropdowns();
