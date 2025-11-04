@@ -142,10 +142,6 @@ section {
     color: #d12386;
 }
 
-.nav-link i {
-    transition: transform 0.3s ease;
-}
-
 .nav-link.active {
     color: #d12386;
 }
@@ -2680,8 +2676,6 @@ a.contact-email:hover {
     .nav-link.active::after {
         display: none;
     }
-    
-    /* --- NEW Mobile Accordion Nav --- */
     .dropdown-menu {
         position: static;
         transform: none;
@@ -2689,31 +2683,19 @@ a.contact-email:hover {
         border-radius: 0;
         border-top: 1px solid var(--border-color);
         min-width: 100%;
-        margin: 0;
-        /* Accordion transition styles */
-        display: block;
-        max-height: 0;
-        overflow: hidden;
         padding: 0;
-        opacity: 1; /* Override desktop styles */
-        visibility: visible; /* Override desktop styles */
-        transition: max-height 0.35s ease-in-out;
-        background-color: var(--surface-color);
+        margin: 0;
+        display: none;
+        overflow: visible;
     }
     .has-dropdown.dropdown-open > .dropdown-menu {
-        max-height: 400px; /* A large enough value to show all sub-items */
-        padding: 0.5rem 0;
-    }
-    .has-dropdown.dropdown-open > .nav-link i {
-        transform: rotate(180deg);
+        display: block;
     }
     .dropdown-menu a {
+        padding-left: 2.5rem;
+        margin-left: 22px;
         background-color: var(--surface-color);
-        margin-left: 0;
-        padding: 0.75rem 1.5rem 0.75rem 2.5rem;
     }
-    /* --- END Mobile Accordion Nav --- */
-
 
     .why-qatar-content, .decision-makers-layout, .lead-capture-grid, .footer-grid {
         grid-template-columns: 1fr;
