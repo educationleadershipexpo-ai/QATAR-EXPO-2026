@@ -196,6 +196,7 @@ section {
 }
 
 .dropdown-menu li {
+    margin-left: 50%;
 }
 
 .dropdown-menu a {
@@ -203,6 +204,7 @@ section {
     padding: 0.75rem 1.5rem;
     color: var(--text-color);
     text-decoration: none;
+    margin-left:-100px;
     font-weight: 700;
     font-size: 0.95rem;
     transition: background-color 0.2s, color 0.2s;
@@ -739,7 +741,7 @@ section {
 .impact-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 1rem;
+    gap: 1.5rem;
     margin-top: 3rem;
 }
 
@@ -751,7 +753,7 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 1.2rem;
+    padding: 1.5rem;
     color: var(--white);
     background-size: cover;
     background-position: center;
@@ -784,7 +786,7 @@ section {
 }
 
 .impact-number {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     font-weight: 700;
     font-family: var(--heading-font);
     line-height: 1.1;
@@ -807,7 +809,7 @@ section {
 
 
 .impact-label {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 400;
     opacity: 0.9;
     margin-top: 0.25rem;
@@ -1505,7 +1507,7 @@ section {
 
 /* Unified button style for the "3 Ways to Join" section */
 #three-ways-to-join .way-card .btn {
-    background: #101c35;
+    background-color: #101c35;
     color: white;
     border-color: #fff;
     transition: background-color 0.3s, color 0.3s;
@@ -1796,7 +1798,6 @@ input[type="text"],
 input[type="email"],
 input[type="tel"],
 input[type="date"],
-input[type="number"],
 textarea,
 select {
     width: 100%;
@@ -1812,7 +1813,6 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="tel"]:focus,
 input[type="date"]:focus,
-input[type="number"]:focus,
 textarea:focus,
 select:focus {
     outline: none;
@@ -2693,6 +2693,7 @@ a.contact-email:hover {
     }
     .dropdown-menu a {
         padding-left: 2.5rem;
+        margin-left: 22px;
         background-color: var(--surface-color);
     }
 
@@ -3359,17 +3360,6 @@ a.contact-email:hover {
     pointer-events: none;
 }
 
-/* --- School Group Registration Page Mascot --- */
-.school-group-reg-mascot {
-    position: absolute;
-    width: 230px;
-    height: auto;
-    top: 110px;
-    right: 5%;
-    z-index: 5;
-    pointer-events: none;
-}
-
 /* --- Speaker Registration Page Mascot --- */
 .speaker-reg-mascot {
     position: absolute;
@@ -3423,10 +3413,10 @@ a.contact-email:hover {
 /* --- Hackathon Page Mascot --- */
 .hackathon-intro-mascot {
     position: absolute;
-    width: 200px;
+    width: 180px;
     height: auto;
     top: -150px;
-    right: -220px;
+    right: -150px;
     z-index: 5;
     pointer-events: none;
 }
@@ -3471,11 +3461,11 @@ a.contact-email:hover {
 }
 
 .brand-exposure-mascot {
-position: absolute;
-    width: 280px;
+    position: absolute;
+    width: 200px;
     height: auto;
     top: -220px;
-    left: 70%;
+    left: 80%;
     transform: translateX(-50%);
     z-index: 5;
     pointer-events: none;
@@ -3489,7 +3479,7 @@ position: absolute;
     position: absolute;
     width: 180px;
     height: auto;
-    top: -300px;
+    top: -270px;
     left: 70px;
     transform: translateX(-50%);
     z-index: 5;
@@ -3572,9 +3562,6 @@ position: absolute;
     .sponsorship-reg-mascot {
         display: none;
     }
-    .school-group-reg-mascot {
-        display: none;
-    }
     .exhibit-footer-mascot {
         display: none;
     }
@@ -3634,5 +3621,14 @@ position: absolute;
     .mobile-nav-ctas .btn {
         width: 100%;
         text-align: center;
+    }
+    .mobile-nav-ctas .btn-secondary {
+        background: #711fb8;
+        color: var(--white);
+        border-color: #711fb8;
+    }
+    .mobile-nav-ctas .btn-secondary:hover {
+        background: #5a1991;
+        border-color: #5a1991;
     }
 }
