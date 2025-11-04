@@ -978,7 +978,6 @@
             sessionStorage.setItem('exitModalShown', 'true');
             // Clean up all triggers once shown
             document.removeEventListener('mouseout', handleMouseOut);
-            window.removeEventListener('scroll', handleScroll);
             clearTimeout(timer);
         };
 
@@ -993,18 +992,10 @@
             }
         };
 
-        const handleScroll = () => {
-            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-            if (scrollPercent >= 50) {
-                showModal();
-            }
-        };
+        const timer = setTimeout(showModal, 20000); // Increased timer to 20 seconds
 
-        const timer = setTimeout(showModal, 10000);
-
-        // Add triggers
+        // Add triggers (scroll trigger removed)
         document.addEventListener('mouseout', handleMouseOut);
-        window.addEventListener('scroll', handleScroll);
 
         // Add closing event listeners
         closeModalBtn?.addEventListener('click', hideModal);
